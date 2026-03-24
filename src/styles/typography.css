@@ -1,0 +1,47 @@
+/**
+ * Semantic typography utilities — prefer these over scattered font-black / font-bold.
+ * Compose with text-* size and color utilities.
+ */
+@utility typo-page-title {
+  @apply font-semibold tracking-tight;
+}
+
+@utility typo-page-subtitle {
+  @apply font-normal tracking-widest uppercase;
+}
+
+@utility typo-section-title {
+  @apply font-semibold;
+}
+
+@utility typo-section-label {
+  @apply font-medium tracking-widest uppercase text-muted-foreground;
+}
+
+@utility typo-card-title {
+  @apply font-medium leading-none tracking-tight;
+}
+
+@utility typo-label {
+  @apply font-medium;
+}
+
+@utility typo-body {
+  @apply font-normal;
+}
+
+@utility typo-meta {
+  @apply font-normal text-muted-foreground;
+}
+
+@utility typo-kpi {
+  @apply font-semibold tabular-nums;
+}
+
+@utility typo-table-header {
+  @apply font-medium text-muted-foreground;
+}
+
+@utility typo-dense-caps {
+  @apply font-medium uppercase tracking-wider;
+}

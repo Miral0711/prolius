@@ -1,0 +1,83 @@
+{
+  "pageTitle": "Bus Live Tracking",
+  "summaryCounters": {
+    "total": 779,
+    "online": 28,
+    "idling": 44,
+    "accOff": 64,
+    "alarm": 4,
+    "dvrError": 218,
+    "offline": 421
+  },
+  "vehicleGroups": [
+    {
+      "companyId": null,
+      "companyName": "Blitztech Solutions",
+      "totalVehicles": 4,
+      "online": 0,
+      "vehicles": [
+        {
+          "plateNo": "KSA0001",
+          "gpsLastUpdate": "22-10-2024 14:28",
+          "dvrLastUpdate": null
+        },
+        { "plateNo": "AVI001", "gpsLastUpdate": null, "dvrLastUpdate": null },
+        { "plateNo": "AVI0012", "gpsLastUpdate": null, "dvrLastUpdate": null },
+        { "plateNo": "AVI00123", "gpsLastUpdate": null, "dvrLastUpdate": null }
+      ]
+    },
+    {
+      "companyId": null,
+      "companyName": "Maged Ghalab Est",
+      "totalVehicles": 94,
+      "online": 3,
+      "vehicles": [
+        {
+          "plateNo": "HSA1098",
+          "gpsLastUpdate": "16-01-2025 01:11",
+          "dvrLastUpdate": null
+        },
+        {
+          "plateNo": "ASA8887",
+          "gpsLastUpdate": "07-01-2026 10:12",
+          "dvrLastUpdate": null
+        },
+        {
+          "plateNo": "XSA4247",
+          "gpsLastUpdate": "07-01-2026 09:55",
+          "dvrLastUpdate": null
+        },
+        {
+          "plateNo": "HSA1167",
+          "gpsLastUpdate": "16-01-2025 01:09",
+          "dvrLastUpdate": null
+        }
+      ]
+    }
+  ],
+  "selectedVehicle": {
+    "driverName": "xyz",
+    "plateNo": "KSA0001",
+    "vehicleInformation": {
+      "vehicleStatus": "No GPS",
+      "speedKmh": 0,
+      "engineStatus": "On",
+      "driverLogin": true,
+      "batteryVoltage": null
+    },
+    "deviceInformation": {
+      "deviceId": 3254,
+      "mdvrStatus": "Offline",
+      "mdvrVersion": "T241008",
+      "camera1Status": "Offline",
+      "camera2Status": "Offline"
+    },
+    "gpsNetwork": {
+      "gpsSatellites": -1,
+      "connectedCameras": 0,
+      "disconnectedCameras": 2
+    }
+  },
+  "mapPlaceholderMessage": "This page can't load Google Maps correctly. For development purposes only.",
+  "footerText": "Copyright © 2026 Blitztech Solutions FZE LLC. All rights reserved."
+}

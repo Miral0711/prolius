@@ -1,0 +1,61 @@
+# Dependencies
+/node_modules/
+
+# Build output
+/dist/
+/build/
+/coverage/
+/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables (keep example files)
+.env
+.env.*
+!.env.example
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Caches
+.eslintcache
+
+# IDE / editor settings
+.vscode/
+.idea/
+.fleet/
+
+# OS / misc
+.DS_Store
+Thumbs.db
+*.suo
+
+# Packages
+*.tgz
+
+# Theme media assets
+# The template includes a lot of unused images under `public/media/`.
+# Ignore everything by default, then whitelist only what your current code references.
+/public/media/**
+!/public/media/app/
+!/public/media/app/favicon.ico
+!/public/media/app/mini-logo.svg
+!/public/media/flags/
+!/public/media/flags/united-kingdom.svg
+!/public/media/brand-logos/
+!/public/media/brand-logos/triden_white.png
+!/public/media/brand-logos/logo.png
+!/public/media/avatars/
+!/public/media/avatars/300-1.png
+!/public/media/avatars/300-2.png
+!/public/media/avatars/300-4.png
+!/public/media/avatars/300-6.png
+!/public/media/avatars/300-9.png
+!/public/media/avatars/300-11.png
+!/public/media/avatars/300-20.png
+
