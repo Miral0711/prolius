@@ -1,5 +1,10 @@
 import { Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  dashboardTableHeaderCellClass,
+  dashboardTableHeaderLiftShadow,
+  dashboardTableHeaderSurfaceClass,
+} from './GridTable';
 import { StatusBadge, type StatusVariant } from './StatusBadge';
 
 export interface TripItem {
@@ -28,8 +33,12 @@ const STATUS_MAPPING: Record<string, StatusVariant> = {
 
 const COL_WIDTHS = Array(7).fill(`${100 / 7}%`);
 
-const TH_BASE =
-  'text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400 select-none px-3 py-2.5 bg-slate-50/60 border-b border-slate-200/60';
+/** Matches DataTable header: tint + border on cells; lift shadow once on `<thead>`. */
+const TH_BASE = cn(
+  dashboardTableHeaderCellClass,
+  dashboardTableHeaderSurfaceClass,
+  'px-3 py-3',
+);
 const TD_BASE = 'px-3 py-0 align-middle h-[42px]';
 
 export function CompactTripsTable({
@@ -67,7 +76,9 @@ export function CompactTripsTable({
               <col key={i} style={{ width: w }} />
             ))}
           </colgroup>
-          <thead>
+          <thead
+            className={cn('sticky top-0 z-20', dashboardTableHeaderLiftShadow)}
+          >
             <tr>
               <th className={cn(TH_BASE, 'text-center')}>Trip ID</th>
               <th className={cn(TH_BASE, 'text-center')}>Driver</th>
@@ -101,16 +112,9 @@ export function CompactTripsTable({
 
                 {/* Driver */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <div className="flex items-center justify-center gap-1.5 overflow-hidden">
-                    <div className="h-5 w-5 rounded-md bg-slate-100 flex items-center justify-center border border-white shadow-sm shrink-0">
-                      <span className="text-[8.5px] font-semibold text-slate-600">
-                        {trip.driver[0]}
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-semibold text-slate-700 truncate">
-                      {trip.driver}
-                    </span>
-                  </div>
+                  <span className="text-[10px] font-semibold text-slate-700 truncate block">
+                    {trip.driver}
+                  </span>
                 </td>
 
                 {/* Route */}

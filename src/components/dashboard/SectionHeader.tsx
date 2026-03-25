@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
+import { cn } from '@/lib/utils';
 
 interface SectionHeaderProps {
   title: string;
@@ -7,9 +7,13 @@ interface SectionHeaderProps {
   className?: string;
 }
 
-export function SectionHeader({ title, subtitle, className }: SectionHeaderProps) {
+export function SectionHeader({
+  title,
+  subtitle,
+  className,
+}: SectionHeaderProps) {
   return (
-    <div className={cn("flex items-center gap-4 mb-2.5 group", className)}>
+    <div className={cn('flex items-center gap-4 mb-2.5 group', className)}>
       <div className="flex flex-col">
         <h2
           className={cn(

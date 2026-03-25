@@ -103,61 +103,55 @@ const ArchiveControls = ({
 
 /* ─── 2. RECENT RECORDINGS LIST ────────────────────────────────── */
 const DvrRecentList = () => (
-  <div className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
-    <SectionTitle
-      icon={PlayCircle}
-      title="Recent Clips"
-      subtitle="Available recordings"
-      className="shrink-0 mb-0 items-center gap-2 px-1 py-0.5"
-    />
-    <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain pr-2 scrollbar-thin scrollbar-thumb-slate-200">
-      {[
-        { id: 'REC-2941', time: '14:20 - 14:45', cam: 'CAM 1', active: true },
-        { id: 'REC-2942', time: '13:10 - 13:30', cam: 'CAM 2', active: false },
-        { id: 'REC-2943', time: '12:05 - 12:40', cam: 'CAM 1', active: false },
-        { id: 'REC-2944', time: '11:15 - 11:50', cam: 'CAM 3', active: false },
-        { id: 'REC-2945', time: '10:00 - 10:30', cam: 'CAM 4', active: false },
-        { id: 'REC-2946', time: '09:15 - 09:45', cam: 'CAM 2', active: false },
-      ].map((item, i) => (
-        <RecordingListItem
-          key={i}
-          id={item.id}
-          time={item.time}
-          cam={item.cam}
-          icon={Video}
-          active={item.active}
-        />
-      ))}
+  <PageSectionCard className="flex min-h-0 flex-1 flex-col overflow-hidden">
+    <div className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden">
+      <SectionTitle
+        icon={PlayCircle}
+        title="Recent Clips"
+        subtitle="Available recordings"
+        className="shrink-0 mb-0 items-center gap-2 py-0.5"
+      />
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain pr-1 scrollbar-thin scrollbar-thumb-slate-200">
+        {[
+          { id: 'REC-2941', time: '14:20 - 14:45', cam: 'CAM 1', active: true },
+          { id: 'REC-2942', time: '13:10 - 13:30', cam: 'CAM 2', active: false },
+          { id: 'REC-2943', time: '12:05 - 12:40', cam: 'CAM 1', active: false },
+          { id: 'REC-2944', time: '11:15 - 11:50', cam: 'CAM 3', active: false },
+          { id: 'REC-2945', time: '10:00 - 10:30', cam: 'CAM 4', active: false },
+          { id: 'REC-2946', time: '09:15 - 09:45', cam: 'CAM 2', active: false },
+        ].map((item, i) => (
+          <RecordingListItem
+            key={i}
+            id={item.id}
+            time={item.time}
+            cam={item.cam}
+            icon={Video}
+            active={item.active}
+          />
+        ))}
+      </div>
     </div>
-  </div>
+  </PageSectionCard>
 );
 
 /* ─── 3. ANALYTICS QUICK VIEW ─────────────────────────────────── */
 const DvrAnalyticsSection = () => (
-  <div className="flex shrink-0 flex-col gap-1.5">
-    <SectionTitle
-      icon={BarChart3}
-      title="Analytics"
-      subtitle="Clip metrics"
-      className="mb-0 items-center gap-2 px-1 py-0.5"
-    />
-    <div className="grid grid-cols-2 gap-2">
-      <StatMiniCard label="Daily Clips" value="248" className="bg-white" />
-      <StatMiniCard label="Incidents" value="12" className="bg-white" />
-      <StatMiniCard
-        label="Avg Speed"
-        value="64"
-        unit="km/h"
-        className="bg-white"
+  <PageSectionCard className="shrink-0 overflow-visible">
+    <div className="flex flex-col gap-1.5">
+      <SectionTitle
+        icon={BarChart3}
+        title="Analytics"
+        subtitle="Clip metrics"
+        className="mb-0 items-center gap-2 py-0.5"
       />
-      <StatMiniCard
-        label="Reliability"
-        value="99.9"
-        unit="%"
-        className="bg-white"
-      />
+      <div className="grid grid-cols-2 gap-2">
+        <StatMiniCard label="Daily Clips" value="248" />
+        <StatMiniCard label="Incidents" value="12" />
+        <StatMiniCard label="Avg Speed" value="64" unit="km/h" />
+        <StatMiniCard label="Reliability" value="99.9" unit="%" />
+      </div>
     </div>
-  </div>
+  </PageSectionCard>
 );
 
 /* ─── MAIN SIDEBAR ASSEMBLY ──────────────────────────────────── */
@@ -177,7 +171,7 @@ export function DvrSidebar({
   return (
     <div
       className={cn(
-        'flex min-h-0 flex-1 flex-col gap-2 overflow-hidden',
+        'flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden',
         className,
       )}
     >

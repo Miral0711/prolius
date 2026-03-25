@@ -167,34 +167,31 @@ interface FilterInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  * In-flow picker icon (not absolute) so native text never draws underneath it.
  * Slightly smaller, darker neutral gray — calendar + clock match.
  */
-const nativePickerIndicator =
-  [
-    '[&::-webkit-calendar-picker-indicator]:ml-2',
-    '[&::-webkit-calendar-picker-indicator]:mr-1.5',
-    '[&::-webkit-calendar-picker-indicator]:h-3',
-    '[&::-webkit-calendar-picker-indicator]:w-3',
-    '[&::-webkit-calendar-picker-indicator]:min-h-3',
-    '[&::-webkit-calendar-picker-indicator]:min-w-3',
-    '[&::-webkit-calendar-picker-indicator]:shrink-0',
-    '[&::-webkit-calendar-picker-indicator]:cursor-pointer',
-    '[&::-webkit-calendar-picker-indicator]:opacity-100',
-    '[&::-webkit-calendar-picker-indicator]:[filter:brightness(0)_saturate(100%)_invert(32%)_sepia(12%)_saturate(480%)_hue-rotate(176deg)_brightness(0.94)_contrast(0.96)]',
-  ].join(' ') as const;
+const nativePickerIndicator = [
+  '[&::-webkit-calendar-picker-indicator]:ml-2',
+  '[&::-webkit-calendar-picker-indicator]:mr-1.5',
+  '[&::-webkit-calendar-picker-indicator]:h-3',
+  '[&::-webkit-calendar-picker-indicator]:w-3',
+  '[&::-webkit-calendar-picker-indicator]:min-h-3',
+  '[&::-webkit-calendar-picker-indicator]:min-w-3',
+  '[&::-webkit-calendar-picker-indicator]:shrink-0',
+  '[&::-webkit-calendar-picker-indicator]:cursor-pointer',
+  '[&::-webkit-calendar-picker-indicator]:opacity-100',
+  '[&::-webkit-calendar-picker-indicator]:[filter:brightness(0)_saturate(100%)_invert(32%)_sepia(12%)_saturate(480%)_hue-rotate(176deg)_brightness(0.94)_contrast(0.96)]',
+].join(' ') as const;
 
 /** Minimal WebKit tweaks — avoid flex/gap on fields-wrapper (breaks 12-03-2026 / 07:00). */
-const dateDatetimeEdit =
-  [
-    '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-    '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
-    '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
-  ].join(' ') as const;
+const dateDatetimeEdit = [
+  '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
+  '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
+  '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
+].join(' ') as const;
 
-const timeDatetimeEdit =
-  [
-    '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-    '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
-    '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
-  ].join(' ') as const;
+const timeDatetimeEdit = [
+  '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
+  '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
+  '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
+].join(' ') as const;
 
 const dvrFilterLabelClass =
   'ml-0.5 flex h-[13px] shrink-0 items-center gap-1.5 text-[9px] font-medium uppercase tracking-widest leading-none text-slate-400';
@@ -239,7 +236,9 @@ export const FilterInput: React.FC<FilterInputProps> = ({
         {Icon && <Icon className="h-2.5 w-2.5 shrink-0 text-slate-400" />}
         {label}
       </label>
-      <div className="relative min-w-0 overflow-visible group/input">{control}</div>
+      <div className="relative min-w-0 overflow-visible group/input">
+        {control}
+      </div>
     </div>
   );
 };

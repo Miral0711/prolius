@@ -23,7 +23,7 @@ export function MetadataCell({
     <div className={cn('min-w-0 text-left', className)}>
       <div
         className={cn(
-          'truncate text-[11px] font-semibold leading-tight text-slate-900',
+          'truncate text-[11px] font-semibold leading-tight text-slate-800',
           primaryClassName,
         )}
       >

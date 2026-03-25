@@ -1,28 +1,34 @@
 import { cn } from '@/lib/utils';
 
 export type StatusVariant =
-  | 'available' | 'emerald'
-  | 'on-trip' | 'blue'
-  | 'offline' | 'slate'
-  | 'maintenance' | 'amber'
-  | 'alert' | 'rose'
+  | 'available'
+  | 'emerald'
+  | 'on-trip'
+  | 'blue'
+  | 'offline'
+  | 'slate'
+  | 'maintenance'
+  | 'amber'
+  | 'alert'
+  | 'rose'
   | 'neutral'
-  | 'pending' | 'violet';
+  | 'pending'
+  | 'violet';
 
 const VARIANT_STYLES: Record<StatusVariant, string> = {
-  available: 'bg-emerald-100/80 text-emerald-700 border-emerald-200/50',
-  emerald:   'bg-emerald-100/80 text-emerald-700 border-emerald-200/50',
-  'on-trip': 'bg-blue-100/80 text-blue-700 border-blue-200/50',
-  blue:      'bg-blue-100/80 text-blue-700 border-blue-200/50',
-  offline:   'bg-slate-100/80 text-slate-600 border-slate-200/50',
-  slate:     'bg-slate-100/80 text-slate-600 border-slate-200/50',
-  maintenance: 'bg-amber-100/80 text-amber-700 border-amber-200/50',
-  amber:       'bg-amber-100/80 text-amber-700 border-amber-200/50',
-  alert:     'bg-rose-100/80 text-rose-700 border-rose-200/50',
-  rose:      'bg-rose-100/80 text-rose-700 border-rose-200/50',
-  neutral:   'bg-slate-100/80 text-slate-600 border-slate-200/50',
-  pending:   'bg-violet-100/80 text-violet-700 border-violet-200/50',
-  violet:    'bg-violet-100/80 text-violet-700 border-violet-200/50',
+  available: 'bg-emerald-50 text-emerald-800 border-emerald-200/70',
+  emerald: 'bg-emerald-50 text-emerald-800 border-emerald-200/70',
+  'on-trip': 'bg-blue-50 text-blue-800 border-blue-200/70',
+  blue: 'bg-blue-50 text-blue-800 border-blue-200/70',
+  offline: 'bg-slate-50 text-slate-700 border-slate-200/70',
+  slate: 'bg-slate-50 text-slate-700 border-slate-200/70',
+  maintenance: 'bg-amber-50 text-amber-900 border-amber-200/70',
+  amber: 'bg-amber-50 text-amber-900 border-amber-200/70',
+  alert: 'bg-rose-50 text-rose-800 border-rose-200/70',
+  rose: 'bg-rose-50 text-rose-800 border-rose-200/70',
+  neutral: 'bg-slate-50 text-slate-700 border-slate-200/70',
+  pending: 'bg-violet-50 text-violet-800 border-violet-200/70',
+  violet: 'bg-violet-50 text-violet-800 border-violet-200/70',
 };
 
 const VARIANT_DOT: Partial<Record<StatusVariant, string>> = {
@@ -48,6 +54,8 @@ export interface StatusBadgeProps {
   withDot?: boolean;
   /** Sentence case label (e.g. WASL Enable / Disable) */
   preserveCase?: boolean;
+  /** Compact pill for dense data tables (fleet / admin) */
+  size?: 'default' | 'sm';
   className?: string;
 }
 
@@ -56,6 +64,7 @@ export function StatusBadge({
   variant = 'neutral',
   withDot = false,
   preserveCase = false,
+  size = 'default',
   className,
 }: StatusBadgeProps) {
   const dotClass = VARIANT_DOT[variant] ?? 'bg-slate-400';
@@ -63,14 +72,21 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center justify-center gap-0.5 rounded-sm border px-1.5 py-0.5 text-[10px] tracking-tight shadow-xs transition-colors',
-        preserveCase ? 'font-semibold' : 'font-semibold uppercase',
+        'inline-flex items-center justify-center gap-0.5 rounded-sm border font-semibold shadow-xs transition-colors',
+        size === 'default' &&
+          'min-h-[1.375rem] px-1.5 py-0.5 text-[10px] tracking-tight',
+        size === 'sm' &&
+          'h-5 min-h-[1.25rem] gap-1 px-2 py-0 text-[9px] leading-none tracking-wide',
+        preserveCase ? 'normal-case' : 'uppercase',
         VARIANT_STYLES[variant],
         className,
       )}
     >
       {withDot && (
-        <span className={cn('h-1.5 w-1.5 shrink-0 rounded-full', dotClass)} aria-hidden />
+        <span
+          className={cn('h-1.5 w-1.5 shrink-0 rounded-full', dotClass)}
+          aria-hidden
+        />
       )}
       {label}
     </span>

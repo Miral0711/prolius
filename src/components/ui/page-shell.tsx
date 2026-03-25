@@ -1,16 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
+import { cn } from '@/lib/utils';
 
 /**
  * Page shell: gradient frame + optional title row. Put primary layout and outer
  * inset in `PageSurface` (`@/components/layout`) inside `contentWrapperClassName` / children so
  * footer and body share one padding system.
  */
-const pageContainerClass =
-  'relative mx-auto w-full space-y-2';
+const pageContainerClass = 'relative mx-auto w-full space-y-2';
+
+/** Full-viewport child under app header; used by DVR pages, Create Job, etc. */
+export const PAGE_SHELL_VIEWPORT_FILL_CLASSNAME =
+  'flex h-full min-h-0 flex-1 flex-col space-y-0 overflow-hidden bg-transparent pt-0 pb-0 max-w-none';
+
+export const PAGE_SHELL_VIEWPORT_FILL_CONTENT_CLASSNAME =
+  'relative flex h-full min-h-0 flex-1 flex-col overflow-hidden p-0';
 
 const pageBgClass =
   'pointer-events-none absolute -inset-[1px] -z-10 overflow-hidden rounded-[28px]';
@@ -68,7 +74,9 @@ export function PageShell({
       {!hideHeader && (
         <div className={pageHeaderRowClass}>
           <div>
-            {!hideTitle && <h1 className={cn(pageTitleClass, titleClassName)}>{title}</h1>}
+            {!hideTitle && (
+              <h1 className={cn(pageTitleClass, titleClassName)}>{title}</h1>
+            )}
             {subtitle != null && (
               <p className={cn(pageSubtitleClass, subtitleClassName)}>
                 {subtitle}

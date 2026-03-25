@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { StatusBadge } from '@/components/dashboard/StatusBadge';
 
 export type PowerState = 'Enable' | 'Disable';
 
@@ -7,22 +8,17 @@ export interface PowerBadgeProps {
   className?: string;
 }
 
+/** Power column — same pill system as WASL / Status (emerald = enable, rose = disable). */
 export function PowerBadge({ power, className }: PowerBadgeProps) {
-  const isOn = power === 'Enable';
+  const on = power === 'Enable';
   return (
-    <span
-      className={cn(
-        'inline-flex h-6 shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded border px-2 text-[10px] font-semibold uppercase leading-none tracking-wide',
-        isOn
-          ? 'border-emerald-200/80 bg-emerald-50 text-emerald-800'
-          : 'border-rose-200/80 bg-rose-50 text-rose-800',
-        className,
-      )}
-    >
-      <span
-        className={cn('h-1.5 w-1.5 shrink-0 rounded-full', isOn ? 'bg-emerald-500' : 'bg-rose-400')}
-      />
-      {isOn ? 'Enable' : 'Disable'}
-    </span>
+    <StatusBadge
+      label={power}
+      variant={on ? 'emerald' : 'rose'}
+      withDot
+      preserveCase
+      size="sm"
+      className={cn('whitespace-nowrap', className)}
+    />
   );
 }

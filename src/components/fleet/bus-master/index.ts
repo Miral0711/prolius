@@ -1,5 +1,15 @@
 export { fleetSurface, fleetType } from './tokens';
-export { BUS_TABLE_COL_WIDTH_PX, BUS_TABLE_TOTAL_PX } from './bus-table-cols';
+export {
+  BUS_TABLE_COL_WIDTH_PX,
+  BUS_LIST_TABLE_COLUMN_COUNT,
+  BUS_TABLE_TOTAL_PX,
+} from './bus-table-cols';
+export {
+  BusListTable,
+  DEFAULT_BUS_LIST_PRIMARY_ROW_ACTIONS,
+  type BusListTableProps,
+  type BusListTableRow,
+} from './BusListTable';
 export { MetadataCell, type MetadataCellProps } from './MetadataCell';
 export { SubscriptionStatusCell, type SubscriptionStatusCellProps } from './SubscriptionStatusCell';
 export { MdtDeviceCell, type MdtDeviceCellProps, type MdtHealthState } from './MdtDeviceCell';

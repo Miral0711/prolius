@@ -41,20 +41,20 @@ export function RowActionMenu({
   className,
 }: RowActionMenuProps) {
   return (
-    <div className={cn('flex min-w-0 items-center justify-end gap-1', className)}>
-      <ActionButtonGroup items={primaryActions} />
+    <div className={cn('flex min-w-0 items-center justify-end gap-0.5', className)}>
+      <ActionButtonGroup items={primaryActions} dense />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
             type="button"
             className={cn(
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200/90 bg-white',
+              'flex h-6 w-6 shrink-0 items-center justify-center rounded-sm border border-slate-200/90 bg-white',
               'text-slate-500 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30',
             )}
             aria-label={menuAriaLabel}
           >
-            <MoreHorizontal className="h-4 w-4" aria-hidden />
+            <MoreHorizontal className="h-3.5 w-3.5" aria-hidden />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-52">

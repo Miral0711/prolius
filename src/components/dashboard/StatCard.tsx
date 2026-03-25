@@ -44,7 +44,9 @@ export function StatCard({
           <span className="truncate text-[8px] font-semibold uppercase leading-none tracking-wider text-slate-400">
             {label}
           </span>
-          <span className="text-[15px] font-semibold leading-none tabular-nums text-slate-800">{value}</span>
+          <span className="text-[15px] font-semibold leading-none tabular-nums text-slate-800">
+            {value}
+          </span>
         </div>
       </div>
     );
@@ -53,19 +55,29 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 p-2 transition-all hover:bg-white hover:shadow-lg rounded-md border border-white/40 bg-white/70 backdrop-blur-md",
-        className
+        'flex items-center gap-2 p-2 transition-all hover:bg-white hover:shadow-lg rounded-md border border-white/40 bg-white/70 backdrop-blur-md',
+        className,
       )}
     >
-      <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm border border-white/50", bgColor)}>
-        <Icon className={cn("h-4 w-4", color)} />
+      <div
+        className={cn(
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm border border-white/50',
+          bgColor,
+        )}
+      >
+        <Icon className={cn('h-4 w-4', color)} />
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-0.5">
           {label}
         </p>
         <div className="flex items-baseline gap-1.5">
-          <p className={cn("text-[14px] font-semibold leading-none tabular-nums", color)}>
+          <p
+            className={cn(
+              'text-[14px] font-semibold leading-none tabular-nums',
+              color,
+            )}
+          >
             {value}
           </p>
           {subValue && (

@@ -13,34 +13,37 @@ interface VehicleMapMarkerProps {
   style?: React.CSSProperties;
 }
 
-const STATUS_COLORS: Record<VehicleStatus, { main: string; ring: string; text: string; bg: string; pulse: boolean }> = {
-  Available: { 
-    main: '#10b981', 
-    ring: 'rgba(16,185,129,0.25)', 
-    text: 'text-emerald-700', 
-    bg: 'bg-emerald-100', 
-    pulse: false 
+const STATUS_COLORS: Record<
+  VehicleStatus,
+  { main: string; ring: string; text: string; bg: string; pulse: boolean }
+> = {
+  Available: {
+    main: '#10b981',
+    ring: 'rgba(16,185,129,0.25)',
+    text: 'text-emerald-700',
+    bg: 'bg-emerald-100',
+    pulse: false,
   },
-  'On Trip': { 
-    main: '#3b82f6', 
-    ring: 'rgba(59,130,246,0.25)', 
-    text: 'text-blue-700', 
-    bg: 'bg-blue-100', 
-    pulse: true 
+  'On Trip': {
+    main: '#3b82f6',
+    ring: 'rgba(59,130,246,0.25)',
+    text: 'text-blue-700',
+    bg: 'bg-blue-100',
+    pulse: true,
   },
-  Maintenance: { 
-    main: '#f59e0b', 
-    ring: 'rgba(245,158,11,0.25)', 
-    text: 'text-amber-700', 
-    bg: 'bg-amber-100', 
-    pulse: false 
+  Maintenance: {
+    main: '#f59e0b',
+    ring: 'rgba(245,158,11,0.25)',
+    text: 'text-amber-700',
+    bg: 'bg-amber-100',
+    pulse: false,
   },
-  Alert: { 
-    main: '#ef4444', 
-    ring: 'rgba(239,68,68,0.30)', 
-    text: 'text-rose-700', 
-    bg: 'bg-rose-100', 
-    pulse: true 
+  Alert: {
+    main: '#ef4444',
+    ring: 'rgba(239,68,68,0.30)',
+    text: 'text-rose-700',
+    bg: 'bg-rose-100',
+    pulse: true,
   },
 };
 
@@ -70,31 +73,35 @@ export function VehicleMapMarker({
           style={{ background: meta.main }}
         />
       )}
-      
+
       {/* Halo ring */}
       <span
         className={cn(
-          "absolute inset-[-4px] rounded-full transition-all duration-300",
-          isHovered ? "scale-125 opacity-40" : "scale-100 opacity-20"
+          'absolute inset-[-4px] rounded-full transition-all duration-300',
+          isHovered ? 'scale-125 opacity-40' : 'scale-100 opacity-20',
         )}
         style={{ background: meta.ring }}
       />
-      
+
       {/* Bus Marker */}
-      <div 
+      <div
         className={cn(
-          "relative flex items-center justify-center h-7 w-7 rounded-lg border-2 border-white shadow-lg transition-all duration-200",
-          isHovered ? "scale-125 -translate-y-1 z-20" : "scale-100 translate-y-0"
+          'relative flex items-center justify-center h-7 w-7 rounded-lg border-2 border-white shadow-lg transition-all duration-200',
+          isHovered
+            ? 'scale-125 -translate-y-1 z-20'
+            : 'scale-100 translate-y-0',
         )}
-        style={{ 
+        style={{
           background: meta.main,
-          boxShadow: isHovered ? `0 4px 12px rgba(0,0,0,0.25), 0 0 0 2px ${meta.ring}` : '0 2px 6px rgba(0,0,0,0.15)'
+          boxShadow: isHovered
+            ? `0 4px 12px rgba(0,0,0,0.25), 0 0 0 2px ${meta.ring}`
+            : '0 2px 6px rgba(0,0,0,0.15)',
         }}
       >
         <Bus className="h-4 w-4 text-white" />
-        
+
         {/* Status indicator dot */}
-        <span 
+        <span
           className="absolute -right-1 -top-1 block h-2.5 w-2.5 rounded-full border border-white shadow-sm"
           style={{ background: meta.main }}
         />

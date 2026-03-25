@@ -138,8 +138,7 @@ export function FilterChips({
                 className={cn(
                   'ml-0.5 flex items-center justify-center min-w-[18px] h-[18px] rounded px-1 text-[9px] font-semibold transition-colors',
                   isActive ? styles.badgeActive : styles.badgeIdle,
-                  chip.isCloseAction &&
-                    'bg-rose-500 text-white rounded p-0.5',
+                  chip.isCloseAction && 'bg-rose-500 text-white rounded p-0.5',
                 )}
               >
                 {chip.count}

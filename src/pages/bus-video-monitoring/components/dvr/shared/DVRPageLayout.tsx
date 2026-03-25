@@ -1,11 +1,15 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import {
+  PAGE_SHELL_VIEWPORT_FILL_CLASSNAME,
+  PAGE_SHELL_VIEWPORT_FILL_CONTENT_CLASSNAME,
+  PageShell,
+} from '@/components/ui/page-shell';
+import {
   PageSurface,
   type PageSurfacePadding,
   type PageSurfaceSectionGap,
 } from '@/components/layout';
-import { PageShell } from '@/components/ui/page-shell';
 
 interface DVRPageLayoutProps {
   title: string;
@@ -44,11 +48,8 @@ export const DVRPageLayout: React.FC<DVRPageLayoutProps> = ({
       title={title}
       subtitle={subtitle}
       hideHeader
-      className={cn(
-        'flex h-full min-h-0 flex-1 flex-col space-y-0 overflow-hidden bg-transparent pt-0 pb-0 max-w-none',
-        className,
-      )}
-      contentWrapperClassName="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden p-0"
+      className={cn(PAGE_SHELL_VIEWPORT_FILL_CLASSNAME, className)}
+      contentWrapperClassName={PAGE_SHELL_VIEWPORT_FILL_CONTENT_CLASSNAME}
     >
       <PageSurface padding={padding} fill sectionGap={sectionGap}>
         <PageSurface.Body className="min-h-0 flex-1 overflow-hidden">

@@ -19,7 +19,8 @@ export function Wrapper() {
     pathname === '/messaging/chat' ||
     pathname === '/bus-video-monitoring/live-dvr' ||
     pathname === '/bus-video-monitoring/history-dvr' ||
-    pathname === '/fleet-management/bus';
+    pathname === '/fleet-management/bus' ||
+    pathname.startsWith('/job-dispatching');
 
   // Example of passing status label specifically for dashboard
   const statusLabel =

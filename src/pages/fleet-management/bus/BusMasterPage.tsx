@@ -2,52 +2,22 @@ import { useState } from 'react';
 import {
   Bus,
   CheckCircle2,
-  Eye,
-  FileDown,
-  FileSpreadsheet,
   Info,
-  Pencil,
   Plus,
   Power,
   Settings,
-  Trash2,
   XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { PageShell } from '@/components/ui/page-shell';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { StatCard } from '@/components/dashboard/StatCard';
 import {
-  StatusBadge,
-  type StatusVariant,
-} from '@/components/dashboard/StatusBadge';
-import {
-  BUS_TABLE_COL_WIDTH_PX,
-  DataTable,
-  DataTableBodyScroll,
-  DataTableFooter,
-  DataTableTable,
-  DataTableToolbar,
+  BusListTable,
   FilterDropdown,
   fleetSurface,
   FleetToolbarButton,
-  fleetType,
-  MetadataCell,
-  PowerBadge,
-  RowActionMenu,
   SearchInput,
-  TableCell,
-  TableHeader,
-  TableHeaderCell,
-  TableRow,
+  type BusListTableRow,
   type MdtHealthState,
   type RowMenuEntry,
 } from '@/components/fleet/bus-master';
@@ -335,17 +305,7 @@ function buildBusMasterRows(total: number): BusMasterRow[] {
 
 const BUS_MASTER_DUMMY: BusMasterRow[] = buildBusMasterRows(28);
 
-function busStatusVariant(status: BusStatus): StatusVariant {
-  if (status === 'Active') return 'emerald';
-  if (status === 'Maintenance') return 'amber';
-  return 'rose';
-}
-
-function waslVariant(wasl: WaslStatus): StatusVariant {
-  return wasl === 'Enable' ? 'emerald' : 'rose';
-}
-
-function buildRowMenuEntries(row: BusMasterRow): RowMenuEntry[] {
+function buildRowMenuEntries(row: BusListTableRow): RowMenuEntry[] {
   return [
     {
       kind: 'item',
@@ -420,8 +380,6 @@ export default function BusMasterPage() {
     if (selectedIds.size === BUS_MASTER_DUMMY.length) setSelectedIds(new Set());
     else setSelectedIds(new Set(BUS_MASTER_DUMMY.map((r) => r.id)));
   };
-
-  const tableRowCount = BUS_MASTER_DUMMY.length;
 
   return (
     <PageShell
@@ -526,312 +484,14 @@ export default function BusMasterPage() {
               </div>
             </div>
 
-            {/* Table */}
-            <DataTable className="min-h-0">
-              <DataTableToolbar>
-                <div className="flex min-w-0 items-center gap-2">
-                  <Bus className="h-4 w-4 shrink-0 text-slate-600" />
-                  <h3 className="text-[13px] font-bold uppercase tracking-wide text-slate-800">
-                    Bus List
-                  </h3>
-                </div>
-                <div className="flex shrink-0 items-center gap-1.5">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-3 text-[11px] font-semibold text-blue-700 shadow-sm hover:border-blue-300 hover:bg-blue-100 hover:text-blue-800"
-                  >
-                    <FileSpreadsheet className="h-3.5 w-3.5" />
-                    Excel
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 gap-1.5 rounded-md border border-rose-200 bg-rose-50 px-3 text-[11px] font-semibold text-rose-700 shadow-sm hover:border-rose-300 hover:bg-rose-100 hover:text-rose-800"
-                  >
-                    <FileDown className="h-3.5 w-3.5" />
-                    PDF
-                  </Button>
-                </div>
-              </DataTableToolbar>
-
-              <DataTableBodyScroll>
-                <DataTableTable>
-                  <colgroup>
-                    {BUS_TABLE_COL_WIDTH_PX.map((w, i) => (
-                      <col key={i} style={{ width: w }} />
-                    ))}
-                  </colgroup>
-                  <TableHeader>
-                    <tr>
-                      <TableHeaderCell
-                        align="center"
-                        variant="default"
-                        className="max-w-none overflow-visible bg-white text-slate-500"
-                      >
-                        <span className="sr-only">Select all rows</span>
-                        <Checkbox
-                          checked={selectedIds.size === BUS_MASTER_DUMMY.length}
-                          onCheckedChange={toggleAll}
-                          className="mx-auto border-slate-300"
-                        />
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Company Name
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Plate No
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        align="center"
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Seq No
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        MDT ID
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Sub. Start &amp; End
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Tariff
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        align="center"
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        WASL
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        align="center"
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Status
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        align="center"
-                        variant="default"
-                        className="bg-white text-slate-500"
-                      >
-                        Power
-                      </TableHeaderCell>
-                      <TableHeaderCell
-                        align="right"
-                        variant="default"
-                        className="max-w-none overflow-visible bg-white text-slate-500"
-                      >
-                        Actions
-                      </TableHeaderCell>
-                    </tr>
-                  </TableHeader>
-                  <tbody className="bg-white">
-                    {BUS_MASTER_DUMMY.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        className={cn(
-                          'hover:bg-slate-50/80',
-                          selectedIds.has(row.id) &&
-                            'bg-slate-50 hover:bg-slate-50',
-                        )}
-                      >
-                        <TableCell
-                          align="center"
-                          className="max-w-none overflow-visible"
-                        >
-                          <div className="flex items-center justify-center">
-                            <Checkbox
-                              checked={selectedIds.has(row.id)}
-                              onCheckedChange={() => toggleSelect(row.id)}
-                              className="border-slate-300"
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <MetadataCell primary={row.companyName} />
-                        </TableCell>
-                        <TableCell>
-                          <span className="font-mono text-[11px] font-semibold tabular-nums text-blue-700">
-                            {row.plateNo}
-                          </span>
-                        </TableCell>
-                        <TableCell align="center">
-                          <span className={cn('font-mono text-[11px]', fleetType.bodyMono)}>
-                            {row.seqNo}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={cn('block truncate text-[11px]', fleetType.bodyMono)}
-                          >
-                            {row.mdtId}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={cn('block truncate text-[11px]', fleetType.bodyMono)}
-                          >
-                            {row.subStart} - {row.subEnd}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={cn('block truncate text-[11px]', fleetType.bodyMono)}
-                          >
-                            {row.tariff}
-                          </span>
-                        </TableCell>
-                        <TableCell align="center">
-                          <span
-                            className="inline-flex justify-center"
-                            title="WASL integration status"
-                          >
-                            <StatusBadge
-                              label={row.wasl}
-                              variant={waslVariant(row.wasl)}
-                              withDot
-                              preserveCase
-                              className="h-6 whitespace-nowrap px-2 text-[10px]"
-                            />
-                          </span>
-                        </TableCell>
-                        <TableCell align="center">
-                          <span
-                            className="inline-flex justify-center"
-                            title="Fleet operations status"
-                          >
-                            <StatusBadge
-                              label={row.status}
-                              variant={busStatusVariant(row.status)}
-                              className="h-6 whitespace-nowrap px-2 text-[10px] font-semibold"
-                            />
-                          </span>
-                        </TableCell>
-                        <TableCell align="center">
-                          <div
-                            className="flex justify-center"
-                            title="On-board power / ignition"
-                          >
-                            <PowerBadge power={row.power} />
-                          </div>
-                        </TableCell>
-                        <TableCell
-                          align="right"
-                          className="max-w-none overflow-visible"
-                        >
-                          <RowActionMenu
-                            primaryActions={[
-                              {
-                                icon: Eye,
-                                label: 'View details',
-                                variant: 'info',
-                              },
-                              {
-                                icon: Pencil,
-                                label: 'Edit bus',
-                                variant: 'default',
-                              },
-                              {
-                                icon: Trash2,
-                                label: 'Delete',
-                                variant: 'danger',
-                              },
-                            ]}
-                            menuEntries={buildRowMenuEntries(row)}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </tbody>
-                </DataTableTable>
-              </DataTableBodyScroll>
-
-              <DataTableFooter className="flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="flex items-center gap-1.5 text-[11px] text-slate-600">
-                    <span>Show</span>
-                    <Select defaultValue="25">
-                      <SelectTrigger className="h-7 w-[64px] border-slate-200 bg-white px-2 text-[11px] font-medium shadow-none">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="10">10</SelectItem>
-                        <SelectItem value="25">25</SelectItem>
-                        <SelectItem value="50">50</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <span>entries</span>
-                  </div>
-                  <p className="text-[11px] text-slate-600">
-                    Showing{' '}
-                    <span className="font-semibold text-slate-800">1</span> to{' '}
-                    <span className="font-semibold text-slate-800">
-                      {tableRowCount}
-                    </span>{' '}
-                    of <span className="font-semibold text-slate-800">779</span>{' '}
-                    entries
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-1">
-                  <button
-                    type="button"
-                    className="rounded border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-50"
-                  >
-                    Previous
-                  </button>
-                  {[1, 2, 3, 4, 5].map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      className={cn(
-                        'flex h-7 min-w-[1.75rem] items-center justify-center rounded border px-1 text-[11px] font-semibold transition-all',
-                        p === 1
-                          ? 'border-blue-500 bg-blue-600 text-white shadow-sm'
-                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50',
-                      )}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                  <span className="px-0.5 text-[11px] font-medium text-slate-400">
-                    …
-                  </span>
-                  <button
-                    type="button"
-                    className="flex h-7 min-w-[1.75rem] items-center justify-center rounded border border-slate-200 bg-white px-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50"
-                  >
-                    32
-                  </button>
-                  <button
-                    type="button"
-                    className="rounded border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 transition-colors hover:bg-slate-50"
-                  >
-                    Next
-                  </button>
-                </div>
-              </DataTableFooter>
-            </DataTable>
+            <BusListTable
+              rows={BUS_MASTER_DUMMY}
+              selectedIds={selectedIds}
+              onToggleRow={toggleSelect}
+              onToggleAll={toggleAll}
+              totalEntryCount={779}
+              getRowMenuEntries={buildRowMenuEntries}
+            />
           </div>
         </PageSurface.Body>
         <PageSurface.Footer />

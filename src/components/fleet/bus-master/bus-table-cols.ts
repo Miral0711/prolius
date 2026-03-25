@@ -1,19 +1,22 @@
 /**
  * Fixed column widths for Bus Master `table-fixed` layout.
- * Rebalanced to keep spacing more even across columns, similar to compact dashboard tables.
+ * Tuned so text columns get readable width, IDs stay tight, and chip columns match badge width.
  */
 export const BUS_TABLE_COL_WIDTH_PX = [
-  52, // expand + checkbox
-  170, // company
-  100, // plate
-  72, // seq
-  100, // mdt
-  170, // subscription range
+  44, // checkbox
+  204, // company name (primary scan column)
+  84, // plate no
+  58, // seq no
+  88, // mdt id
+  196, // subscription range
   100, // tariff
-  100, // wasl
-  112, // status
-  100, // power
-  140, // actions
+  86, // wasl
+  108, // status
+  86, // power
+  122, // actions
 ] as const;
 
 export const BUS_TABLE_TOTAL_PX = BUS_TABLE_COL_WIDTH_PX.reduce((a, b) => a + b, 0);
+
+/** Column count for `<colgroup>` / empty-state `colSpan` (keeps Bus List table reusable). */
+export const BUS_LIST_TABLE_COLUMN_COUNT = BUS_TABLE_COL_WIDTH_PX.length;

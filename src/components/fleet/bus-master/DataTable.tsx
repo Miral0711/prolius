@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { fleetSurface } from './tokens';
 
 const stickyHeadDefault =
-  'sticky top-0 z-20 border-b border-slate-200 bg-slate-100/95 shadow-[0_1px_0_0_rgba(226,232,240,0.95)] backdrop-blur-sm';
+  'sticky top-0 z-20 border-b border-slate-200/70 bg-slate-50 shadow-[0_1px_0_0_rgb(226_232_240)]';
 
 const stickyHeadNavy = cn(
   'sticky top-0 z-20 backdrop-blur-sm',
@@ -92,7 +92,15 @@ export function TableHeader({ className, ...props }: React.ComponentProps<'thead
 }
 
 export function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
-  return <tr className={cn('border-b border-slate-200/70 transition-colors duration-150', className)} {...props} />;
+  return (
+    <tr
+      className={cn(
+        'transition-colors duration-150 even:bg-slate-50/40 hover:bg-blue-50/45',
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export interface TableExpandRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
@@ -109,7 +117,7 @@ export function TableExpandRow({ colSpan, children, className, ...props }: Table
     >
       <td
         colSpan={colSpan}
-        className="max-w-none overflow-visible p-0 align-top"
+        className="max-w-none overflow-visible border-b border-slate-200/70 p-0 align-top"
       >
         {children}
       </td>
@@ -126,6 +134,7 @@ export function TableCell({ className, align = 'left', ...props }: TableCellProp
     <td
       className={cn(
         fleetSurface.cell,
+        fleetSurface.tableGridCell,
         'max-w-0 align-middle overflow-hidden',
         align === 'center' && 'text-center',
         align === 'right' && 'text-right',
@@ -157,9 +166,13 @@ export function TableHeaderCell({
       className={cn(
         sticky,
         fleetSurface.cellHeader,
+        variant === 'default' && fleetSurface.tableGridHeaderCell,
+        variant === 'navy' && 'border-r border-white/10 first:border-l',
         'max-w-0 align-middle overflow-hidden',
         variant === 'navy' &&
           'text-[10px] font-semibold uppercase tracking-wide text-white/95',
+        variant === 'default' &&
+          'text-[10px] font-bold uppercase tracking-[0.06em] text-slate-600',
         align === 'center' && 'text-center',
         align === 'right' && 'text-right',
         align === 'left' && 'text-left',
@@ -178,7 +191,7 @@ export function DataTableFooter({ className, children, ...props }: DataTableFoot
   return (
     <div
       className={cn(
-        'flex shrink-0 items-center justify-between border-t border-slate-200/60 bg-slate-50/40',
+        'flex shrink-0 items-center justify-between border-t border-slate-200/70 bg-slate-50/60',
         fleetSurface.paginationBar,
         className,
       )}

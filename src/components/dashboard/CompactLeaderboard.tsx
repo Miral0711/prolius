@@ -25,7 +25,9 @@ interface CompactLeaderboardProps {
   icon?: LucideIcon;
 }
 
-const LEADERBOARD_TABLE_LAYOUT = 'repeat(7, minmax(0, 1fr))';
+/** Driver column is text-only (no avatars); numeric columns share equal space */
+const LEADERBOARD_TABLE_LAYOUT =
+  'minmax(52px, 0.75fr) minmax(100px, 1.35fr) repeat(5, minmax(0, 1fr))';
 
 export function CompactLeaderboard({
   data,
@@ -39,7 +41,7 @@ export function CompactLeaderboard({
   const columns: DataTableColumn<LeaderboardItem>[] = [
     {
       key: 'rank',
-      header: '#',
+      header: 'Rank',
       align: 'center',
       render: (d) => (
         <span
@@ -63,16 +65,9 @@ export function CompactLeaderboard({
       header: 'Driver',
       align: 'center',
       render: (d) => (
-        <div className="flex items-center justify-center gap-2 min-w-0 max-w-full">
-          <div className="h-6 w-6 rounded-md bg-slate-100 flex items-center justify-center border border-white shadow-sm shrink-0">
-            <span className="text-[9px] font-semibold text-slate-600">
-              {d.name[0]}
-            </span>
-          </div>
-          <span className="text-[11px] font-semibold text-slate-700 truncate tracking-tight">
-            {d.name}
-          </span>
-        </div>
+        <span className="text-[11px] font-semibold text-slate-700 truncate tracking-tight block w-full">
+          {d.name}
+        </span>
       ),
     },
     {
@@ -142,8 +137,8 @@ export function CompactLeaderboard({
         className,
       )}
     >
-      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-2 shrink-0">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2 bg-slate-50/10 shrink-0">
+        <div className="flex items-center gap-2">
           <div className="h-6 w-6 rounded-md bg-amber-50 flex items-center justify-center border border-amber-100/50">
             <Icon className="h-3.5 w-3.5 text-amber-500" />
           </div>
@@ -151,9 +146,12 @@ export function CompactLeaderboard({
             {title}
           </h3>
         </div>
-        <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest leading-none text-right">
-          {subtitle}
-        </span>
+        <div className="flex items-center gap-2.5">
+          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
+            {subtitle}
+          </span>
+          <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+        </div>
       </div>
       <DataTable
         data={data}
@@ -161,9 +159,9 @@ export function CompactLeaderboard({
         gridCols={LEADERBOARD_TABLE_LAYOUT}
         gap="gap-0"
         minWidth={minWidth}
-        rowHeight="min-h-[44px]"
-        headerHeight="min-h-[38px]"
-        px="px-4"
+        rowHeight="min-h-[42px]"
+        headerHeight="min-h-0"
+        px="px-3"
         className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200"
       />
     </div>
