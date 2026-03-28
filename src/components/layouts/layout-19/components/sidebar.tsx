@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   BarChart3,
   Bell,
@@ -27,6 +27,11 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useLayout } from './context';
+import {
+  layoutLevel1Flyout,
+  layoutNestedSubmenu,
+  SIDEBAR_FLYOUT_ITEM_HEIGHT_PX,
+} from './sidebar-submenu-position';
 
 /* ═══════════════════════════════════════════════════════════════
    1. TYPES & CONSTANTS
@@ -42,7 +47,12 @@ export interface NavItem {
 
 const SIDEBAR_WIDTH_EXPANDED = 240;
 const SIDEBAR_WIDTH_COLLAPSED = 72;
-const ITEM_HEIGHT = 28; // Shared height for all menu rows
+const ITEM_HEIGHT = SIDEBAR_FLYOUT_ITEM_HEIGHT_PX;
+
+/** Cross dead zone between sidebar column and fixed flyout without closing. */
+const FLYOUT_CLOSE_DELAY_MS = 220;
+/** Brief delay before clearing nested flyout when pointer leaves level-1 panel. */
+const SUBMENU_CLOSE_DELAY_MS = 100;
 
 /* ═══════════════════════════════════════════════════════════════
    2. NAV CONFIGURATION
@@ -725,12 +735,63 @@ export function Sidebar() {
     setSidebarCollapsed(true);
   }, [setSidebarCollapsed]);
 
+  const level1FlyoutRef = useRef<HTMLDivElement | null>(null);
+  const flyoutCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const subCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelFlyoutCloseTimer = useCallback(() => {
+    if (flyoutCloseTimerRef.current) {
+      clearTimeout(flyoutCloseTimerRef.current);
+      flyoutCloseTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleFlyoutClose = useCallback(() => {
+    cancelFlyoutCloseTimer();
+    flyoutCloseTimerRef.current = window.setTimeout(() => {
+      setHoveredItem(null);
+      setHoveredSubItem(null);
+      flyoutCloseTimerRef.current = null;
+    }, FLYOUT_CLOSE_DELAY_MS);
+  }, [cancelFlyoutCloseTimer]);
+
+  const cancelSubCloseTimer = useCallback(() => {
+    if (subCloseTimerRef.current) {
+      clearTimeout(subCloseTimerRef.current);
+      subCloseTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleSubClose = useCallback(() => {
+    cancelSubCloseTimer();
+    subCloseTimerRef.current = window.setTimeout(() => {
+      setHoveredSubItem(null);
+      subCloseTimerRef.current = null;
+    }, SUBMENU_CLOSE_DELAY_MS);
+  }, [cancelSubCloseTimer]);
+
+  useEffect(
+    () => () => {
+      cancelFlyoutCloseTimer();
+      cancelSubCloseTimer();
+    },
+    [cancelFlyoutCloseTimer, cancelSubCloseTimer],
+  );
+
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [hoveredSubItem, setHoveredSubItem] = useState<string | null>(null);
   const [mouseY, setMouseY] = useState(0);
   const [hoveredItemTop, setHoveredItemTop] = useState(0);
   const [subMouseY, setSubMouseY] = useState(0);
-  const [hoveredSubItemTop, setHoveredSubItemTop] = useState(0);
+  /** Trigger row offset from level-1 flyout top (border box), for caret + layout. */
+  const [hoveredSubItemOffsetInFlyout, setHoveredSubItemOffsetInFlyout] =
+    useState(0);
+  const [flyoutInnerMaxPx, setFlyoutInnerMaxPx] = useState<number | undefined>(
+    undefined,
+  );
+  const [subFlyoutInnerMaxPx, setSubFlyoutInnerMaxPx] = useState<
+    number | undefined
+  >(undefined);
 
   const isActive = useCallback(
     (path?: string) => {
@@ -759,46 +820,58 @@ export function Sidebar() {
     childrenCount: number = 0,
   ) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
+    const vh = window.innerHeight;
+    const { flyoutTopPx, innerMaxHeightPx } = layoutLevel1Flyout(
+      rect.top,
+      childrenCount,
+      vh,
+    );
 
-    // Estimate height more accurately: (items * height) + padding + margins
-    const estimatedHeight = childrenCount * ITEM_HEIGHT + 24;
-
-    let flyoutTop = rect.top;
-
-    // If flyout goes below viewport, shift it up just enough to fit
-    if (flyoutTop + estimatedHeight > viewportHeight - 10) {
-      flyoutTop = viewportHeight - estimatedHeight - 10;
-    }
-
-    // Ensure it doesn't go above the top of the header
-    flyoutTop = Math.max(10, flyoutTop);
-
-    setMouseY(flyoutTop);
+    setMouseY(flyoutTopPx);
     setHoveredItemTop(rect.top);
+    setFlyoutInnerMaxPx(innerMaxHeightPx);
     setHoveredItem(id);
   };
 
-  const handleSubMouseEnter = (
+  /**
+   * Positions the nested (second) flyout and its left caret from the **level-1 parent row**
+   * only. Must not be driven from the nested panel or leaf links — those rects would move
+   * the arrow away from the true parent↔child connection.
+   */
+  const handleSubRowMouseEnter = (
     e: React.MouseEvent,
     id: string,
     childrenCount: number = 0,
   ) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const estimatedHeight = childrenCount * ITEM_HEIGHT + 24;
+    const triggerRect = e.currentTarget.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const parentRect = level1FlyoutRef.current?.getBoundingClientRect();
 
-    // rect.top is relative to viewport, mouseY is the flyout's top relative to viewport.
-    let localTop = rect.top - mouseY - 8;
-
-    if (rect.top + estimatedHeight > viewportHeight - 10) {
-      localTop -= rect.top + estimatedHeight - (viewportHeight - 10);
+    if (!parentRect) {
+      const approxParent = new DOMRect(0, mouseY, 0, 0);
+      const { topPx, innerMaxHeightPx } = layoutNestedSubmenu(
+        approxParent,
+        triggerRect,
+        childrenCount,
+        vh,
+      );
+      setSubMouseY(topPx);
+      setHoveredSubItemOffsetInFlyout(triggerRect.top - mouseY);
+      setSubFlyoutInnerMaxPx(innerMaxHeightPx);
+      setHoveredSubItem(id);
+      return;
     }
 
-    localTop = Math.max(0, localTop);
+    const { topPx, innerMaxHeightPx } = layoutNestedSubmenu(
+      parentRect,
+      triggerRect,
+      childrenCount,
+      vh,
+    );
 
-    setSubMouseY(localTop);
-    setHoveredSubItemTop(rect.top - mouseY);
+    setSubMouseY(topPx);
+    setHoveredSubItemOffsetInFlyout(triggerRect.top - parentRect.top);
+    setSubFlyoutInnerMaxPx(innerMaxHeightPx);
     setHoveredSubItem(id);
   };
 
@@ -814,6 +887,8 @@ export function Sidebar() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
+        cancelFlyoutCloseTimer();
+        cancelSubCloseTimer();
         setHoveredItem(null);
         setHoveredSubItem(null);
       }}
@@ -854,9 +929,9 @@ export function Sidebar() {
 
       <div className="h-px bg-white/10 mx-5 mb-2" />
 
-      {/* ── Navigation ────────────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto overflow-x-visible py-1 px-2 scrollbar-hide">
-        <nav className="space-y-[2px] flex flex-col">
+      {/* ── Navigation: fills space between header and profile; scrolls when list exceeds viewport */}
+      <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-visible py-1 px-2 scrollbar-hide">
+        <nav className="flex flex-col space-y-[2px]">
           {NAV_ITEMS.map((item) => {
             const active = isParentActive(item);
             const Icon = item.icon || Package;
@@ -866,9 +941,11 @@ export function Sidebar() {
               <div
                 key={item.id}
                 className="relative group/mainitem"
-                onMouseEnter={(e) =>
-                  handleMouseEnter(e, item.id, item.children?.length)
-                }
+                onMouseEnter={(e) => {
+                  cancelFlyoutCloseTimer();
+                  handleMouseEnter(e, item.id, item.children?.length ?? 0);
+                }}
+                onMouseLeave={scheduleFlyoutClose}
               >
                 {/* Active Accent Bar */}
                 {active && (
@@ -889,10 +966,10 @@ export function Sidebar() {
                   )}
                   style={{ height: `${ITEM_HEIGHT}px` }}
                 >
-                  <div className="flex h-7 w-7 items-center justify-center shrink-0">
+                  <div className="flex h-[30px] w-7 items-center justify-center shrink-0">
                     <Icon
                       className={cn(
-                        'h-4 w-4 transition-colors',
+                        'h-[17px] w-[17px] transition-colors',
                         active
                           ? 'text-blue-400'
                           : 'group-hover/mainitem:text-blue-300',
@@ -900,7 +977,7 @@ export function Sidebar() {
                     />
                   </div>
                   {!collapsed && (
-                    <span className="text-xs font-medium tracking-tight flex-1 truncate">
+                    <span className="text-[13px] leading-tight font-medium tracking-tight flex-1 truncate">
                       {item.label}
                     </span>
                   )}
@@ -917,6 +994,7 @@ export function Sidebar() {
                 <AnimatePresence>
                   {hoveredItem === item.id && hasChildren && (
                     <motion.div
+                      ref={level1FlyoutRef}
                       initial={{ opacity: 0, x: -8, scale: 0.98 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
                       exit={{ opacity: 0, x: -8, scale: 0.98 }}
@@ -925,15 +1003,33 @@ export function Sidebar() {
                         stiffness: 400,
                         damping: 30,
                       }}
-                      className="fixed z-[150] bg-[#1a2333]/95 border border-white/5 rounded-md shadow-[0_30px_70px_rgba(0,0,0,0.7)] p-2 flex flex-col backdrop-blur-xl min-w-[140px] max-w-[180px] w-max"
+                      className="fixed z-[150] overflow-visible bg-[#1a2333]/95 border border-white/5 rounded-md shadow-[0_30px_70px_rgba(0,0,0,0.7)] p-2 flex flex-col backdrop-blur-xl min-w-[140px] max-w-[180px] w-max"
                       style={{
                         left: collapsed
                           ? SIDEBAR_WIDTH_COLLAPSED + 8
                           : SIDEBAR_WIDTH_EXPANDED + 8,
                         top: mouseY,
                       }}
-                      onMouseLeave={() => setHoveredSubItem(null)}
+                      onMouseEnter={() => {
+                        cancelFlyoutCloseTimer();
+                        cancelSubCloseTimer();
+                      }}
+                      onMouseLeave={(e) => {
+                        const rel = e.relatedTarget;
+                        if (
+                          rel instanceof Node &&
+                          e.currentTarget.contains(rel)
+                        ) {
+                          return;
+                        }
+                        scheduleSubClose();
+                      }}
                     >
+                      {/* Bridge L1 → L2: sits past the panel edge only (does not cover rows) */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-auto absolute top-0 left-full z-[153] h-full w-3"
+                      />
                       <div
                         className="absolute left-[-6px] w-0 h-0 border-y-[6px] border-y-transparent border-r-[6px] border-r-white/10 z-[151]"
                         style={{
@@ -947,7 +1043,14 @@ export function Sidebar() {
                         }}
                       />
 
-                      <div className="max-h-[75vh] overflow-y-auto space-y-[2px] scrollbar-hide px-0.5">
+                      <div
+                        className="min-h-0 overflow-y-auto space-y-[2px] scrollbar-hide px-0.5"
+                        style={
+                          flyoutInnerMaxPx != null
+                            ? { maxHeight: `${flyoutInnerMaxPx}px` }
+                            : undefined
+                        }
+                      >
                         {item.children?.map((sub) => {
                           const subActive = isParentActive(sub);
                           const subHasChildren =
@@ -962,13 +1065,14 @@ export function Sidebar() {
                             <div
                               key={sub.id}
                               className="relative group/subcontainer"
-                              onMouseEnter={(e) =>
-                                handleSubMouseEnter(
+                              onMouseEnter={(e) => {
+                                cancelSubCloseTimer();
+                                handleSubRowMouseEnter(
                                   e,
                                   sub.id,
-                                  sub.children?.length,
-                                )
-                              }
+                                  sub.children?.length ?? 0,
+                                );
+                              }}
                             >
                               <Link
                                 to={sub.path || '#'}
@@ -1015,32 +1119,36 @@ export function Sidebar() {
                                   left: `calc(100% + 8px)`,
                                   top: subMouseY,
                                 }}
-                                onMouseEnter={(e) =>
-                                  handleSubMouseEnter(
-                                    e,
-                                    sub.id,
-                                    sub.children?.length,
-                                  )
-                                }
+                                onMouseEnter={() => {
+                                  cancelFlyoutCloseTimer();
+                                  cancelSubCloseTimer();
+                                }}
                               >
-                                {/* Invisible bridge to prevent mouse leave gaps */}
-                                <div className="absolute left-[-15px] top-0 bottom-0 w-[15px] bg-transparent" />
+                                {/* Bridge back toward L1 to avoid gap flicker */}
+                                <div className="pointer-events-auto absolute left-[-20px] top-0 bottom-0 z-[154] w-5 bg-transparent" />
 
                                 {/* Dynamic Pointers */}
                                 <div
                                   className="absolute left-[-6px] w-0 h-0 border-y-[6px] border-y-transparent border-r-[6px] border-r-white/10 z-[156]"
                                   style={{
-                                    top: `${hoveredSubItemTop - subMouseY + (ITEM_HEIGHT - 12) / 2}px`,
+                                    top: `${hoveredSubItemOffsetInFlyout - subMouseY + (ITEM_HEIGHT - 12) / 2}px`,
                                   }}
                                 />
                                 <div
                                   className="absolute left-[-5px] w-0 h-0 border-y-[5px] border-y-transparent border-r-[5px] border-r-[#1a2333] z-[157]"
                                   style={{
-                                    top: `${hoveredSubItemTop - subMouseY + (ITEM_HEIGHT - 10) / 2}px`,
+                                    top: `${hoveredSubItemOffsetInFlyout - subMouseY + (ITEM_HEIGHT - 10) / 2}px`,
                                   }}
                                 />
 
-                                <div className="max-h-[60vh] overflow-y-auto space-y-[2px] scrollbar-hide px-0.5">
+                                <div
+                                  className="min-h-0 overflow-y-auto space-y-[2px] scrollbar-hide px-0.5"
+                                  style={
+                                    subFlyoutInnerMaxPx != null
+                                      ? { maxHeight: `${subFlyoutInnerMaxPx}px` }
+                                      : undefined
+                                  }
+                                >
                                   {sub.children?.map((leaf) => (
                                     <Link
                                       key={leaf.id}
@@ -1079,7 +1187,7 @@ export function Sidebar() {
       </div>
 
       {/* ── User Profile Footer ───────────────────────────────── */}
-      <div className="p-4 border-t border-white/5 bg-white/[0.01] backdrop-blur-sm">
+      <div className="shrink-0 border-t border-white/5 bg-white/[0.01] p-4 backdrop-blur-sm">
         <div
           className={cn(
             'flex items-center rounded-sm transition-all duration-300 hover:bg-white/5 cursor-pointer group/user p-1',
