@@ -966,7 +966,7 @@ export function Sidebar() {
                   )}
                   style={{ height: `${ITEM_HEIGHT}px` }}
                 >
-                  <div className="flex h-[30px] w-7 items-center justify-center shrink-0">
+                  <div className="flex h-full w-7 shrink-0 items-center justify-center">
                     <Icon
                       className={cn(
                         'h-[17px] w-[17px] transition-colors',
@@ -977,7 +977,7 @@ export function Sidebar() {
                     />
                   </div>
                   {!collapsed && (
-                    <span className="text-[13px] leading-tight font-medium tracking-tight flex-1 truncate">
+                    <span className="text-[13px] leading-normal font-medium tracking-tight flex-1 min-w-0 truncate">
                       {item.label}
                     </span>
                   )}
@@ -1078,18 +1078,20 @@ export function Sidebar() {
                                 to={sub.path || '#'}
                                 onClick={(e) => !sub.path && e.preventDefault()}
                                 className={cn(
-                                  'group/subitem flex items-center justify-between px-1.5 rounded-sm text-xs font-medium transition-all duration-200',
+                                  'group/subitem flex items-center justify-between px-1.5 rounded-sm text-xs font-medium leading-normal transition-all duration-200',
                                   subActive
                                     ? 'bg-blue-600/20 text-blue-100 shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
                                     : 'text-white/60 hover:bg-white/5 hover:text-white',
                                 )}
                                 style={{ height: `${ITEM_HEIGHT}px` }}
                               >
-                                <span className="flex items-center gap-1.5 truncate pr-2">
+                                <span className="flex min-w-0 flex-1 items-center gap-1.5 truncate pr-2">
                                   {subActive && (
                                     <div className="w-1 h-1 rounded-full bg-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.8)]" />
                                   )}
-                                  <span className="truncate">{sub.label}</span>
+                                  <span className="min-w-0 truncate leading-normal">
+                                    {sub.label}
+                                  </span>
                                 </span>
                                 {subHasChildren && (
                                   <ChevronRight className="h-3 w-3 opacity-20 group-hover/subitem:opacity-80 transition-opacity" />
@@ -1154,18 +1156,18 @@ export function Sidebar() {
                                       key={leaf.id}
                                       to={leaf.path || '#'}
                                       className={cn(
-                                        'flex items-center px-1.5 text-xs font-medium transition-all rounded-sm',
+                                        'flex items-center px-1.5 text-xs font-medium leading-normal transition-all rounded-sm',
                                         isActive(leaf.path)
                                           ? 'bg-blue-600/20 text-white shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
                                           : 'text-white/60 hover:bg-white/5 hover:text-white',
                                       )}
                                       style={{ height: `${ITEM_HEIGHT}px` }}
                                     >
-                                      <span className="flex items-center gap-1.5 truncate">
+                                      <span className="flex min-w-0 flex-1 items-center gap-1.5 truncate">
                                         {isActive(leaf.path) && (
                                           <div className="w-1 h-1 rounded-full bg-blue-300" />
                                         )}
-                                        <span className="truncate">
+                                        <span className="min-w-0 truncate leading-normal">
                                           {leaf.label}
                                         </span>
                                       </span>

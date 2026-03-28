@@ -5,7 +5,7 @@
  */
 
 /** Row height for sidebar + flyout menu items (kept in sync with `sidebar.tsx`). */
-export const SIDEBAR_FLYOUT_ITEM_HEIGHT_PX = 30;
+export const SIDEBAR_FLYOUT_ITEM_HEIGHT_PX = 32;
 export const SIDEBAR_FLYOUT_ITEM_GAP_PX = 2;
 /** Sum of vertical padding on flyout panels (e.g. p-2 top + bottom). */
 export const SIDEBAR_FLYOUT_PANEL_PAD_Y_PX = 16;
