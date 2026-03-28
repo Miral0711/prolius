@@ -786,13 +786,6 @@ export function Sidebar() {
   /** Trigger row offset from level-1 flyout top (border box), for caret + layout. */
   const [hoveredSubItemOffsetInFlyout, setHoveredSubItemOffsetInFlyout] =
     useState(0);
-  const [flyoutInnerMaxPx, setFlyoutInnerMaxPx] = useState<number | undefined>(
-    undefined,
-  );
-  const [subFlyoutInnerMaxPx, setSubFlyoutInnerMaxPx] = useState<
-    number | undefined
-  >(undefined);
-
   const isActive = useCallback(
     (path?: string) => {
       if (!path) return false;
@@ -821,15 +814,10 @@ export function Sidebar() {
   ) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const vh = window.innerHeight;
-    const { flyoutTopPx, innerMaxHeightPx } = layoutLevel1Flyout(
-      rect.top,
-      childrenCount,
-      vh,
-    );
+    const { flyoutTopPx } = layoutLevel1Flyout(rect.top, childrenCount, vh);
 
     setMouseY(flyoutTopPx);
     setHoveredItemTop(rect.top);
-    setFlyoutInnerMaxPx(innerMaxHeightPx);
     setHoveredItem(id);
   };
 
@@ -849,7 +837,7 @@ export function Sidebar() {
 
     if (!parentRect) {
       const approxParent = new DOMRect(0, mouseY, 0, 0);
-      const { topPx, innerMaxHeightPx } = layoutNestedSubmenu(
+      const { topPx } = layoutNestedSubmenu(
         approxParent,
         triggerRect,
         childrenCount,
@@ -857,12 +845,11 @@ export function Sidebar() {
       );
       setSubMouseY(topPx);
       setHoveredSubItemOffsetInFlyout(triggerRect.top - mouseY);
-      setSubFlyoutInnerMaxPx(innerMaxHeightPx);
       setHoveredSubItem(id);
       return;
     }
 
-    const { topPx, innerMaxHeightPx } = layoutNestedSubmenu(
+    const { topPx } = layoutNestedSubmenu(
       parentRect,
       triggerRect,
       childrenCount,
@@ -871,7 +858,6 @@ export function Sidebar() {
 
     setSubMouseY(topPx);
     setHoveredSubItemOffsetInFlyout(triggerRect.top - parentRect.top);
-    setSubFlyoutInnerMaxPx(innerMaxHeightPx);
     setHoveredSubItem(id);
   };
 
@@ -1043,14 +1029,7 @@ export function Sidebar() {
                         }}
                       />
 
-                      <div
-                        className="min-h-0 overflow-y-auto space-y-[2px] scrollbar-hide px-0.5"
-                        style={
-                          flyoutInnerMaxPx != null
-                            ? { maxHeight: `${flyoutInnerMaxPx}px` }
-                            : undefined
-                        }
-                      >
+                      <div className="space-y-[2px] px-0.5 overflow-visible">
                         {item.children?.map((sub) => {
                           const subActive = isParentActive(sub);
                           const subHasChildren =
@@ -1143,14 +1122,7 @@ export function Sidebar() {
                                   }}
                                 />
 
-                                <div
-                                  className="min-h-0 overflow-y-auto space-y-[2px] scrollbar-hide px-0.5"
-                                  style={
-                                    subFlyoutInnerMaxPx != null
-                                      ? { maxHeight: `${subFlyoutInnerMaxPx}px` }
-                                      : undefined
-                                  }
-                                >
+                                <div className="space-y-[2px] px-0.5 overflow-visible">
                                   {sub.children?.map((leaf) => (
                                     <Link
                                       key={leaf.id}

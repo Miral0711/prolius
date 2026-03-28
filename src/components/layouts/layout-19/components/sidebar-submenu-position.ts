@@ -1,7 +1,10 @@
 /**
  * Viewport-aware flyout positioning for the layout-19 sidebar.
- * Minimal vertical shifts: anchor to the hovered row, then move only enough to clear
- * the viewport bottom. Inner scrolling is a last resort when content still cannot fit.
+ * Level 1: anchor to the sidebar row; clamp `top` between viewport margins so the full
+ * panel fits when possible (no artificial max-height / inner scroll).
+ * Nested (level 2): anchor to the trigger row; shift up only as needed so the full
+ * panel fits in the viewport — including negative `topPx` so the panel may extend
+ * above the L1 flyout. Nested panels do not use inner scroll.
  */
 
 /** Row height for sidebar + flyout menu items (kept in sync with `sidebar.tsx`). */
@@ -33,13 +36,15 @@ export function estimateFlyoutOuterHeightPx(itemCount: number): number {
 }
 
 export interface Level1FlyoutLayout {
+  /** `top` for `position: fixed` level-1 flyout (viewport Y). May be less than `margins.top` if the panel must move up to fit. */
   flyoutTopPx: number;
-  /** Set only when the list must scroll; omit for natural (unrestricted) height. */
-  innerMaxHeightPx?: number;
 }
 
 /**
- * Level-1 flyout: top aligns with sidebar row; shift up only by overflow past bottom.
+ * Level-1 flyout: prefer top aligned with the sidebar row; if the panel would extend past
+ * the viewport bottom, shift up by the minimum amount. Enforces top and bottom viewport
+ * margins. Does not cap inner height — avoids spurious scroll from a fraction-of-vh rule
+ * when the full menu still fits after repositioning.
  */
 export function layoutLevel1Flyout(
   sidebarItemTopPx: number,
@@ -49,7 +54,6 @@ export function layoutLevel1Flyout(
     top: SIDEBAR_SUBMENU_VIEWPORT_MARGIN,
     bottom: SIDEBAR_SUBMENU_VIEWPORT_MARGIN,
   },
-  designMaxInnerFractionOfVh = 0.75,
 ): Level1FlyoutLayout {
   const innerNatural = innerListNaturalHeightPx(itemCount);
   const outerNatural =
@@ -58,45 +62,48 @@ export function layoutLevel1Flyout(
     SIDEBAR_FLYOUT_OUTER_FUDGE_PX;
   const bottomLimit = viewportHeightPx - margins.bottom;
 
-  let flyoutTopPx = sidebarItemTopPx;
-  const overflowBottom = flyoutTopPx + outerNatural - bottomLimit;
-  if (overflowBottom > 0) {
-    flyoutTopPx -= overflowBottom;
+  const idealTopPx = sidebarItemTopPx;
+  const minTopPx = margins.top;
+  const maxTopPx = bottomLimit - outerNatural;
+
+  let flyoutTopPx = idealTopPx;
+  if (flyoutTopPx > maxTopPx) {
+    flyoutTopPx = maxTopPx;
   }
-  flyoutTopPx = Math.max(margins.top, flyoutTopPx);
-
-  const bottomAfter = flyoutTopPx + outerNatural;
-  let innerMaxHeightPx: number | undefined;
-
-  if (bottomAfter > bottomLimit) {
-    innerMaxHeightPx = Math.max(
-      96,
-      bottomLimit - flyoutTopPx - SIDEBAR_FLYOUT_PANEL_PAD_Y_PX,
-    );
-  } else if (innerNatural > viewportHeightPx * designMaxInnerFractionOfVh) {
-    innerMaxHeightPx = viewportHeightPx * designMaxInnerFractionOfVh;
+  if (flyoutTopPx < minTopPx) {
+    flyoutTopPx = minTopPx;
+  }
+  if (minTopPx > maxTopPx) {
+    flyoutTopPx = maxTopPx;
   }
 
-  return { flyoutTopPx, innerMaxHeightPx };
+  return { flyoutTopPx };
 }
 
 export interface NestedSubmenuLayout {
-  /** `top` for `position: absolute` nested panel inside level-1 flyout. */
+  /**
+   * `top` for `position: absolute` nested panel inside level-1 flyout.
+   * May be negative so the panel can sit partly above the L1 flyout while staying
+   * viewport-clamped (no inner scroll).
+   */
   topPx: number;
-  /** Set only when the nested list must scroll. */
-  innerMaxHeightPx?: number;
 }
 
 /**
- * Nested flyout: top aligned to trigger row; shift up minimally for bottom collision.
+ * Nested flyout: prefer top aligned to the trigger row; if the panel would extend
+ * past the viewport bottom, shift up by the minimum amount. Also enforces top
+ * viewport margin. Does not clamp to `topPx >= 0` — negative values keep the menu
+ * attached visually while fitting above the bottom edge.
  */
 export function layoutNestedSubmenu(
   parentFlyoutRect: DOMRectReadOnly,
   triggerRowRect: DOMRectReadOnly,
   nestedItemCount: number,
   viewportHeightPx: number,
-  margins: { bottom: number } = { bottom: SIDEBAR_SUBMENU_VIEWPORT_MARGIN },
-  designMaxInnerFractionOfVh = 0.6,
+  margins: { top: number; bottom: number } = {
+    top: SIDEBAR_SUBMENU_VIEWPORT_MARGIN,
+    bottom: SIDEBAR_SUBMENU_VIEWPORT_MARGIN,
+  },
 ): NestedSubmenuLayout {
   const innerNatural = innerListNaturalHeightPx(nestedItemCount);
   const outerNatural =
@@ -105,25 +112,20 @@ export function layoutNestedSubmenu(
     SIDEBAR_FLYOUT_OUTER_FUDGE_PX;
   const bottomLimit = viewportHeightPx - margins.bottom;
 
-  let topPx = triggerRowRect.top - parentFlyoutRect.top;
+  const idealTopPx = triggerRowRect.top - parentFlyoutRect.top;
+  const minTopPx = margins.top - parentFlyoutRect.top;
+  const maxTopPx = bottomLimit - outerNatural - parentFlyoutRect.top;
 
-  let nestedBottomV = parentFlyoutRect.top + topPx + outerNatural;
-  if (nestedBottomV > bottomLimit) {
-    topPx -= nestedBottomV - bottomLimit;
+  let topPx = idealTopPx;
+  if (topPx > maxTopPx) {
+    topPx = maxTopPx;
   }
-  topPx = Math.max(0, topPx);
-
-  nestedBottomV = parentFlyoutRect.top + topPx + outerNatural;
-  let innerMaxHeightPx: number | undefined;
-
-  if (nestedBottomV > bottomLimit) {
-    innerMaxHeightPx = Math.max(
-      96,
-      bottomLimit - parentFlyoutRect.top - topPx - SIDEBAR_FLYOUT_PANEL_PAD_Y_PX,
-    );
-  } else if (innerNatural > viewportHeightPx * designMaxInnerFractionOfVh) {
-    innerMaxHeightPx = viewportHeightPx * designMaxInnerFractionOfVh;
+  if (topPx < minTopPx) {
+    topPx = minTopPx;
+  }
+  if (minTopPx > maxTopPx) {
+    topPx = maxTopPx;
   }
 
-  return { topPx, innerMaxHeightPx };
+  return { topPx };
 }
