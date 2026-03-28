@@ -28,7 +28,8 @@ import {
   YAxis,
 } from 'recharts';
 import { cn } from '@/lib/utils';
-import { PageSurface } from '@/components/layout';
+import { typography } from '@/lib/typography';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 import { PageShell } from '@/components/ui/page-shell';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Button } from '@/components/ui/button';
@@ -44,10 +45,10 @@ const SectionHeader = ({ title, icon: Icon, extra, action, className }: { title:
   <div className={cn("flex items-center justify-between gap-3 mb-2 px-1", className)}>
     <div className="flex items-center gap-2">
       {Icon && <Icon className="h-4 w-4 text-slate-400" />}
-      <h3 className="text-[13px] font-semibold text-slate-800 tracking-tight flex items-center gap-2">
+      <h3 className={cn(typography.cardTitle, 'flex items-center gap-2')}>
         {title}
         {extra && <span className="h-1 w-1 rounded-full bg-slate-200" />}
-        {extra && <span className="text-[10px] font-medium text-slate-400 tabular-nums uppercase tracking-wider">{extra}</span>}
+        {extra && <span className="text-xs font-medium text-slate-400 tabular-nums uppercase tracking-[0.04rem]">{extra}</span>}
       </h3>
     </div>
     {action && <div>{action}</div>}
@@ -77,17 +78,17 @@ const AlertKpiCard = ({ alert, count }: { alert: typeof AI_ALERT_TYPES[0]; count
           )}>
             <Icon className="h-3 w-3" />
           </div>
-          <p className="text-[18px] font-semibold text-slate-800 leading-none tabular-nums tracking-tight">{count}</p>
+          <p className="text-xl font-semibold text-slate-800 leading-none tabular-nums tracking-tight">{count}</p>
         </div>
         
         <div className="flex flex-col gap-0.5 mt-0.5">
-          <p className="text-[11px] font-medium text-slate-700 truncate leading-none">{alert.name}</p>
+          <p className="text-2sm font-medium text-slate-700 truncate leading-none">{alert.name}</p>
         {!isZero ? (
-            <span className="text-[8px] font-medium text-rose-500 uppercase tracking-tight flex items-center gap-1">
+            <span className="text-2xs font-medium text-rose-500 uppercase tracking-tight flex items-center gap-1">
               <span className="h-1 w-1 rounded-full bg-rose-500 animate-pulse" /> ACTIVE
             </span>
           ) : (
-            <span className="text-[8px] font-medium text-slate-400 uppercase tracking-tight flex items-center gap-1">
+            <span className="text-2xs font-medium text-slate-400 uppercase tracking-tight flex items-center gap-1">
               <span className="h-1 w-1 rounded-full bg-slate-200" /> STABLE
             </span>
           )}
@@ -99,7 +100,7 @@ const AlertKpiCard = ({ alert, count }: { alert: typeof AI_ALERT_TYPES[0]; count
 
 const ChartCard = ({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) => (
   <GlassCard className={cn("flex flex-col min-h-[235px] h-full border-slate-200/60 bg-white shadow-sm p-4 transition-all duration-200 hover:shadow-md", className)}>
-    <h3 className="text-[13px] font-semibold text-slate-800 mb-3 flex items-center gap-2">
+    <h3 className={cn(typography.cardTitle, 'mb-3 flex items-center gap-2')}>
       <TrendingUp className="h-4 w-4 text-blue-500" />
       {title}
     </h3>
@@ -115,8 +116,8 @@ const TelemetryPill = ({ icon: Icon, label, value, color, last }: { icon: any; l
       <Icon className="h-3 w-3" />
     </div>
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] font-medium text-slate-500 leading-none">{label}</span>
-      <span className="text-[12px] font-semibold text-slate-800 leading-none tabular-nums">{value}</span>
+      <span className="text-xs font-medium text-slate-500 leading-none">{label}</span>
+      <span className="text-sm font-semibold text-slate-800 leading-none tabular-nums">{value}</span>
     </div>
   </div>
 );
@@ -139,22 +140,22 @@ export default function AiAlertMonitoringPage() {
       className="max-w-none flex h-full min-h-0 flex-1 flex-col space-y-0"
       contentWrapperClassName="relative flex max-w-none flex-1 flex-col overflow-hidden p-0 min-h-0"
     >
-      <PageSurface padding="md" fill sectionGap="md">
+      <PageSurface padding={PAGE_SURFACE_FOOTER_PADDING} fill sectionGap="none">
         <PageSurface.Body className="min-h-0 flex-1 space-y-4 overflow-y-auto">
       {/* ─── PAGE ACTIONS ─── */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
-          <h2 className="text-[15px] font-semibold text-slate-800">Advanced AI Diagnostics</h2>
-          <p className="text-[10px] text-slate-400 font-medium">Real-time driver & vehicle safety telemetry</p>
+          <h2 className={typography.cardTitle}>Advanced AI Diagnostics</h2>
+          <p className="text-xs text-slate-400 font-medium">Real-time driver & vehicle safety telemetry</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-8 gap-2 px-3 shadow-sm bg-white hover:bg-slate-50 text-slate-700 font-semibold border-slate-200 text-[11px]">
+          <Button variant="outline" size="sm" className="h-8 gap-2 px-3 shadow-sm bg-white hover:bg-slate-50 text-slate-700 font-semibold border-slate-200 text-2sm">
             <Download className="h-3.5 w-3.5" /> Export
           </Button>
-          <Button variant="outline" size="sm" className="h-8 gap-2 px-3 shadow-sm bg-white hover:bg-slate-50 text-slate-700 font-semibold border-slate-200 text-[11px]">
+          <Button variant="outline" size="sm" className="h-8 gap-2 px-3 shadow-sm bg-white hover:bg-slate-50 text-slate-700 font-semibold border-slate-200 text-2sm">
             <FileText className="h-3.5 w-3.5" /> Report
           </Button>
-          <Button size="sm" className="h-8 gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-[11px] px-3 shadow-sm">
+          <Button size="sm" className="h-8 gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-2sm px-3 shadow-sm">
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </Button>
         </div>
@@ -207,7 +208,7 @@ export default function AiAlertMonitoringPage() {
             <SectionHeader 
               title="Critical AI Alerts" 
               icon={Zap} 
-              action={<a href="#" className="text-[11px] font-medium text-blue-600 hover:underline">View All</a>}
+              action={<a href="#" className="text-2sm font-medium text-blue-600 hover:underline">View All</a>}
             />
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {alertCounts.map((alert) => (
@@ -284,8 +285,8 @@ export default function AiAlertMonitoringPage() {
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                      <span className="text-[18px] font-semibold text-slate-800">100%</span>
-                      <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest">Mix</span>
+                      <span className="text-xl font-semibold text-slate-800">100%</span>
+                      <span className="text-2xs font-medium text-slate-400 uppercase tracking-[0.08rem]">Mix</span>
                     </div>
                   </div>
                   <div className="w-[110px] flex flex-col gap-2.5">
@@ -293,9 +294,9 @@ export default function AiAlertMonitoringPage() {
                       <div key={i} className="flex items-center justify-between group cursor-default">
                         <div className="flex items-center gap-2 min-w-0">
                           <div className="h-2 w-2 rounded-full shrink-0" style={{ background: d.color }} />
-                          <span className="text-[11px] font-medium text-slate-600 truncate">{d.name}</span>
+                          <span className="text-2sm font-medium text-slate-600 truncate">{d.name}</span>
                         </div>
-                        <span className="text-[11px] font-semibold text-slate-800 shrink-0">{d.value}%</span>
+                        <span className="text-2sm font-semibold text-slate-800 shrink-0">{d.value}%</span>
                       </div>
                     ))}
                   </div>
@@ -310,7 +311,7 @@ export default function AiAlertMonitoringPage() {
             
             {/* Driver Behavior Section */}
             <div>
-              <h3 className="text-[13px] font-semibold text-slate-800 mb-3">Driver Behavior</h3>
+              <h3 className={cn(typography.cardTitle, 'mb-3')}>Driver Behavior</h3>
               <div className="flex flex-col gap-3">
                 {[
                   { icon: Activity, label: 'Speeding', value: '14', color: 'text-rose-500' },
@@ -322,9 +323,9 @@ export default function AiAlertMonitoringPage() {
                   <div key={idx} className="flex items-center justify-between group">
                     <div className="flex items-center gap-2">
                       <item.icon className={cn("h-3 w-3", item.color || "text-slate-400")} />
-                      <span className="text-[11px] font-medium text-slate-600 truncate">{item.label}</span>
+                      <span className="text-2sm font-medium text-slate-600 truncate">{item.label}</span>
                     </div>
-                    <span className="text-[12px] font-semibold tabular-nums shrink-0 text-slate-800">{item.value}</span>
+                    <span className="text-sm font-semibold tabular-nums shrink-0 text-slate-800">{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -334,7 +335,7 @@ export default function AiAlertMonitoringPage() {
 
             {/* Hardware Health Section */}
             <div>
-              <h3 className="text-[13px] font-semibold text-slate-800 mb-3">Hardware Health</h3>
+              <h3 className={cn(typography.cardTitle, 'mb-3')}>Hardware Health</h3>
               <div className="flex flex-col gap-3">
                 {[
                   { icon: HardDrive, label: 'SD Card', value: 'Normal', color: 'text-emerald-500', valueColor: 'text-emerald-500' },
@@ -344,9 +345,9 @@ export default function AiAlertMonitoringPage() {
                   <div key={idx} className="flex items-center justify-between group">
                     <div className="flex items-center gap-2">
                       <item.icon className={cn("h-3 w-3", item.color || "text-slate-400")} />
-                      <span className="text-[11px] font-medium text-slate-600 truncate">{item.label}</span>
+                      <span className="text-2sm font-medium text-slate-600 truncate">{item.label}</span>
                     </div>
-                    <span className={cn("text-[12px] font-semibold tabular-nums shrink-0", item.valueColor || "text-slate-800")}>{item.value}</span>
+                    <span className={cn("text-sm font-semibold tabular-nums shrink-0", item.valueColor || "text-slate-800")}>{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -356,11 +357,11 @@ export default function AiAlertMonitoringPage() {
             
             {/* CTA Section */}
             <div className="mt-auto pt-4">
-              <h4 className="text-slate-800 text-[13px] font-semibold mb-1.5">Weekly Safety Report</h4>
-              <p className="text-slate-500 text-[10px] leading-relaxed mb-4">
+              <h4 className={cn(typography.cardTitle, 'mb-1.5')}>Weekly Safety Report</h4>
+              <p className="text-slate-500 text-xs leading-snug mb-3">
                 Synthesize fleet safety trends into a single boardroom-ready report.
               </p>
-              <Button className="w-full h-8 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold shadow-sm">
+              <Button className="w-full h-8 bg-blue-600 hover:bg-blue-700 text-white text-2sm font-semibold shadow-sm">
                 Generate Report
               </Button>
             </div>
@@ -375,3 +376,5 @@ export default function AiAlertMonitoringPage() {
     </PageShell>
   );
 }
+
+

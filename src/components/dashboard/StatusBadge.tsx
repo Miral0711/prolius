@@ -74,9 +74,9 @@ export function StatusBadge({
       className={cn(
         'inline-flex items-center justify-center gap-0.5 rounded-sm border font-semibold shadow-xs transition-colors',
         size === 'default' &&
-          'min-h-[1.375rem] px-1.5 py-0.5 text-[10px] tracking-tight',
+          'min-h-[1.125rem] px-1.5 py-0 text-[11px] leading-none tracking-[0.01rem]',
         size === 'sm' &&
-          'h-5 min-h-[1.25rem] gap-1 px-2 py-0 text-[9px] leading-none tracking-wide',
+          'h-4.5 min-h-[1rem] gap-1 px-1.25 py-0 text-[10px] leading-none tracking-[0.01rem]',
         preserveCase ? 'normal-case' : 'uppercase',
         VARIANT_STYLES[variant],
         className,
@@ -92,3 +92,5 @@ export function StatusBadge({
     </span>
   );
 }
+
+

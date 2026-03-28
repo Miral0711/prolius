@@ -8,6 +8,7 @@ import { type RoutePoint, MOCK_HISTORY_EVENTS } from '@/data/bus-history-mock-da
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 export interface BusHistoryMapCardProps {
   route: RoutePoint[];
@@ -100,7 +101,9 @@ export function BusHistoryMapCard({
     return (
       <div
         className={cn(
-          'flex w-full items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/40 text-sm text-slate-500 backdrop-blur-xl',
+          'flex w-full items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-white/40 backdrop-blur-xl',
+          typography.meta,
+          'text-slate-500',
           className,
         )}
         style={{ height }}
@@ -165,8 +168,14 @@ export function BusHistoryMapCard({
                  icon={createIcon(iconColor)}
                >
                  <Popup>
-                   <div className="text-[10px] font-semibold uppercase text-slate-800">
-                     {ev.type}<br/>{ev.time}<br/><span className="text-slate-400">{ev.location}</span>
+                   <div className="min-w-[140px] space-y-1 p-0.5">
+                     <p className={cn(typography.body, 'font-medium text-slate-800 tracking-tight')}>
+                       {ev.type}
+                     </p>
+                     <p className={cn(typography.meta, 'font-mono not-italic tabular-nums text-slate-500')}>
+                       {ev.time}
+                     </p>
+                     <p className={cn(typography.meta, 'text-slate-500')}>{ev.location}</p>
                    </div>
                  </Popup>
                </Marker>
@@ -183,9 +192,14 @@ export function BusHistoryMapCard({
               zIndexOffset={2000}
             >
               <Popup>
-                <div className="text-[11px] font-semibold uppercase text-slate-800 text-center min-w-[80px]">
-                  <div className="text-blue-600 mb-1 border-b border-slate-100 pb-1">{currentPoint.timestamp}</div>
-                  <div className="text-lg">{currentPoint.speed} <span className="text-[8px]">KM/H</span></div>
+                <div className="min-w-[100px] space-y-1.5 p-0.5 text-center">
+                  <div className={cn(typography.meta, 'border-b border-slate-100 pb-1 font-mono not-italic text-blue-600 tabular-nums')}>
+                    {currentPoint.timestamp}
+                  </div>
+                  <div className={cn(typography.kpi, 'tabular-nums text-slate-800')}>
+                    {currentPoint.speed}{' '}
+                    <span className={cn(typography.caption, 'font-normal text-slate-500')}>KM/H</span>
+                  </div>
                 </div>
               </Popup>
             </Marker>
@@ -202,7 +216,7 @@ export function BusHistoryMapCard({
             ].map((l, i) => (
               <div key={i} className="flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors cursor-default">
                 <div className="h-1.5 w-1.5 rounded-full shadow-inner" style={{ backgroundColor: l.color }} />
-                <span className="text-[7.5px] font-semibold text-slate-600 uppercase tracking-widest leading-none">{l.label}</span>
+                <span className={cn(typography.meta, 'leading-none text-slate-600')}>{l.label}</span>
               </div>
             ))}
         </div>
@@ -240,16 +254,18 @@ export function BusHistoryMapCard({
         <div className="flex-1 flex flex-col gap-1 relative py-1">
           <div className="flex justify-between items-center mb-0.5">
             <div className="flex items-center gap-2">
-               <span className="text-[9px] font-semibold text-blue-600 uppercase tracking-widest bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100/50 leading-none">
+               <span className={cn(typography.meta, 'rounded border border-blue-100/50 bg-blue-50 px-1.5 py-0.5 font-mono leading-none not-italic text-blue-600 tabular-nums')}>
                  {route[playbackIndex]?.timestamp || '00:00:00'}
                </span>
                {hoverIndex !== null && (
-                  <span className="text-[8px] font-medium text-slate-300 uppercase leading-none">
+                  <span className={cn(typography.meta, 'leading-none not-italic text-slate-500')}>
                     Seek: {route[hoverIndex]?.timestamp}
                   </span>
                )}
             </div>
-            <span className="text-[9px] font-semibold text-slate-300 uppercase tracking-widest leading-none">{route[route.length-1]?.timestamp}</span>
+            <span className={cn(typography.meta, 'font-mono leading-none not-italic text-slate-500 tabular-nums')}>
+              {route[route.length - 1]?.timestamp}
+            </span>
           </div>
 
           <div className="relative h-4 group cursor-pointer flex items-center">
@@ -307,14 +323,17 @@ export function BusHistoryMapCard({
 
         {/* Speed Engine Selector */}
         <div className="flex items-center gap-1 p-0.5 bg-slate-100/60 rounded-lg border border-slate-200/40 shrink-0">
-           <span className="text-[7px] font-semibold text-slate-400 uppercase px-1.5 tracking-tighter">SPD</span>
+           <span className={cn(typography.caption, 'px-1.5 font-normal tracking-tight text-slate-500')}>
+             Spd
+           </span>
           {[1, 2, 4, 8].map((s) => (
             <button
               key={s}
               onClick={() => setPlaybackSpeed(s)}
               className={cn(
-                "h-7 min-w-[28px] px-1.5 rounded text-[9px] font-semibold transition-all uppercase tracking-tighter",
-                playbackSpeed === s ? "bg-white text-blue-600 shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-700"
+                typography.caption,
+                'h-7 min-w-[28px] rounded px-1.5 font-medium transition-all tracking-tight',
+                playbackSpeed === s ? "border border-slate-100 bg-white text-blue-600 shadow-sm" : "text-slate-400 hover:text-slate-700"
               )}
             >
               x{s}
@@ -325,3 +344,5 @@ export function BusHistoryMapCard({
     </div>
   );
 }
+
+

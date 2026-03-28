@@ -1,4 +1,6 @@
 import { CheckCircle, MapPin, Truck } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const MOCK_ACTIVITIES = [
@@ -31,7 +33,7 @@ const MOCK_ACTIVITIES = [
 export function RecentActivityCard() {
   return (
     <DashboardCard>
-      <h3 className="mb-1 text-xs font-medium text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>
         Recent Activity
       </h3>
       <div className="space-y-1">
@@ -48,7 +50,7 @@ export function RecentActivityCard() {
                   {' — '}
                   {activity.action}
                 </p>
-                <p className="text-[11px] text-slate-500">{activity.time}</p>
+                <p className="text-2sm text-slate-500">{activity.time}</p>
               </div>
             </div>
           );
@@ -57,3 +59,5 @@ export function RecentActivityCard() {
     </DashboardCard>
   );
 }
+
+

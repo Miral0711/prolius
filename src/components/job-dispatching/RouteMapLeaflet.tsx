@@ -36,7 +36,7 @@ export function RouteMapLeaflet({ className }: { className?: string }) {
       <MapContainer
         center={DEFAULT_CENTER}
         zoom={12}
-        className="z-0 h-full w-full min-h-[180px] rounded-md [&_.leaflet-container]:bg-white [&_.leaflet-tile-pane]:opacity-[0.35] [&_.leaflet-tile-pane]:transition-opacity [&_.leaflet-control-attribution]:max-w-[calc(100%-8px)] [&_.leaflet-control-attribution]:truncate [&_.leaflet-control-attribution]:rounded [&_.leaflet-control-attribution]:border-sky-200/60 [&_.leaflet-control-attribution]:bg-white/90 [&_.leaflet-control-attribution]:text-[9px] [&_.leaflet-control-zoom]:mt-2 [&_.leaflet-control-zoom]:mr-2 [&_.leaflet-control-zoom]:rounded-md [&_.leaflet-control-zoom]:border-sky-200/80 [&_.leaflet-control-zoom]:bg-white/95 [&_.leaflet-control-zoom_a]:text-sky-800"
+        className="z-0 h-full w-full min-h-[180px] rounded-md [&_.leaflet-container]:bg-white [&_.leaflet-tile-pane]:opacity-[0.35] [&_.leaflet-tile-pane]:transition-opacity [&_.leaflet-control-attribution]:max-w-[calc(100%-8px)] [&_.leaflet-control-attribution]:truncate [&_.leaflet-control-attribution]:rounded [&_.leaflet-control-attribution]:border-sky-200/60 [&_.leaflet-control-attribution]:bg-white/90 [&_.leaflet-control-attribution]:text-2xs [&_.leaflet-control-zoom]:mt-2 [&_.leaflet-control-zoom]:mr-2 [&_.leaflet-control-zoom]:rounded-md [&_.leaflet-control-zoom]:border-sky-200/80 [&_.leaflet-control-zoom]:bg-white/95 [&_.leaflet-control-zoom_a]:text-sky-800"
         scrollWheelZoom
         zoomControl
         attributionControl
@@ -63,7 +63,7 @@ export function RouteMapLeaflet({ className }: { className?: string }) {
             Select pickup &amp; dropoff to preview route
           </p>
           <p
-            className="text-xs leading-relaxed text-slate-500 [text-shadow:_0_1px_2px_rgb(255_255_255/_0.95),0_0_10px_rgb(255_255_255/_0.5)]"
+            className="text-xs leading-snug text-slate-500 [text-shadow:_0_1px_2px_rgb(255_255_255/_0.95),0_0_10px_rgb(255_255_255/_0.5)]"
           >
             The route will appear on this map
           </p>
@@ -72,3 +72,5 @@ export function RouteMapLeaflet({ className }: { className?: string }) {
     </div>
   );
 }
+
+

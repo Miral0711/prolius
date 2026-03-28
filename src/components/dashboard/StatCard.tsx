@@ -41,10 +41,10 @@ export function StatCard({
           <Icon className={cn('h-3 w-3', color)} />
         </div>
         <div className="flex min-w-0 flex-col justify-center gap-0.5">
-          <span className="truncate text-[8px] font-semibold uppercase leading-none tracking-wider text-slate-400">
+          <span className="truncate text-xs font-normal uppercase leading-none tracking-[0.04rem] text-black">
             {label}
           </span>
-          <span className="text-[15px] font-semibold leading-none tabular-nums text-slate-800">
+          <span className="text-sm font-medium leading-none tabular-nums text-slate-800">
             {value}
           </span>
         </div>
@@ -68,20 +68,20 @@ export function StatCard({
         <Icon className={cn('h-4 w-4', color)} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-0.5">
+        <p className="truncate text-xs font-normal uppercase tracking-[0.04rem] text-black mb-0.5">
           {label}
         </p>
         <div className="flex items-baseline gap-1.5">
           <p
             className={cn(
-              'text-[14px] font-semibold leading-none tabular-nums',
+              'text-2sm font-medium leading-none tabular-nums',
               color,
             )}
           >
             {value}
           </p>
           {subValue && (
-            <span className="text-[9px] font-medium text-slate-400 truncate tracking-tighter">
+            <span className="text-2xs font-normal text-slate-400 truncate tracking-tighter">
               {subValue}
             </span>
           )}

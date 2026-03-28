@@ -29,7 +29,7 @@ export function OperationalDetailPanel({
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-4">
         {sections.map(section => (
           <div key={section.title} className="min-w-0 space-y-2">
-            <h4 className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.02rem] text-slate-400">
               {section.title}
             </h4>
             <div className="space-y-1.5">
@@ -38,8 +38,8 @@ export function OperationalDetailPanel({
                   key={row.label}
                   className="grid grid-cols-[minmax(0,7.5rem)_1fr] gap-x-2 gap-y-0.5"
                 >
-                  <span className="text-[10px] font-medium text-slate-500">{row.label}</span>
-                  <span className="min-w-0 text-[11px] font-medium text-slate-800">{row.value}</span>
+                  <span className="text-xs font-medium text-slate-500">{row.label}</span>
+                  <span className="min-w-0 text-2sm font-medium text-slate-800">{row.value}</span>
                 </div>
               ))}
             </div>
@@ -47,10 +47,12 @@ export function OperationalDetailPanel({
         ))}
       </div>
       {note ? (
-        <p className="mt-4 border-t border-slate-200/80 pt-3 text-[10px] leading-relaxed text-slate-500">
+        <p className="mt-4 border-t border-slate-200/80 pt-3 text-xs leading-snug text-slate-500">
           {note}
         </p>
       ) : null}
     </div>
   );
 }
+
+

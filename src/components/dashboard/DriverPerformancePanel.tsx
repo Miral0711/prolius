@@ -80,7 +80,7 @@ export function DriverPerformancePanel({
             ))}
           </div>
         </div>
-        <div className="mt-1.5 flex flex-wrap gap-2 border-t border-slate-100 pt-1.5 text-[11px]">
+        <div className="mt-1.5 flex flex-wrap gap-2 border-t border-slate-100 pt-1.5 text-2sm">
           {summaryMetrics.map((metric) => (
             <div key={metric.label}>
               <p className="text-slate-500">{metric.label}</p>
@@ -94,7 +94,7 @@ export function DriverPerformancePanel({
         <table className="w-full min-w-[500px] text-sm">
           <thead>
             <tr className="border-b border-slate-200">
-              <th className="pb-1.5 text-left text-[11px] font-medium text-slate-500">
+              <th className="pb-1.5 text-left text-2sm font-medium text-slate-500">
                 #
               </th>
               <th className="pb-2 text-left text-xs font-medium text-slate-500">
@@ -144,3 +144,5 @@ export function DriverPerformancePanel({
     </div>
   );
 }
+
+

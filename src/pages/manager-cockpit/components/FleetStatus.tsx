@@ -128,7 +128,7 @@ export function FleetStatus() {
               >
                 <Icon className="h-3 w-3" />
               </div>
-              <span className="min-w-0 flex-1 truncate text-[10px] uppercase tracking-wide text-slate-500 leading-tight">
+              <span className="min-w-0 flex-1 truncate text-xs uppercase tracking-[0.02rem] text-slate-500 leading-tight">
                 {s.label}
               </span>
               <span className="shrink-0 text-sm font-semibold text-slate-700 leading-tight">
@@ -141,3 +141,5 @@ export function FleetStatus() {
     </DataCard>
   );
 }
+
+

@@ -41,3 +41,5 @@ export function MapPanel({
     </Card>
   );
 }
+
+

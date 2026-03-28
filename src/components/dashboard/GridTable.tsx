@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 /** Light tint + separation — shared by Top Drivers & Recent Trips header rows. */
 export const dashboardTableHeaderSurfaceClass =
@@ -16,7 +17,7 @@ export const dashboardTableHeaderRowClass = cn(
 
 /** Shared header label style — refined presence without heavy UI. */
 export const dashboardTableHeaderCellClass =
-  'text-[10px] font-medium uppercase tracking-[0.12em] text-slate-700 select-none';
+  cn(typography.tableHeader, 'select-none');
 
 export interface DataTableColumn<T> {
   key: string;
@@ -46,9 +47,9 @@ export function DataTable<T>({
   gridCols,
   gap = 'gap-4',
   minWidth = 600,
-  rowHeight = 'min-h-[48px]',
-  headerHeight = 'min-h-[40px]',
-  px = 'px-5',
+  rowHeight = 'min-h-[40px]',
+  headerHeight = 'min-h-[32px]',
+  px = 'px-4',
   className,
   onRowClick,
 }: DataTableProps<T>) {
@@ -73,7 +74,7 @@ export function DataTable<T>({
             <div
               key={col.key || i}
               className={cn(
-                'flex min-h-0 min-w-0 items-center py-3',
+                'flex min-h-0 min-w-0 items-center py-2',
                 dashboardTableHeaderCellClass,
                 col.align === 'right'
                   ? 'justify-end text-right'
@@ -111,7 +112,8 @@ export function DataTable<T>({
                   <div
                     key={col.key || i}
                     className={cn(
-                      'truncate py-2.5 transition-transform duration-150',
+                      'truncate py-2 transition-transform duration-150',
+                      typography.tableCell,
                       col.align === 'right'
                         ? 'text-right'
                         : col.align === 'center'
@@ -128,7 +130,7 @@ export function DataTable<T>({
               </div>
             ))
           ) : (
-            <div className="flex items-center justify-center py-10 text-slate-400 text-xs font-medium italic">
+            <div className="flex items-center justify-center py-10 text-slate-400 text-xs font-normal italic">
               No records found
             </div>
           )}
@@ -137,3 +139,5 @@ export function DataTable<T>({
     </div>
   );
 }
+
+

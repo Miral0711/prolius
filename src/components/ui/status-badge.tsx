@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 type StatusKind = 'online' | 'offline';
 
@@ -30,8 +31,10 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-sm border px-2.5 py-0.5',
-        'text-[9px] font-medium tracking-wide',
+        'inline-flex items-center gap-1 rounded-sm border px-2 py-0',
+        'min-h-[1.125rem]',
+        'uppercase tracking-[0.02rem]',
+        'text-[11px] leading-none font-medium',
         isOnline
           ? 'border-emerald-200 bg-emerald-50/80 text-emerald-700'
           : 'border-slate-200 bg-slate-50/80 text-slate-600',
@@ -47,8 +50,10 @@ export function StatusBadge({
           )}
         />
       )}
-      <span>{label ?? (isOnline ? 'Online' : 'Offline')}</span>
+      <span className={cn(typography.caption)}>{label ?? (isOnline ? 'Online' : 'Offline')}</span>
     </span>
   );
 }
+
+
 

@@ -73,7 +73,7 @@ export function SidebarMenu() {
   );
 
   const itemRowClass =
-    'flex h-10 items-center gap-3 rounded-sm px-3 text-[14px] font-medium text-slate-700 transition-colors ' +
+    'flex h-10 items-center gap-3 rounded-sm px-3 text-xs font-medium text-slate-700 transition-colors ' +
     'hover:bg-white/18 ' +
     'data-[selected=true]:bg-white/22 data-[selected=true]:text-slate-900 data-[selected=true]:border-l-2 data-[selected=true]:border-l-slate-400/80 ' +
     '[&_svg]:size-4 [&_svg]:shrink-0';
@@ -139,7 +139,7 @@ export function SidebarMenu() {
         classNames={{
           separator: '-mx-2 mb-1',
           label:
-            'mb-0.5 mt-1.5 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-500 leading-tight',
+            'mb-0.5 mt-1.5 px-3 py-1 text-xs font-normal uppercase tracking-[0.02rem] text-slate-500 leading-tight',
           item: itemRowClass,
           group: '',
           subTrigger: itemRowClass,
@@ -162,7 +162,7 @@ export function SidebarMenu() {
       <div className="space-y-1">
         {MENU_SIDEBAR.map((group, groupIndex) => (
           <div key={groupIndex}>
-            <div className="mb-0.5 mt-1.5 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-500 leading-tight">
+            <div className="mb-0.5 mt-1.5 px-3 py-1 text-xs font-normal uppercase tracking-[0.02rem] text-slate-500 leading-tight">
               {group.title}
             </div>
             <div className="space-y-0.5">
@@ -232,3 +232,5 @@ export function SidebarMenu() {
     </>
   );
 }
+
+

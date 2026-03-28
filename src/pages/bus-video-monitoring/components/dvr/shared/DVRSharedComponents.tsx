@@ -1,6 +1,39 @@
 import React from 'react';
 import { ChevronRight, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
+
+/**
+ * DVR / archive surfaces — semantic roles aligned with dashboard `typography`
+ * (`src/lib/typography.ts`, `src/styles/typography.css`).
+ */
+export const dvrTypography = {
+  /** All DVR section chrome titles (sidebar, map, telemetry) — one token */
+  sectionTitle: typography.sectionTitle,
+  sectionSubtitle: cn(typography.meta, 'text-gray-400 tracking-normal'),
+  /** @deprecated Use sectionTitle — same utility, kept for imports */
+  panelHeading: typography.sectionTitle,
+  fieldLabel: cn(typography.body, 'text-gray-400 tracking-normal'),
+  value: cn('text-sm font-medium tabular-nums text-gray-800 tracking-normal'),
+  valueTight: cn('text-sm font-medium tabular-nums text-gray-800 tracking-tight'),
+  metadata: cn(typography.body, 'text-gray-500 tracking-normal'),
+  control: cn('text-xs font-medium tracking-normal'),
+  legend: cn(typography.body, 'text-gray-400 tracking-normal'),
+  /** Dark video chrome — same hierarchy as light panels */
+  videoTitle: cn('text-sm font-medium text-white tracking-normal'),
+  videoTag: cn('text-xs font-medium text-white/60 tracking-normal'),
+  videoMeta: cn('text-xs font-normal text-white/45 tabular-nums tracking-normal'),
+  videoMetaStrong: cn('text-xs font-medium text-white/75 tabular-nums tracking-normal'),
+  videoTimecode: cn('text-xs font-medium text-white/65 tabular-nums tracking-normal'),
+} as const;
+
+/** Short label for the channel switcher (title case, compact). */
+export function formatDvrChannelChipLabel(channel: string): string {
+  const t = channel.trim();
+  if (/^all channels$/i.test(t)) return 'All';
+  const head = t.split(/\s*[–-]\s*/)[0].trim();
+  return head.replace(/^CAM\b/i, 'Cam');
+}
 
 interface PageSectionCardProps {
   children: React.ReactNode;
@@ -45,11 +78,11 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
       </div>
     )}
     <div className="flex flex-col">
-      <h3 className="text-[10px] font-medium text-slate-800 uppercase tracking-widest leading-none mb-0.5">
+      <h3 className={cn(dvrTypography.sectionTitle, 'mb-0.5 leading-none')}>
         {title}
       </h3>
       {subtitle && (
-        <p className="text-[8px] font-medium text-slate-400 uppercase tracking-widest leading-none">
+        <p className={cn(dvrTypography.sectionSubtitle, 'leading-none')}>
           {subtitle}
         </p>
       )}
@@ -86,7 +119,8 @@ export const StatMiniCard: React.FC<StatMiniCardProps> = ({
   >
     <p
       className={cn(
-        'text-[7.5px] font-medium text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1 group-hover:text-slate-500 transition-colors',
+        dvrTypography.fieldLabel,
+        'mb-1 flex items-center gap-1 group-hover:text-gray-500 transition-colors',
         comfortableMetrics && 'mb-1.5',
       )}
     >
@@ -100,7 +134,7 @@ export const StatMiniCard: React.FC<StatMiniCardProps> = ({
     >
       <span
         className={cn(
-          'text-sm font-semibold text-slate-800 tracking-tighter tabular-nums',
+          dvrTypography.value,
           comfortableMetrics ? 'leading-snug' : 'leading-none',
         )}
       >
@@ -109,7 +143,7 @@ export const StatMiniCard: React.FC<StatMiniCardProps> = ({
       {unit && (
         <span
           className={cn(
-            'text-[8px] font-medium text-slate-400 uppercase tracking-widest',
+            dvrTypography.fieldLabel,
             comfortableMetrics ? 'leading-snug' : 'leading-none',
           )}
         >
@@ -147,10 +181,10 @@ export const StatBadge = ({
         className,
       )}
     >
-      <span className="text-[7px] font-medium uppercase tracking-widest opacity-70 leading-none mb-1">
+      <span className={cn(dvrTypography.fieldLabel, 'leading-none mb-1')}>
         {label}
       </span>
-      <span className="text-[10px] font-medium leading-none">{value}</span>
+      <span className="text-sm font-medium leading-none">{value}</span>
     </div>
   );
 };
@@ -183,18 +217,24 @@ const nativePickerIndicator = [
 /** Minimal WebKit tweaks — avoid flex/gap on fields-wrapper (breaks 12-03-2026 / 07:00). */
 const dateDatetimeEdit = [
   '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-  '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
+  '[&::-webkit-datetime-edit]:text-sm [&::-webkit-datetime-edit]:font-normal [&::-webkit-datetime-edit]:text-gray-800',
+  '[&::-webkit-datetime-edit]:text-center',
   '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
+  '[&::-webkit-datetime-edit-fields-wrapper]:text-center',
 ].join(' ') as const;
 
 const timeDatetimeEdit = [
   '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-  '[&::-webkit-datetime-edit]:text-[10px] [&::-webkit-datetime-edit]:font-semibold [&::-webkit-datetime-edit]:text-slate-700',
+  '[&::-webkit-datetime-edit]:text-sm [&::-webkit-datetime-edit]:font-normal [&::-webkit-datetime-edit]:text-gray-800',
+  '[&::-webkit-datetime-edit]:text-center',
   '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
+  '[&::-webkit-datetime-edit-fields-wrapper]:text-center',
 ].join(' ') as const;
 
-const dvrFilterLabelClass =
-  'ml-0.5 flex h-[13px] shrink-0 items-center gap-1.5 text-[9px] font-medium uppercase tracking-widest leading-none text-slate-400';
+const dvrFilterLabelClass = cn(
+  'ml-0.5 flex h-[13px] shrink-0 items-center gap-1.5 leading-none',
+  dvrTypography.fieldLabel,
+);
 
 /** Left inset + right inset for trailing icon (in-flow; no overlap). */
 const dvrDateTimeInputPad = 'pl-3 pr-1.5' as const;
@@ -208,10 +248,15 @@ export const FilterInput: React.FC<FilterInputProps> = ({
   ...props
 }) => {
   const inputClassName = cn(
-    'box-border flex h-10 w-full min-h-10 min-w-0 items-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-left text-[10px] font-semibold leading-normal text-slate-700 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-400 transition-all hover:bg-white hover:border-slate-300 [color-scheme:light]',
-    type === 'date' ? dvrDateTimeInputPad : 'px-2.5',
-    type === 'date' && nativePickerIndicator,
-    type === 'date' && dateDatetimeEdit,
+    'box-border flex h-10 w-full min-h-10 min-w-0 items-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-sm leading-normal text-gray-800 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-400 transition-all hover:bg-white hover:border-slate-300 [color-scheme:light]',
+    type === 'date'
+      ? cn(
+          'justify-center text-center font-normal',
+          dvrDateTimeInputPad,
+          nativePickerIndicator,
+          dateDatetimeEdit,
+        )
+      : 'justify-start px-2.5 text-left font-medium',
   );
 
   const control = <input type={type} {...props} className={inputClassName} />;
@@ -262,7 +307,7 @@ export const TimeInput: React.FC<
         type="time"
         {...props}
         className={cn(
-          'box-border flex h-10 w-full min-h-10 min-w-0 items-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-left text-[10px] font-semibold leading-normal text-slate-700',
+          'box-border flex h-10 w-full min-h-10 min-w-0 items-center justify-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-center text-sm font-normal leading-normal text-gray-800',
           dvrDateTimeInputPad,
           'focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/10',
           'transition-all hover:border-slate-300 hover:bg-white [color-scheme:light]',
@@ -292,7 +337,12 @@ export const ChannelChipGroup: React.FC<ChannelChipGroupProps> = ({
 }) => (
   <div className="space-y-2">
     {label && (
-      <label className="text-[9px] font-medium uppercase tracking-widest text-slate-400 flex items-center gap-1.5 ml-0.5">
+      <label
+        className={cn(
+          dvrTypography.fieldLabel,
+          'flex items-center gap-1.5 ml-0.5',
+        )}
+      >
         {Icon && <Icon className="h-2.5 w-2.5" />} {label}
       </label>
     )}
@@ -302,13 +352,14 @@ export const ChannelChipGroup: React.FC<ChannelChipGroupProps> = ({
           key={ch}
           onClick={() => onChange(ch)}
           className={cn(
-            'flex-1 px-1.5 py-1.5 rounded-lg text-[10px] font-medium uppercase transition-all truncate border',
+            dvrTypography.control,
+            'flex-1 px-1.5 py-1.5 rounded-lg transition-all truncate border',
             selected === ch
               ? 'bg-white text-blue-600 border-white shadow-sm ring-1 ring-slate-200/20'
-              : 'text-slate-500 border-transparent hover:text-slate-700',
+              : 'text-gray-500 border-transparent hover:text-gray-700',
           )}
         >
-          {ch.includes('CAM') ? ch.split('–')[0].trim() : ch.split(' ')[0]}
+          {formatDvrChannelChipLabel(ch)}
         </button>
       ))}
     </div>
@@ -353,17 +404,23 @@ export const RecordingListItem: React.FC<RecordingListItemProps> = ({
       <div className="flex items-center justify-between mb-0.5">
         <p
           className={cn(
-            'text-[10px] font-medium tracking-tight truncate uppercase leading-none',
-            active ? 'text-blue-700 font-extrabold' : 'text-slate-800',
+            dvrTypography.valueTight,
+            'truncate leading-none',
+            active ? 'text-blue-700' : 'text-gray-800',
           )}
         >
           {id}
         </p>
-        <span className="text-[8px] font-medium text-slate-400 uppercase leading-none">
+        <span className={cn(dvrTypography.fieldLabel, 'leading-none shrink-0')}>
           {cam}
         </span>
       </div>
-      <p className="text-[10px] font-medium text-slate-400 tabular-nums leading-none mt-1 group-hover:text-slate-500 transition-colors">
+      <p
+        className={cn(
+          dvrTypography.metadata,
+          'tabular-nums leading-none mt-1 group-hover:text-gray-600 transition-colors',
+        )}
+      >
         {time}
       </p>
     </div>
@@ -397,7 +454,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   <button
     onClick={onClick}
     className={cn(
-      'h-9 px-3 rounded-lg flex items-center justify-center gap-2 text-[9px] font-extrabold uppercase tracking-widest transition-all active:scale-95 flex-1 shadow-sm',
+      'h-9 px-3 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95 flex-1 shadow-sm',
+      dvrTypography.control,
       variant === 'primary' &&
         'bg-[#1e293b] border border-[#1e293b] text-white hover:bg-slate-800 hover:shadow-md',
       variant === 'secondary' &&
@@ -428,8 +486,8 @@ export const LegendItem: React.FC<LegendItemProps> = ({
 }) => (
   <div className={cn('flex items-center gap-1.5', className)}>
     <div className={cn('h-2 w-2 rounded-full shadow-sm', color)} />
-    <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest leading-none">
-      {label}
-    </span>
+    <span className={cn(dvrTypography.legend, 'leading-none')}>{label}</span>
   </div>
 );
+
+

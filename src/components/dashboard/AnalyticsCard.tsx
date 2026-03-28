@@ -1,5 +1,6 @@
 import { type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface AnalyticsCardProps {
   label: string;
@@ -37,17 +38,14 @@ export function AnalyticsCard({
       </div>
       <div>
         <p
-          className={cn(
-            'text-sm font-semibold leading-none tabular-nums',
-            color,
-          )}
+          className={cn(typography.kpi, 'leading-none', color)}
         >
           {value}
         </p>
-        <p className="mt-1 text-[10px] font-semibold text-slate-700 truncate tracking-tight">
+        <p className={cn('mt-1 truncate tracking-tight', typography.label, 'text-slate-700')}>
           {label}
         </p>
-        <p className="text-[9px] font-medium text-slate-400 truncate tracking-tighter mt-0.5 uppercase">
+        <p className={cn('truncate tracking-tighter mt-0.5', typography.meta, 'text-slate-400')}>
           {sub}
         </p>
       </div>

@@ -29,7 +29,7 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
           <select
             value={selectedChannel}
             onChange={e => onChannelChange(e.target.value)}
-            className="h-8 min-w-[140px] rounded-xl border border-slate-200 bg-slate-50/50 pl-8 pr-7 text-[10px] font-medium text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 transition-all appearance-none cursor-pointer"
+            className="h-8 min-w-[140px] rounded-xl border border-slate-200 bg-slate-50/50 pl-8 pr-7 text-xs font-medium text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 transition-all appearance-none cursor-pointer"
           >
             {channels.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -42,13 +42,13 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
         </div>
 
         {/* Date Selector Display */}
-        <div className="h-8 px-2.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-[10px] font-medium text-slate-600 shadow-sm">
+        <div className="h-8 px-2.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-600 shadow-sm">
           <Calendar className="h-3 w-3 text-slate-400" />
           <span>Mar 12, 2026</span>
         </div>
 
         {/* Time Range Display */}
-        <div className="h-8 px-2.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-[10px] font-mono font-medium text-slate-600 shadow-sm">
+        <div className="h-8 px-2.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-white text-xs font-mono font-medium text-slate-600 shadow-sm">
           <Clock className="h-3 w-3 text-slate-400" />
           <span>07:00 – 17:00</span>
         </div>
@@ -61,7 +61,7 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
               type="button"
               onClick={() => onSpeedChange(s)}
               className={cn(
-                'rounded-lg px-2.5 h-full text-[9px] font-semibold tracking-tight transition-all',
+                'rounded-lg px-2.5 h-full text-2xs font-semibold tracking-tight transition-all',
                 selectedSpeed === s 
                   ? 'bg-blue-600 text-white shadow-sm' 
                   : 'text-slate-500 hover:bg-white hover:text-slate-700'
@@ -78,7 +78,7 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
         <button
           type="button"
           onClick={onRefresh}
-          className="flex h-8 items-center gap-2 rounded-xl bg-slate-900 px-3.5 text-[10px] font-medium text-white shadow-sm hover:bg-slate-800 transition-all hover:translate-y-[-1px] active:translate-y-[0px]"
+          className="flex h-8 items-center gap-2 rounded-xl bg-slate-900 px-3.5 text-xs font-medium text-white shadow-sm hover:bg-slate-800 transition-all hover:translate-y-[-1px] active:translate-y-[0px]"
         >
           <Search className="h-3 w-3 text-blue-400" /> Refresh Analysis
         </button>
@@ -86,3 +86,5 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
     </div>
   );
 };
+
+

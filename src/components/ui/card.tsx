@@ -39,7 +39,7 @@ const cardVariants = cva(
 );
 
 const cardHeaderVariants = cva(
-  'flex items-center justify-between flex-wrap px-5 min-h-14 gap-2.5',
+  'flex items-center justify-between flex-wrap px-5 min-h-12 gap-2',
   {
     variants: {
       variant: {
@@ -53,7 +53,7 @@ const cardHeaderVariants = cva(
   },
 );
 
-const cardContentVariants = cva('grow p-5', {
+const cardContentVariants = cva('grow p-4', {
   variants: {
     variant: {
       default: '',
@@ -77,7 +77,7 @@ const cardTableVariants = cva('grid grow', {
   },
 });
 
-const cardFooterVariants = cva('flex items-center px-5 min-h-14', {
+const cardFooterVariants = cva('flex items-center px-5 min-h-12', {
   variants: {
     variant: {
       default: 'border-t border-border',
@@ -200,10 +200,7 @@ function CardTitle({
   return (
     <h3
       data-slot="card-title"
-      className={cn(
-        'text-base typo-card-title',
-        className,
-      )}
+      className={cn('typo-card-title', className)}
       {...props}
     />
   );
@@ -234,3 +231,5 @@ export {
   CardTitle,
   CardToolbar,
 };
+
+

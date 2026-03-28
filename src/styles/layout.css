@@ -2,7 +2,7 @@
 :root {
   --sidebar-width: 16rem; /* 256px */
   --sidebar-collapsed-width: 4rem; /* 64px */
-  --header-height: 4rem; /* 64px */
+  --header-height: 3rem; /* 48px — compact global header; Layout19 overrides via provider */
   --content-padding: 1.25rem; /* 20px */
 }
 
@@ -40,3 +40,5 @@
 .content-full-width-collapsed {
   width: calc(100vw - var(--sidebar-collapsed-width));
 }
+
+

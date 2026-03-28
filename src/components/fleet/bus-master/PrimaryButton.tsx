@@ -8,7 +8,7 @@ export function PrimaryButton({ className, children, ...props }: PrimaryButtonPr
   return (
     <Button
       className={cn(
-        'h-8 shrink-0 gap-1.5 rounded-md bg-blue-600 px-3 text-[10px] font-medium text-white',
+        'h-8 shrink-0 gap-1.5 rounded-md bg-blue-600 px-3 text-xs font-medium text-white',
         'shadow-md shadow-blue-500/20 hover:bg-blue-700',
         className,
       )}
@@ -18,3 +18,5 @@ export function PrimaryButton({ className, children, ...props }: PrimaryButtonPr
     </Button>
   );
 }
+
+

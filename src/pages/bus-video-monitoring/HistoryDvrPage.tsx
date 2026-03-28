@@ -12,20 +12,20 @@ import { PageSectionCard } from './components/dvr/shared/DVRSharedComponents';
 /* ─── DATA ───────────────────────────────────────────────────────── */
 
 const CHANNELS = [
-  'All Channels',
-  'CAM 1 – Front',
-  'CAM 2 – Rear',
-  'CAM 3 – Cabin',
-  'CAM 4 – Door',
+  'All channels',
+  'Cam 1 – Front',
+  'Cam 2 – Rear',
+  'Cam 3 – Cabin',
+  'Cam 4 – Door',
 ];
 
 const TIMELINE_MARKERS = [
-  { pct: 8, color: 'bg-rose-500', label: 'HARD BRAKE' },
-  { pct: 22, color: 'bg-amber-400', label: 'SPEEDING' },
-  { pct: 38, color: 'bg-blue-400', label: 'CLIP START' },
-  { pct: 51, color: 'bg-emerald-400', label: 'GEO-FENCE' },
-  { pct: 63, color: 'bg-rose-500', label: 'HARD ACCEL' },
-  { pct: 79, color: 'bg-amber-400', label: 'SHARP TURN' },
+  { pct: 8, color: 'bg-rose-500', label: 'Hard brake' },
+  { pct: 22, color: 'bg-amber-400', label: 'Speeding' },
+  { pct: 38, color: 'bg-blue-400', label: 'Clip start' },
+  { pct: 51, color: 'bg-emerald-400', label: 'Geo-fence' },
+  { pct: 63, color: 'bg-rose-500', label: 'Hard accel' },
+  { pct: 79, color: 'bg-amber-400', label: 'Sharp turn' },
 ];
 
 /* ═══════════════════════════════════════════════════════════════════ */
@@ -39,8 +39,6 @@ export default function HistoryDvrPage() {
   return (
     <DVRPageLayout
       title="History DVR"
-      padding="sm"
-      sectionGap="sm"
       gridClassName="gap-2"
       leftColumnClassName="w-[300px]"
       rightColumnClassName="w-[300px]"
@@ -57,7 +55,9 @@ export default function HistoryDvrPage() {
           <DVRPlayerCard
             isPlaying={isPlaying}
             onTogglePlay={() => setIsPlaying(!isPlaying)}
-            channelName={channel === 'All Channels' ? 'CAM 1 - FRONT' : channel}
+            channelName={
+              channel === 'All channels' ? 'Cam 1 · Front' : channel
+            }
             vehicleTag="KSA-1029"
             currentTime="11:23:47"
             currentDate="Mar 12, 2026"
@@ -84,3 +84,5 @@ export default function HistoryDvrPage() {
     />
   );
 }
+
+

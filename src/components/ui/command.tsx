@@ -144,7 +144,7 @@ const CommandShortcut = ({
     <span
       data-slot="command-shortcut"
       className={cn(
-        'ms-auto text-xs tracking-widest text-muted-foreground',
+        'ms-auto text-xs tracking-[0.08rem] text-muted-foreground',
         className,
       )}
       {...props}
@@ -183,3 +183,5 @@ export {
   CommandSeparator,
   CommandShortcut,
 };
+
+

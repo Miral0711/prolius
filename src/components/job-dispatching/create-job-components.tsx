@@ -3,6 +3,7 @@ import { CarFront, MapPin, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { typography } from '@/lib/typography';
 import {
   InputGroup as BaseInputGroup,
   Input,
@@ -71,7 +72,7 @@ export function SectionCard({
           headerClassName,
         )}
       >
-        <CardTitle className="flex items-center gap-1.5 text-sm font-semibold text-sky-950">
+        <CardTitle className={cn(typography.cardTitle, 'flex items-center gap-1.5')}>
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-sky-600 shadow-[0_0_0_2px_rgba(14,165,233,0.25)]" />
           {title}
         </CardTitle>
@@ -86,7 +87,7 @@ export function SectionCard({
 export function SectionHeader({ title }: { title: string }) {
   return (
     <div className="mb-0.5 flex items-center gap-1.5">
-      <h3 className="text-[10px] font-semibold uppercase tracking-[0.12em] text-sky-800">
+      <h3 className={typography.sectionTitle}>
         {title}
       </h3>
       <div className="h-px min-w-[1rem] flex-1 bg-gradient-to-r from-sky-300/80 to-sky-100/40" />
@@ -105,7 +106,7 @@ export function FormField({
 }) {
   return (
     <label className={cn('flex flex-col gap-px', className)}>
-      <span className="text-[11px] font-medium text-slate-600/90">{label}</span>
+      <span className="text-2sm font-medium text-slate-600/90">{label}</span>
       {children}
     </label>
   );
@@ -125,7 +126,7 @@ export function FormInput({
       <Input
         variant="md"
         placeholder={placeholder}
-        className="h-8 rounded-md border-[#d9e4f2] bg-white/90 text-[12px] text-slate-700 placeholder:text-slate-400/90"
+        className="h-8 rounded-md border-[#d9e4f2] bg-white/90 text-sm text-slate-700 placeholder:text-slate-400/90"
       />
     </FormField>
   );
@@ -145,7 +146,7 @@ export function SelectDropdown({
       <Select>
         <SelectTrigger
           size="md"
-          className="h-8 rounded-md border-[#d9e4f2] bg-white/90 text-[12px] text-slate-700 data-[placeholder]:text-slate-400/90"
+          className="h-8 rounded-md border-[#d9e4f2] bg-white/90 text-sm text-slate-700 data-[placeholder]:text-slate-400/90"
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -175,14 +176,14 @@ export function InputGroup({
       <BaseInputGroup>
         <InputAddon
           variant="md"
-          className="h-8 min-h-8 rounded-s-md rounded-e-none border-[#d9e4f2] bg-[#f3f7fd] text-[12px] text-slate-600"
+          className="h-8 min-h-8 rounded-s-md rounded-e-none border-[#d9e4f2] bg-[#f3f7fd] text-sm text-slate-600"
         >
           {countryCode}
         </InputAddon>
         <Input
           variant="md"
           placeholder={placeholder}
-          className="h-8 rounded-s-none border-[#d9e4f2] bg-white/90 text-[12px] text-slate-700 placeholder:text-slate-400/90"
+          className="h-8 rounded-s-none border-[#d9e4f2] bg-white/90 text-sm text-slate-700 placeholder:text-slate-400/90"
         />
       </BaseInputGroup>
     </FormField>
@@ -194,11 +195,11 @@ export function ToggleSwitch({ label }: { label: string }) {
   const [fixed, setFixed] = useState(false);
 
   const segment =
-    'flex min-h-0 min-w-0 flex-1 items-center justify-center rounded-[5px] px-2 text-center text-[11px] font-semibold leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/35 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-100';
+    'flex min-h-0 min-w-0 flex-1 items-center justify-center rounded-[5px] px-2 text-center text-2sm font-semibold leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/35 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-100';
 
   return (
     <div className="flex flex-col gap-px">
-      <span className="text-[11px] font-medium text-slate-600/90">{label}</span>
+      <span className="text-2sm font-medium text-slate-600/90">{label}</span>
       <div
         role="group"
         aria-label={`${label}: Meter or Fixed`}
@@ -242,7 +243,7 @@ export function StatField({ label, value }: { label: string; value: string }) {
       <div
         role="status"
         aria-live="polite"
-        className="flex h-8 w-full items-center rounded-md border border-[#d9e4f2] bg-white/90 px-2.5 text-[12px] font-normal text-slate-700"
+        className="flex h-8 w-full items-center rounded-md border border-[#d9e4f2] bg-white/90 px-2.5 text-sm font-normal text-slate-700"
       >
         {value}
       </div>
@@ -268,7 +269,7 @@ export function EmptyState({
           <Icon className="h-4 w-4 text-sky-600" />
         </div>
         <p className="text-sm font-semibold text-slate-700">{title}</p>
-        <p className="text-xs leading-relaxed text-slate-500/90">
+        <p className="text-xs leading-snug text-slate-500/90">
           {description}
         </p>
       </div>
@@ -287,7 +288,7 @@ export function ButtonPrimary({
     <Button
       variant="primary"
       size="md"
-      className={cn('h-8 rounded-md px-4 text-[12px] font-semibold', className)}
+      className={cn('h-8 rounded-md px-4 text-sm font-semibold', className)}
     >
       {children}
     </Button>
@@ -306,7 +307,7 @@ export function ButtonSecondary({
       variant="outline"
       size="md"
       className={cn(
-        'h-8 rounded-md border-[#d7e3f1] bg-white text-[12px] font-semibold text-slate-600',
+        'h-8 rounded-md border-[#d7e3f1] bg-white text-sm font-semibold text-slate-600',
         className,
       )}
     >
@@ -324,13 +325,13 @@ export function SearchField({
 }) {
   return (
     <label className="flex flex-col gap-px">
-      <span className="text-[11px] font-medium text-slate-600/90">{label}</span>
+      <span className="text-2sm font-medium text-slate-600/90">{label}</span>
       <div className="relative">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-sky-600" />
         <Input
           variant="md"
           placeholder={placeholder}
-          className="h-8 rounded-md border-[#d9e4f2] bg-white/90 pl-8 text-[12px] text-slate-700 placeholder:text-slate-400/90"
+          className="h-8 rounded-md border-[#d9e4f2] bg-white/90 pl-8 text-sm text-slate-700 placeholder:text-slate-400/90"
         />
       </div>
     </label>
@@ -344,7 +345,7 @@ export function TripRemarkField() {
         variant="md"
         placeholder="Add a short remark"
         rows={2}
-        className="min-h-[36px] resize-none rounded-md border-[#d9e4f2] bg-white/90 py-1.5 leading-snug text-[12px] text-slate-700 placeholder:text-slate-400/90"
+        className="min-h-[32px] resize-none rounded-md border-[#d9e4f2] bg-white/90 py-1.5 leading-snug text-sm text-slate-700 placeholder:text-slate-400/90"
       />
     </FormField>
   );
@@ -359,3 +360,5 @@ export function CardFooterActions({ children }: { children: ReactNode }) {
 }
 
 export { RouteMapLeaflet as MapContainer } from './RouteMapLeaflet';
+
+

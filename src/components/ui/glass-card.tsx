@@ -17,7 +17,7 @@ export interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   blur?: 'xl' | '2xl';
   /** No padding when true */
   noPadding?: boolean;
-  /** Padding: default 16px (p-4), sm 12px (p-3) for denser layout */
+  /** Padding: default 12px (p-3), sm 10px (p-2.5) for denser layout */
   size?: 'default' | 'sm';
 }
 
@@ -48,7 +48,7 @@ function GlassCard({
         glassCardBase,
         opacityMap[opacity],
         blurMap[blur],
-        !noPadding && (size === 'sm' ? 'p-3' : 'p-4'),
+        !noPadding && (size === 'sm' ? 'p-2.5' : 'p-3'),
         className,
       )}
       {...props}
@@ -59,3 +59,5 @@ function GlassCard({
 }
 
 export { GlassCard, glassCardBase };
+
+

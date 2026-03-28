@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/page-shell';
 import {
   PageSurface,
+  PAGE_SURFACE_FOOTER_PADDING,
   type PageSurfacePadding,
   type PageSurfaceSectionGap,
 } from '@/components/layout';
@@ -24,9 +25,9 @@ interface DVRPageLayoutProps {
   leftColumnClassName?: string;
   /** Fixed width of the right column when present */
   rightColumnClassName?: string;
-  /** Outer inset inside app shell (default 16px) */
+  /** Outer inset inside app shell (default matches Live Bus Tracking) */
   padding?: PageSurfacePadding;
-  /** Gap between body row and footer (default md) */
+  /** Gap between body row and footer (default none for a flush, compact footer) */
   sectionGap?: PageSurfaceSectionGap;
 }
 
@@ -40,8 +41,8 @@ export const DVRPageLayout: React.FC<DVRPageLayoutProps> = ({
   gridClassName,
   leftColumnClassName,
   rightColumnClassName,
-  padding = 'md',
-  sectionGap = 'md',
+  padding = PAGE_SURFACE_FOOTER_PADDING,
+  sectionGap = 'none',
 }) => {
   return (
     <PageShell
@@ -89,3 +90,5 @@ export const DVRPageLayout: React.FC<DVRPageLayoutProps> = ({
     </PageShell>
   );
 };
+
+

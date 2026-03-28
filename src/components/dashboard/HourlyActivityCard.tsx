@@ -41,7 +41,7 @@ export function HourlyActivityCard() {
           </BarChart>
         </ChartContainer>
       </ChartPanel>
-      <div className="mt-1 flex justify-between text-[11px]">
+      <div className="mt-1 flex justify-between text-2sm">
         <div>
           <span className="text-slate-500">Peak Hour: </span>
           <span className="font-medium text-slate-700">4:00 PM</span>
@@ -54,3 +54,5 @@ export function HourlyActivityCard() {
     </AnalyticsCard>
   );
 }
+
+

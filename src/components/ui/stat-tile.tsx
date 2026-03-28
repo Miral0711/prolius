@@ -142,7 +142,7 @@ export function StatTile({
     : isCockpit
       ? 'h-3 w-3'
       : 'h-2.5 w-2.5';
-  const labelClass = isCompact ? 'text-[9px]' : 'text-[10px]';
+  const labelClass = isCompact ? 'text-2xs' : 'text-xs';
   const valueClass = isCompact
     ? 'text-lg font-semibold leading-none'
     : isCockpit
@@ -181,7 +181,7 @@ export function StatTile({
             </div>
             <p
               className={cn(
-                'truncate font-medium uppercase tracking-wide leading-none',
+                'truncate font-medium uppercase tracking-[0.02rem] leading-none',
                 labelClass,
                 'text-slate-500',
               )}
@@ -212,7 +212,7 @@ export function StatTile({
             </div>
             <p
               className={cn(
-                'truncate font-medium uppercase tracking-wide leading-none',
+                'truncate font-medium uppercase tracking-[0.02rem] leading-none',
                 labelClass,
                 'text-slate-500',
               )}
@@ -232,7 +232,7 @@ export function StatTile({
             <p
               className={cn(
                 'mt-0.5 flex items-center gap-0.5 leading-none',
-                'text-[10px] text-slate-400/90',
+                'text-xs text-slate-400/90',
               )}
             >
               <Dot className="h-1.5 w-1.5 shrink-0 text-slate-300" />
@@ -244,3 +244,5 @@ export function StatTile({
     </GlassCard>
   );
 }
+
+

@@ -1,4 +1,6 @@
 import { Cell, Pie, PieChart } from 'recharts';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const REGION_DATA = [
@@ -12,7 +14,7 @@ const REGION_DATA = [
 export function RegionalDistributionCard() {
   return (
     <DashboardCard>
-      <h3 className="mb-1 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>
         Regional Distribution
       </h3>
       <div className="flex items-center gap-1.5">
@@ -31,7 +33,7 @@ export function RegionalDistributionCard() {
             </Pie>
           </PieChart>
           <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center">
-            <span className="text-sm font-semibold text-slate-700">450</span>
+            <span className="text-[14px] font-semibold text-slate-700">450</span>
             <span className="text-xs text-slate-500">Vehicles</span>
           </div>
         </div>
@@ -42,10 +44,10 @@ export function RegionalDistributionCard() {
                 className="h-2.5 w-2.5 shrink-0 rounded-sm"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="truncate text-xs text-slate-600">
+              <span className="truncate text-xs font-normal text-slate-600">
                 {item.name}
               </span>
-              <span className="ml-auto text-xs font-medium text-slate-700">
+              <span className="ml-auto text-xs font-normal text-slate-700">
                 {item.value}%
               </span>
             </div>
@@ -55,3 +57,5 @@ export function RegionalDistributionCard() {
     </DashboardCard>
   );
 }
+
+

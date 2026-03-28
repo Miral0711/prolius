@@ -1,6 +1,6 @@
 import { Info, Pause, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { LegendItem } from './shared/DVRSharedComponents';
+import { dvrTypography, LegendItem } from './shared/DVRSharedComponents';
 
 /* ─── 1. TIMELINE MARKER COMPONENT ───────────────────────────── */
 export const TimelineMarker = ({
@@ -17,7 +17,7 @@ export const TimelineMarker = ({
     style={{ left: `${pct}%` }}
   >
     <div className={cn('h-full w-1 relative', color)}>
-      <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all shadow-xl pointer-events-none mb-1">
+      <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-900 text-xs font-medium text-white tracking-normal whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all shadow-xl pointer-events-none mb-1">
         {label}
         <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
       </div>
@@ -37,7 +37,7 @@ export const PlaybackTimeline = ({
   onProgressChange,
   eventMarkers,
 }: PlaybackTimelineProps) => (
-  <div className="relative flex-1 group/slider py-4">
+  <div className="relative flex-1 group/slider py-3">
     <div
       className="relative h-1.5 w-full bg-slate-100 rounded-full cursor-pointer hover:h-2 transition-all flex items-center"
       onClick={(e) => {
@@ -113,11 +113,21 @@ export function PlaybackControls({
 
       {/* 3. Time Display */}
       <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200/60 rounded-xl">
-        <span className="text-[11px] font-semibold text-slate-700 font-mono tabular-nums leading-none">
+        <span
+          className={cn(
+            dvrTypography.valueTight,
+            'font-mono text-gray-800 leading-none',
+          )}
+        >
           {currentTime}
         </span>
-        <span className="text-slate-300 text-xs">/</span>
-        <span className="text-[11px] font-medium text-slate-400 font-mono tabular-nums leading-none">
+        <span className="text-gray-300 text-xs font-medium">/</span>
+        <span
+          className={cn(
+            dvrTypography.metadata,
+            'font-mono leading-none',
+          )}
+        >
           {totalTime}
         </span>
       </div>
@@ -129,10 +139,11 @@ export function PlaybackControls({
             key={s}
             onClick={() => onSpeedChange(s)}
             className={cn(
-              'px-3 h-7 rounded-lg text-[10px] font-medium uppercase transition-all tracking-wider',
+              dvrTypography.control,
+              'px-3 h-7 rounded-lg transition-all',
               selectedSpeed === s
                 ? 'bg-white text-blue-600 shadow-sm border border-slate-200'
-                : 'text-slate-400 hover:text-slate-600',
+                : 'text-gray-400 hover:text-gray-600',
             )}
           >
             {s}
@@ -150,8 +161,8 @@ export function DvrTimelineAnalytics() {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Info className="h-4 w-4 text-blue-500" />
-          <h3 className="text-[11px] font-semibold text-slate-800 uppercase tracking-widest">
-            Archive Content distribution
+          <h3 className={cn(dvrTypography.sectionTitle, 'leading-none')}>
+            Archive Content Distribution
           </h3>
         </div>
         <div className="flex items-center gap-4">
@@ -183,7 +194,12 @@ export function DvrTimelineAnalytics() {
             (t) => (
               <div key={t} className="flex flex-col items-center gap-1">
                 <div className="h-1.5 w-px bg-slate-200" />
-                <span className="text-[9px] font-medium text-slate-400 tabular-nums">
+                <span
+                  className={cn(
+                    dvrTypography.metadata,
+                    'tabular-nums leading-none',
+                  )}
+                >
                   {t}
                 </span>
               </div>
@@ -194,3 +210,5 @@ export function DvrTimelineAnalytics() {
     </div>
   );
 }
+
+

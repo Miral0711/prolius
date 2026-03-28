@@ -34,15 +34,15 @@ export function Header({ title, statusLabel, extraActions, className }: HeaderPr
         className
       )}
     >
-      <div className="flex w-full items-center justify-between px-4 lg:px-5">
+      <div className="flex h-full min-h-0 w-full items-center justify-between px-4 lg:px-5">
         {/* Left Side: Title & Status */}
-        <div className="flex h-full items-center gap-3">
-          <h1 className="text-[16px] font-semibold tracking-tight text-slate-900 uppercase lg:text-[18px]">
+        <div className="flex h-full min-h-0 items-center gap-2.5 sm:gap-3">
+          <h1 className="text-sm font-semibold uppercase tracking-tight text-slate-900 lg:text-base">
             {displayTitle}
           </h1>
           
           {statusLabel && (
-            <div className="hidden items-center gap-2 rounded-full bg-emerald-50/80 px-2.5 py-0.5 text-[9px] font-semibold text-emerald-600 border border-emerald-100/30 uppercase tracking-tighter sm:flex">
+            <div className="hidden items-center gap-1.5 rounded-full border border-emerald-100/30 bg-emerald-50/80 px-2 py-px text-2xs font-semibold uppercase tracking-tighter text-emerald-600 sm:flex">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               {statusLabel}
             </div>
@@ -55,3 +55,5 @@ export function Header({ title, statusLabel, extraActions, className }: HeaderPr
     </header>
   );
 }
+
+

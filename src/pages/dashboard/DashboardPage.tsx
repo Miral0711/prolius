@@ -43,7 +43,7 @@ import {
 import { FleetMapPanel } from '@/components/dashboard/FleetMapPanel';
 import { SectionHeader } from '@/components/dashboard/SectionHeader';
 import { StatCard } from '@/components/dashboard/StatCard';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 
 /* ─── KPI BAR DATA ─────────────────────────────────────────────── */
 const KPI_STATS = [
@@ -322,7 +322,7 @@ export default function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState<FilterChipId>('all');
 
   return (
-    <PageSurface padding="md" fill sectionGap="md">
+    <PageSurface padding={PAGE_SURFACE_FOOTER_PADDING} fill sectionGap="none">
       <PageSurface.Body className="min-h-0 flex-1 overflow-hidden">
         <DashboardShell>
           <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -343,7 +343,7 @@ export default function DashboardPage() {
             {/* ══ 2. FILTERS ══════════════════════════════════════════════ */}
             <div className="flex items-center gap-2">
               <DashboardCard className="!px-3 !py-1 flex items-center gap-2.5 border-white/60 shadow-sm bg-white/40 rounded-md">
-                <span className="shrink-0 text-[9px] font-semibold uppercase tracking-widest text-slate-400">
+                <span className="shrink-0 text-xs font-normal uppercase tracking-[0.08rem] text-slate-400">
                   FLT_STATUS:
                 </span>
                 <FilterChips
@@ -428,10 +428,10 @@ export default function DashboardPage() {
                           </Pie>
                         </PieChart>
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <span className="text-[13px] font-semibold text-slate-800 leading-none">
+                          <span className="text-[14px] font-medium text-slate-800 leading-none">
                             33
                           </span>
-                          <span className="text-[7px] font-medium text-slate-400 uppercase">
+                          <span className="text-[11px] font-normal text-slate-400 uppercase tracking-[0.02rem] leading-none mt-0.5">
                             Alerts
                           </span>
                         </div>
@@ -447,11 +447,11 @@ export default function DashboardPage() {
                                 className="h-2 w-2 shrink-0 rounded-full"
                                 style={{ background: d.color }}
                               />
-                              <span className="truncate text-[10px] text-slate-500">
+                              <span className="truncate text-xs text-slate-500">
                                 {d.name}
                               </span>
                             </div>
-                            <span className="shrink-0 text-[10px] font-medium text-slate-700">
+                            <span className="shrink-0 text-xs font-medium text-slate-700">
                               {d.value}
                             </span>
                           </div>
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                         Speed Violations
                       </p>
                     </div>
-                    <span className="shrink-0 rounded-sm bg-amber-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase text-amber-700 border border-amber-200/50">
+                    <span className="shrink-0 rounded-sm bg-amber-100 px-1.5 py-0.5 text-2xs font-medium uppercase text-amber-700 border border-amber-200/50">
                       30 this week
                     </span>
                   </header>
@@ -545,10 +545,10 @@ export default function DashboardPage() {
                     ].map((b) => (
                       <div key={b.label}>
                         <div className="mb-0.5 flex justify-between">
-                          <span className="text-[10px] font-medium text-slate-500">
+                          <span className="text-xs font-medium text-slate-500">
                             {b.label}
                           </span>
-                          <span className={`text-[10px] font-medium ${b.text}`}>
+                          <span className={`text-xs font-medium ${b.text}`}>
                             {b.value}
                           </span>
                         </div>
@@ -596,19 +596,19 @@ export default function DashboardPage() {
                         key={g.zone}
                         className="flex items-center justify-between rounded-lg bg-slate-50/80 px-2.5 py-1.5"
                       >
-                        <span className="truncate text-[10px] font-semibold text-slate-700">
+                        <span className="truncate text-xs font-normal text-slate-700">
                           {g.zone}
                         </span>
                         <span
-                          className={`ml-2 shrink-0 rounded-sm px-1.5 py-0.5 text-[9px] font-semibold uppercase ${g.bg} ${g.text} border border-white/50`}
+                          className={`ml-2 shrink-0 rounded-sm px-1.5 py-0.5 text-[11px] leading-none font-normal uppercase tracking-[0.02rem] ${g.bg} ${g.text} border border-white/50`}
                         >
                           {g.exits} exits
                         </span>
                       </div>
                     ))}
-                    <div className="flex justify-between border-t border-slate-100 pt-1.5 text-[10px]">
+                    <div className="flex justify-between border-t border-slate-100 pt-1.5 text-xs">
                       <span className="text-slate-400">Total this week</span>
-                      <span className="font-semibold text-slate-700">
+                      <span className="font-medium text-slate-700">
                         6 violations
                       </span>
                     </div>

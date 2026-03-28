@@ -1,5 +1,6 @@
 import { Search, Filter, Monitor } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { Checkbox } from '@/components/ui/checkbox';
 
 export interface DeviceCompany {
@@ -49,13 +50,13 @@ function DeviceRow({
             className={cn("shrink-0", selected && "border-white/50 bg-white/20")}
           />
           <span
-            className={cn("text-[11px] font-semibold uppercase tracking-tight truncate", selected ? "text-white" : "text-slate-800")}
+            className={cn("text-2sm font-semibold uppercase tracking-tight truncate", selected ? "text-white" : "text-slate-800")}
             title={company.name}
           >
             {company.name}
           </span>
         </div>
-        <div className={cn("flex items-center gap-1 shrink-0 px-1.5 py-0.5 rounded-md text-[9px] font-semibold uppercase", selected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500")}>
+        <div className={cn("flex items-center gap-1 shrink-0 px-1.5 py-0.5 rounded-md text-2xs font-semibold uppercase", selected ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500")}>
           <Monitor className="h-2.5 w-2.5" />
           {company.totalVehicles}
         </div>
@@ -64,11 +65,11 @@ function DeviceRow({
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1">
           <div className={cn("h-1.5 w-1.5 rounded-full", company.online > 0 ? "bg-emerald-400" : "bg-slate-300")} />
-          <span className={cn("text-[9px] font-medium", selected ? "text-blue-100" : "text-slate-400")}>{company.online} Online</span>
+          <span className={cn("text-2xs font-medium", selected ? "text-blue-100" : "text-slate-400")}>{company.online} Online</span>
         </div>
         <div className="flex items-center gap-1">
           <div className={cn("h-1.5 w-1.5 rounded-full", company.offline > 0 ? "bg-rose-400" : "bg-slate-300")} />
-          <span className={cn("text-[9px] font-medium", selected ? "text-blue-100" : "text-slate-400")}>{company.offline} Offline</span>
+          <span className={cn("text-2xs font-medium", selected ? "text-blue-100" : "text-slate-400")}>{company.offline} Offline</span>
         </div>
       </div>
     </div>
@@ -91,8 +92,8 @@ export function DeviceListPanel({
       )}
     >
       <div className="mb-3 flex shrink-0 items-center justify-between px-1">
-        <h3 className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">Device List</h3>
-        <span className="text-[9px] font-medium text-slate-400">{filteredDevices.length} ENTITIES</span>
+        <h3 className={typography.cardTitle}>Device List</h3>
+        <span className="text-2xs font-medium text-slate-400">{filteredDevices.length} ENTITIES</span>
       </div>
 
       <div className="mb-4 shrink-0 space-y-2.5 px-0.5">
@@ -115,7 +116,7 @@ export function DeviceListPanel({
             <button
               key={chip}
               className={cn(
-                "px-2 py-1 rounded-lg text-[9px] font-semibold uppercase tracking-tight transition-all",
+                "px-2 py-1 rounded-lg text-2xs font-semibold uppercase tracking-tight transition-all",
                 chip === 'All' 
                   ? "bg-slate-800 text-white shadow-sm" 
                   : "bg-white/50 text-slate-500 border border-slate-200 hover:bg-white"
@@ -131,7 +132,7 @@ export function DeviceListPanel({
         {filteredDevices.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-10 opacity-40">
             <Search className="h-8 w-8 text-slate-300 mb-2" />
-            <p className="text-[10px] font-medium uppercase text-slate-400">No records found</p>
+            <p className="text-xs font-medium uppercase text-slate-400">No records found</p>
           </div>
         ) : (
           <div className="pb-4">
@@ -151,3 +152,5 @@ export function DeviceListPanel({
     </div>
   );
 }
+
+

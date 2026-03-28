@@ -1,5 +1,6 @@
 import { Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import {
   dashboardTableHeaderCellClass,
   dashboardTableHeaderLiftShadow,
@@ -37,9 +38,9 @@ const COL_WIDTHS = Array(7).fill(`${100 / 7}%`);
 const TH_BASE = cn(
   dashboardTableHeaderCellClass,
   dashboardTableHeaderSurfaceClass,
-  'px-3 py-3',
+  'px-3 py-2',
 );
-const TD_BASE = 'px-3 py-0 align-middle h-[42px]';
+const TD_BASE = 'px-3 py-0 align-middle h-[36px]';
 
 export function CompactTripsTable({
   data,
@@ -56,12 +57,12 @@ export function CompactTripsTable({
           <div className="h-6 w-6 rounded-md bg-blue-50 flex items-center justify-center border border-blue-100/50">
             <Truck className="h-3.5 w-3.5 text-blue-600" />
           </div>
-          <h3 className="text-[11px] font-semibold text-slate-800 uppercase tracking-[0.1em]">
+          <h3 className={typography.cardTitle}>
             {title}
           </h3>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
+          <span className={cn(typography.meta, 'text-slate-400 uppercase tracking-[0.08rem]')}>
             {displaySubtitle}
           </span>
           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
@@ -101,10 +102,10 @@ export function CompactTripsTable({
                 {/* Trip ID */}
                 <td className={cn(TD_BASE, 'text-center')}>
                   <div className="flex flex-col items-center leading-tight overflow-hidden">
-                    <span className="text-[11px] font-semibold text-slate-800 tabular-nums truncate">
+                    <span className={cn(typography.tableCell, 'text-slate-800 tabular-nums truncate')}>
                       {trip.id}
                     </span>
-                    <span className="text-[8.5px] font-medium text-slate-400 tracking-tighter tabular-nums truncate">
+                    <span className="text-2xs font-normal text-slate-400 tracking-tighter tabular-nums truncate">
                       {trip.vehicle}
                     </span>
                   </div>
@@ -112,14 +113,14 @@ export function CompactTripsTable({
 
                 {/* Driver */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className="text-[10px] font-semibold text-slate-700 truncate block">
+                  <span className={cn(typography.tableCell, 'text-slate-700 truncate block')}>
                     {trip.driver}
                   </span>
                 </td>
 
                 {/* Route */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className="text-[10px] font-medium text-slate-700 truncate block">
+                  <span className={cn(typography.tableCell, 'text-slate-700 truncate block')}>
                     {trip.route}
                   </span>
                 </td>
@@ -127,13 +128,13 @@ export function CompactTripsTable({
                 {/* Duration / Distance */}
                 <td className={cn(TD_BASE, 'text-center')}>
                   <div className="flex items-baseline justify-center gap-1 overflow-hidden">
-                    <span className="text-[10px] font-medium text-slate-700 shrink-0">
+                    <span className={cn(typography.tableCell, 'text-slate-700 shrink-0')}>
                       {trip.duration}
                     </span>
-                    <span className="text-[9px] text-slate-300 font-semibold shrink-0">
+                    <span className="text-2xs text-slate-300 font-normal shrink-0">
                       ·
                     </span>
-                    <span className="text-[9px] font-semibold text-slate-500 truncate">
+                    <span className={cn(typography.meta, 'text-slate-500 truncate')}>
                       {trip.distance}
                     </span>
                   </div>
@@ -141,14 +142,14 @@ export function CompactTripsTable({
 
                 {/* Revenue */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className="text-[11px] font-semibold text-emerald-600 tabular-nums">
+                  <span className={cn(typography.tableCell, 'text-emerald-600 tabular-nums')}>
                     {trip.revenue}
                   </span>
                 </td>
 
                 {/* Fuel Usage */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className="text-[10px] font-medium text-slate-600 tabular-nums">
+                  <span className={cn(typography.tableCell, 'text-slate-600 tabular-nums')}>
                     {trip.fuel}
                   </span>
                 </td>
@@ -159,7 +160,7 @@ export function CompactTripsTable({
                     <StatusBadge
                       label={trip.status}
                       variant={STATUS_MAPPING[trip.status] ?? 'neutral'}
-                      className="uppercase text-[8px] tracking-tight font-semibold px-2 py-0.5 shadow-sm border-white/40"
+                      className="uppercase text-[11px] leading-none tracking-[0.01rem] font-medium px-1.5 py-0 shadow-sm border-white/40"
                     />
                   </div>
                 </td>
@@ -181,3 +182,5 @@ export function CompactTripsTable({
     </div>
   );
 }
+
+

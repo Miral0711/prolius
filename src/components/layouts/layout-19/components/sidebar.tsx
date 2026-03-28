@@ -900,14 +900,14 @@ export function Sidebar() {
                     />
                   </div>
                   {!collapsed && (
-                    <span className="text-[11px] font-medium tracking-tight flex-1 truncate">
+                    <span className="text-xs font-medium tracking-tight flex-1 truncate">
                       {item.label}
                     </span>
                   )}
 
                   {/* Collapsed Tooltip */}
                   {collapsed && hoveredItem === item.id && !hasChildren && (
-                    <div className="fixed left-[84px] px-3 py-2 bg-[#1a1f37] text-white text-[11px] font-medium rounded-md shadow-2xl border border-white/10 z-[200] pointer-events-none whitespace-nowrap backdrop-blur-md">
+                    <div className="fixed left-[84px] px-3 py-2 bg-[#1a1f37] text-white text-xs font-medium rounded-md shadow-2xl border border-white/10 z-[200] pointer-events-none whitespace-nowrap backdrop-blur-md">
                       {item.label}
                     </div>
                   )}
@@ -974,7 +974,7 @@ export function Sidebar() {
                                 to={sub.path || '#'}
                                 onClick={(e) => !sub.path && e.preventDefault()}
                                 className={cn(
-                                  'group/subitem flex items-center justify-between px-1.5 rounded-sm text-[11px] font-medium transition-all duration-200',
+                                  'group/subitem flex items-center justify-between px-1.5 rounded-sm text-xs font-medium transition-all duration-200',
                                   subActive
                                     ? 'bg-blue-600/20 text-blue-100 shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
                                     : 'text-white/60 hover:bg-white/5 hover:text-white',
@@ -1046,7 +1046,7 @@ export function Sidebar() {
                                       key={leaf.id}
                                       to={leaf.path || '#'}
                                       className={cn(
-                                        'flex items-center px-1.5 text-[11px] font-medium transition-all rounded-sm',
+                                        'flex items-center px-1.5 text-xs font-medium transition-all rounded-sm',
                                         isActive(leaf.path)
                                           ? 'bg-blue-600/20 text-white shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
                                           : 'text-white/60 hover:bg-white/5 hover:text-white',
@@ -1086,15 +1086,15 @@ export function Sidebar() {
             collapsed && 'justify-center',
           )}
         >
-          <div className="h-8 w-8 rounded-sm bg-gradient-to-tr from-blue-600/20 to-white/5 flex items-center justify-center text-[11px] font-semibold text-white border border-white/10 transition-all group-hover/user:border-blue-500/50 shadow-inner">
+          <div className="h-8 w-8 rounded-sm bg-gradient-to-tr from-blue-600/20 to-white/5 flex items-center justify-center text-xs font-semibold text-white border border-white/10 transition-all group-hover/user:border-blue-500/50 shadow-inner">
             AD
           </div>
           {!collapsed && (
             <div className="flex flex-col ml-3 min-w-0">
-              <span className="text-[11px] font-medium text-white/90 truncate group-hover/user:text-blue-200 transition-colors">
+              <span className="text-xs font-medium text-white/90 truncate group-hover/user:text-blue-200 transition-colors">
                 Admin User
               </span>
-              <span className="text-[9px] text-white/30 uppercase tracking-tighter truncate font-medium">
+              <span className="text-2xs text-white/30 uppercase tracking-tighter truncate font-medium">
                 Operations Commander
               </span>
             </div>

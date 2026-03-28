@@ -21,7 +21,7 @@ import {
   type MdtHealthState,
   type RowMenuEntry,
 } from '@/components/fleet/bus-master';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 
 /* ═══════════════════════════════════════════════════════════════
    TYPES & DUMMY DATA
@@ -389,7 +389,7 @@ export default function BusMasterPage() {
       contentWrapperClassName="relative flex min-h-0 flex-1 flex-col"
     >
       <PageSurface
-        padding="xs"
+        padding={PAGE_SURFACE_FOOTER_PADDING}
         fill
         sectionGap="none"
         className="min-h-0 flex-1 bg-blue-50/70"
@@ -499,3 +499,5 @@ export default function BusMasterPage() {
     </PageShell>
   );
 }
+
+

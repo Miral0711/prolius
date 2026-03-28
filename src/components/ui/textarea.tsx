@@ -16,7 +16,7 @@ const textareaVariants = cva(
     variants: {
       variant: {
         sm: 'px-2.5 py-2.5 text-xs rounded-md',
-        md: 'px-3 py-3 text-[0.8125rem] leading-(--text-sm--line-height) rounded-md',
+        md: 'px-3 py-2 text-2sm leading-(--text-2sm--line-height) rounded-md',
         lg: 'px-4 py-4 text-sm rounded-md',
       },
     },
@@ -41,3 +41,5 @@ function Textarea({
 }
 
 export { Textarea, textareaVariants };
+
+

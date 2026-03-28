@@ -1,3 +1,5 @@
+import { typography } from '@/lib/typography';
+import { cn } from '@/lib/utils';
 import { DashboardCard } from './DashboardCard';
 
 export interface ActivityFeedItem {
@@ -27,11 +29,16 @@ export function CompactActivityFeed({
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
-          <h3 className="text-[11px] font-semibold text-slate-700 uppercase tracking-widest">
+          <h3 className={typography.cardTitle}>
             {title}
           </h3>
         </div>
-        <span className="text-[9px] font-medium text-slate-400 uppercase tracking-tighter">
+        <span
+          className={cn(
+            typography.meta,
+            'text-slate-400 uppercase tracking-tighter',
+          )}
+        >
           {subtitle}
         </span>
       </div>
@@ -52,14 +59,28 @@ export function CompactActivityFeed({
               {/* Content area */}
               <div className="min-w-0 flex-1 flex flex-col gap-1">
                 <div className="flex justify-between items-start gap-2">
-                  <p className="text-[10px] font-semibold leading-none text-slate-800 uppercase tracking-tight">
+                  <p
+                    className={cn(
+                      typography.body,
+                      'leading-none text-slate-800 uppercase tracking-tight',
+                    )}
+                  >
                     {item.event}
                   </p>
-                  <span className="shrink-0 text-[7.5px] font-extrabold text-slate-400 uppercase tracking-tighter">
+                  <span
+                    className={cn(
+                      'shrink-0 text-slate-400 uppercase tracking-[0.02rem] text-[10px] leading-none font-normal',
+                    )}
+                  >
                     {item.time}
                   </span>
                 </div>
-                <p className="text-[9px] leading-[1.3] text-slate-500 font-medium">
+                <p
+                  className={cn(
+                    typography.body,
+                    'leading-[1.3] text-slate-500',
+                  )}
+                >
                   {item.desc}
                 </p>
               </div>

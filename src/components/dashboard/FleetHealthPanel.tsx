@@ -1,5 +1,7 @@
 import { Cell, Pie, PieChart } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const FLEET_HEALTH_DATA = [
@@ -11,7 +13,7 @@ const FLEET_HEALTH_DATA = [
 export function FleetHealthPanel() {
   return (
     <DashboardCard className="flex min-h-0 flex-col overflow-hidden">
-      <h3 className="mb-1.5 shrink-0 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1.5 shrink-0')}>
         Fleet Health
       </h3>
       <div className="flex items-center gap-2">
@@ -49,3 +51,5 @@ export function FleetHealthPanel() {
     </DashboardCard>
   );
 }
+
+

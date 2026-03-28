@@ -65,7 +65,7 @@ export function RowActionMenu({
               <DropdownMenuItem
                 key={entry.id}
                 className={cn(
-                  'cursor-pointer text-[12px]',
+                  'cursor-pointer text-sm',
                   entry.destructive && 'text-rose-600 focus:text-rose-600',
                 )}
                 onSelect={() => entry.onSelect?.()}
@@ -80,3 +80,5 @@ export function RowActionMenu({
     </div>
   );
 }
+
+

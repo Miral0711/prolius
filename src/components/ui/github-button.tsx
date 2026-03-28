@@ -23,7 +23,7 @@ const githubButtonVariants = cva(
       },
       size: {
         default:
-          'h-8.5 rounded-md px-3 gap-2 text-[0.8125rem] leading-none [&_svg]:size-4 gap-2',
+          'h-8.5 rounded-md px-3 gap-2 text-2sm leading-(--text-2sm--line-height) [&_svg]:size-4 gap-2',
         sm: 'h-7 rounded-md px-2.5 gap-1.5 text-xs leading-none [&_svg]:size-3.5 gap-1.5',
         lg: 'h-10 rounded-md px-4 gap-2.5 text-sm leading-none [&_svg]:size-5 gap-2.5',
       },
@@ -327,3 +327,5 @@ function GithubButton({
 
 export { GithubButton, githubButtonVariants };
 export type { GithubButtonProps };
+
+

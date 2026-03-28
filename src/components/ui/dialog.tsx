@@ -131,10 +131,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn(
-        'text-lg font-semibold leading-none tracking-tight',
-        className,
-      )}
+      className={cn('typo-card-title', className)}
       {...props}
     />
   );
@@ -173,3 +170,5 @@ export {
   DialogTitle,
   DialogTrigger,
 };
+
+

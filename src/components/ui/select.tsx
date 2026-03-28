@@ -59,7 +59,7 @@ const selectTriggerVariants = cva(
     variants: {
       size: {
         sm: 'h-7 px-2.5 text-xs gap-1 rounded-md',
-        md: 'h-8.5 px-3 text-[0.8125rem] leading-(--text-sm--line-height) gap-1 rounded-md',
+        md: 'h-8.5 px-3 text-2sm leading-(--text-2sm--line-height) gap-1 rounded-md',
         lg: 'h-10 px-4 text-sm gap-1.5 rounded-md',
       },
     },
@@ -267,3 +267,5 @@ export {
   SelectTrigger,
   SelectValue,
 };
+
+

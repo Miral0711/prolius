@@ -41,7 +41,7 @@ export function SidebarFlyout({
   if (!visible) return null;
 
   const pillClass =
-    'inline-flex items-center rounded-sm px-3 py-2 text-[14px] font-medium text-slate-700 transition-colors hover:bg-white/18 hover:text-slate-900 whitespace-nowrap';
+    'inline-flex items-center rounded-sm px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-white/18 hover:text-slate-900 whitespace-nowrap';
 
   const pillActiveClass = 'bg-white/22 text-slate-900';
 
@@ -79,7 +79,7 @@ export function SidebarFlyout({
               ))}
             </div>
           ) : (
-            <div className="flex flex-wrap gap-1.5 border-t border-white/25 pt-2 text-[14px] text-slate-500">
+            <div className="flex flex-wrap gap-1.5 border-t border-white/25 pt-2 text-xs text-slate-500">
               Select a category
             </div>
           )}
@@ -96,3 +96,5 @@ export function SidebarFlyout({
     </div>
   );
 }
+
+

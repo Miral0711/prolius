@@ -45,7 +45,7 @@ export function SegmentedControl({
             aria-selected={selected}
             tabIndex={interactive ? 0 : -1}
             className={cn(
-              'rounded-md px-2.5 py-1 text-[9px] font-medium uppercase tracking-wide transition-colors',
+              'rounded-md px-2.5 py-1 text-2xs font-medium uppercase tracking-[0.02rem] transition-colors',
               selected
                 ? 'border border-emerald-100 bg-white text-emerald-600 shadow-sm'
                 : 'border border-transparent text-slate-500',
@@ -64,3 +64,5 @@ export function SegmentedControl({
     </div>
   );
 }
+
+

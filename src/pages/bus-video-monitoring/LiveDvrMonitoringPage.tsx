@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { DUMMY_MAP_CENTER } from '@/data/bus-live-tracking-mock-data';
 import { BusLiveMapCard } from '@/pages/bus-tracking/components/BusLiveMapCard';
+import type { LucideIcon } from 'lucide-react';
 import { AlertTriangle, Camera, Monitor, Video, WifiOff } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { GlassCard } from '@/components/ui/glass-card';
+import { StripKpiCard, type StripKpiTint } from '@/components/ui/strip-kpi-card';
 import {
   CameraTile,
   DeviceListPanel,
@@ -13,7 +13,12 @@ import {
 } from './components';
 import { DVRPageLayout } from './components/dvr/shared/DVRPageLayout';
 
-const MONITORING_KPIS = [
+const MONITORING_KPIS: {
+  label: string;
+  value: number;
+  icon: LucideIcon;
+  tint: StripKpiTint;
+}[] = [
   { label: 'Live Cameras', value: 124, icon: Camera, tint: 'blue' },
   { label: 'Offline', value: 3, icon: WifiOff, tint: 'rose' },
   { label: 'Recording', value: 118, icon: Video, tint: 'emerald' },
@@ -70,7 +75,6 @@ export default function LiveDvrMonitoringPage() {
   return (
     <DVRPageLayout
       title="Live DVR Monitoring"
-      padding="sm"
       gridClassName="gap-2"
       leftColumnClassName="w-[260px]"
       leftPanel={
@@ -84,34 +88,17 @@ export default function LiveDvrMonitoringPage() {
       }
       centerPanel={
         <div className="flex min-h-0 flex-1 flex-col gap-2 min-w-0 overflow-hidden">
-          {/* Surveillance KPI Strip */}
-          <div className="flex min-w-0 gap-1.5 shrink-0">
+          {/* Surveillance KPI Strip — same tiles as Live Bus Tracking */}
+          <div className="flex min-w-0 shrink-0 gap-2.5">
             {MONITORING_KPIS.map((k, i) => (
-              <GlassCard
+              <StripKpiCard
                 key={i}
-                className="flex flex-1 items-center gap-2 !p-1.5 border-white/40 shadow-sm"
-              >
-                <div
-                  className={cn(
-                    'h-8 w-8 rounded-lg flex items-center justify-center shrink-0',
-                    k.tint === 'blue' && 'bg-blue-50 text-blue-500',
-                    k.tint === 'rose' && 'bg-rose-50 text-rose-500',
-                    k.tint === 'emerald' && 'bg-emerald-50 text-emerald-500',
-                    k.tint === 'amber' && 'bg-amber-50 text-amber-500',
-                    k.tint === 'slate' && 'bg-slate-50 text-slate-500',
-                  )}
-                >
-                  <k.icon className="h-4 w-4" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[13px] font-semibold text-slate-800 leading-none mb-0.5">
-                    {k.value}
-                  </p>
-                  <p className="text-[8px] font-semibold text-slate-400 uppercase tracking-tighter leading-none">
-                    {k.label}
-                  </p>
-                </div>
-              </GlassCard>
+                label={k.label}
+                value={k.value}
+                icon={k.icon}
+                tint={k.tint}
+                className="min-w-0 flex-1"
+              />
             ))}
           </div>
 
@@ -193,3 +180,5 @@ export default function LiveDvrMonitoringPage() {
     />
   );
 }
+
+

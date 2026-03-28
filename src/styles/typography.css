@@ -1,47 +1,99 @@
 /**
- * Semantic typography utilities — prefer these over scattered font-black / font-bold.
- * Compose with text-* size and color utilities.
+ * Semantic typography utilities — use these instead of arbitrary text-[Npx].
+ * Maps to theme tokens in config.metronic.css (--text-2xs through --text-3xl).
+ * Do not mix multiple font sizes/weights for same-purpose text.
  */
 @utility typo-page-title {
-  @apply font-semibold tracking-tight;
+  @apply text-lg leading-tight font-semibold tracking-tight;
 }
 
 @utility typo-page-subtitle {
-  @apply font-normal tracking-widest uppercase;
+  @apply text-xs leading-snug font-normal text-muted-foreground;
 }
 
+/** Section / panel / card chrome titles — uppercase, dark, one size app-wide */
 @utility typo-section-title {
-  @apply font-semibold;
+  @apply text-xs leading-tight font-medium uppercase tracking-normal text-gray-800;
 }
 
 @utility typo-section-label {
-  @apply font-medium tracking-widest uppercase text-muted-foreground;
+  @apply text-xs leading-snug font-normal tracking-tight text-muted-foreground;
 }
 
 @utility typo-card-title {
-  @apply font-medium leading-none tracking-tight;
+  @apply text-xs leading-tight font-medium uppercase tracking-normal text-gray-800;
 }
 
 @utility typo-label {
-  @apply font-medium;
+  @apply text-xs leading-snug font-medium;
 }
 
 @utility typo-body {
-  @apply font-normal;
+  @apply text-xs leading-snug font-normal;
 }
 
 @utility typo-meta {
-  @apply font-normal text-muted-foreground;
+  @apply text-xs leading-snug font-normal text-muted-foreground;
+}
+
+/** Smallest readable chrome (was ~9–10px) — use font-weight for hierarchy */
+@utility typo-caption {
+  @apply text-2xs leading-tight font-normal;
 }
 
 @utility typo-kpi {
-  @apply font-semibold tabular-nums;
+  @apply text-[14px] leading-tight font-semibold tabular-nums;
 }
 
 @utility typo-table-header {
-  @apply font-medium text-muted-foreground;
+  @apply text-[13px] leading-snug font-medium text-muted-foreground;
+}
+
+@utility typo-table-cell {
+  @apply text-xs leading-snug font-normal text-foreground;
 }
 
 @utility typo-dense-caps {
-  @apply font-medium uppercase tracking-wider;
+  @apply text-xs leading-snug font-normal uppercase tracking-[0.04rem];
+}
+
+@utility typo-toolbar {
+  @apply text-2sm leading-snug font-medium;
+}
+
+/* Chat / messaging — align with dashboard hierarchy (labels light, values medium, metadata subtle) */
+@utility typo-chat-conversation-name {
+  @apply text-sm font-medium leading-tight text-gray-800;
+}
+
+@utility typo-chat-role-label {
+  @apply text-xs font-normal leading-snug text-gray-400;
+}
+
+@utility typo-chat-message-body {
+  @apply text-sm font-normal leading-relaxed text-gray-800;
+}
+
+@utility typo-chat-timestamp {
+  @apply text-xs font-normal leading-none text-gray-400 not-italic;
+}
+
+@utility typo-chat-sidebar-preview {
+  @apply text-sm font-normal leading-snug text-gray-600;
+}
+
+@utility typo-chat-action-label {
+  @apply text-xs font-medium leading-none;
+}
+
+@utility typo-chat-tag {
+  @apply text-xs font-medium leading-none;
+}
+
+@utility typo-chat-composer-input {
+  @apply text-sm font-normal;
+}
+
+@utility typo-chat-field-label {
+  @apply text-xs font-normal leading-snug text-gray-500 uppercase tracking-normal;
 }

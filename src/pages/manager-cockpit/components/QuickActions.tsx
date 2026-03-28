@@ -46,7 +46,7 @@ export function QuickActions() {
               >
                 <Icon className="h-3 w-3 text-slate-700" />
               </div>
-              <span className="text-center text-[10px] font-medium uppercase tracking-wide text-slate-600 leading-tight">
+              <span className="text-center text-xs font-medium uppercase tracking-[0.02rem] text-slate-600 leading-tight">
                 {a.label}
               </span>
             </Link>
@@ -56,3 +56,5 @@ export function QuickActions() {
     </DataCard>
   );
 }
+
+

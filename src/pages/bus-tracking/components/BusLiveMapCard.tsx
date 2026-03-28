@@ -102,19 +102,21 @@ export function BusLiveMapCard({
         )}
       </MapContainer>
       <div className="absolute bottom-2 left-12 right-2 flex flex-wrap gap-2 rounded-lg border border-white/40 bg-white/70 px-2 py-1.5 backdrop-blur-sm">
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-emerald-500" /> Online
         </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-amber-500" /> Idling
         </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-red-500" /> Alarm
         </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-slate-500" /> Offline
         </span>
       </div>
     </div>
   );
 }
+
+

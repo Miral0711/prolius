@@ -14,17 +14,17 @@ export const IconActionButton = forwardRef<HTMLButtonElement, IconActionButtonPr
         ref={ref}
         type="button"
         className={cn(
-          "relative flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-200 ease-in-out",
-          "hover:bg-slate-100/60 active:scale-95",
-          "text-slate-500 hover:text-slate-800",
-          isActive && "bg-slate-100 text-slate-900",
-          className
+          'relative flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-200 ease-in-out',
+          'hover:bg-slate-100/60 active:scale-95',
+          'text-slate-500 hover:text-slate-800',
+          isActive && 'bg-slate-100 text-slate-900',
+          className,
         )}
         {...props}
       >
-        <Icon className="h-[18px] w-[18px] stroke-[1.6]" />
+        <Icon className="h-4 w-4 stroke-[1.6]" />
         {badge !== undefined && (
-          <span className="absolute right-1.5 top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-rose-500 text-[9px] font-semibold text-white ring-2 ring-white shadow-sm">
+          <span className="absolute right-1 top-1 flex h-3 min-w-[14px] items-center justify-center rounded-full bg-rose-500 px-0.5 text-2xs font-semibold text-white shadow-sm ring-2 ring-white">
             {badge}
           </span>
         )}
@@ -34,3 +34,5 @@ export const IconActionButton = forwardRef<HTMLButtonElement, IconActionButtonPr
 );
 
 IconActionButton.displayName = 'IconActionButton';
+
+

@@ -289,7 +289,7 @@ function AlertDescription({
   return (
     <div
       data-slot="alert-description"
-      className={cn('text-sm [&_p]:leading-relaxed [&_p]:mb-2', className)}
+      className={cn('text-sm [&_p]:leading-snug [&_p]:mb-2', className)}
       {...props}
     />
   );
@@ -319,3 +319,5 @@ export {
   AlertTitle,
   AlertToolbar,
 };
+
+

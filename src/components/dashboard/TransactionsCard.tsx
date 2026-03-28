@@ -1,5 +1,6 @@
 import { DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 export interface TransactionItem {
@@ -21,7 +22,7 @@ export function TransactionsCard({
   return (
     <DashboardCard className={cn('', className)}>
       {title && (
-        <h3 className="mb-1.5 text-xs font-semibold text-slate-800">{title}</h3>
+        <h3 className={cn(typography.cardTitle, 'mb-1.5')}>{title}</h3>
       )}
       <div className="space-y-1">
         {items.map((item) => (
@@ -31,11 +32,11 @@ export function TransactionsCard({
           >
             <div className="flex items-center gap-1.5">
               <DollarSign className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-              <span className="text-xs font-medium text-slate-700">
+              <span className={cn(typography.tableCell, 'text-slate-700')}>
                 {item.id}
               </span>
             </div>
-            <span className="text-xs font-semibold text-emerald-600">
+            <span className={cn(typography.tableCell, 'text-emerald-600')}>
               {item.amount}
             </span>
           </div>
@@ -44,3 +45,5 @@ export function TransactionsCard({
     </DashboardCard>
   );
 }
+
+

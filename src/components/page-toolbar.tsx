@@ -1,4 +1,6 @@
 import { type ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 /**
  * Page toolbar. Matches layout-19 pattern:
@@ -39,7 +41,7 @@ function ToolbarHeading({
 
 function ToolbarPageTitle({ children }: { children?: ReactNode }) {
   return (
-    <h1 className="text-lg font-semibold leading-none text-gray-900">
+    <h1 className={cn(typography.pageTitle, 'text-gray-900')}>
       {children}
     </h1>
   );
@@ -47,7 +49,7 @@ function ToolbarPageTitle({ children }: { children?: ReactNode }) {
 
 function ToolbarDescription({ children }: { children?: ReactNode }) {
   return (
-    <div className="mt-1 flex items-center gap-2 text-sm font-normal text-gray-500">
+    <div className={cn('mt-1 flex items-center gap-2', typography.pageSubtitle, 'text-gray-500')}>
       {children}
     </div>
   );
@@ -60,3 +62,5 @@ export {
   ToolbarPageTitle,
   ToolbarDescription,
 };
+
+

@@ -6,6 +6,8 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const barData = [
@@ -22,13 +24,13 @@ const chartConfig: ChartConfig = {
 export function RevenueExpensesCard() {
   return (
     <DashboardCard>
-      <h3 className="mb-1 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>
         Revenue & Expenses
       </h3>
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <p className="text-[11px] text-slate-500">Total Month</p>
-          <p className="text-sm font-semibold text-slate-800">
+          <p className="text-xs font-medium text-slate-500">Total Month</p>
+          <p className="text-[14px] font-semibold text-slate-800">
             SAR 45,231
             <span className="ml-1 inline-flex items-center text-emerald-600">
               <TrendingUp className="h-3 w-3" /> +12%
@@ -36,8 +38,8 @@ export function RevenueExpensesCard() {
           </p>
         </div>
         <div className="flex items-center justify-between">
-          <p className="text-xs text-slate-500">Total Revenue</p>
-          <p className="text-sm font-semibold text-emerald-600">
+          <p className="text-xs font-medium text-slate-500">Total Revenue</p>
+          <p className="text-[14px] font-semibold text-emerald-600">
             SAR 1,239
             <span className="ml-1 text-emerald-500">+8%</span>
           </p>
@@ -58,10 +60,12 @@ export function RevenueExpensesCard() {
           </BarChart>
         </ChartContainer>
       </div>
-      <div className="mt-0.5 flex justify-between text-[11px] text-slate-500">
+      <div className="mt-0.5 flex justify-between text-xs font-normal text-slate-500">
         <span>Overall Expenses SAR 12,450</span>
         <span>Fuel Cost SAR 8,231</span>
       </div>
     </DashboardCard>
   );
 }
+
+

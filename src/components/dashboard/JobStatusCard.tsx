@@ -45,24 +45,26 @@ export function JobStatusCard() {
       </ChartPanel>
       <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-4">
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[10px] font-medium uppercase text-slate-500">
+          <p className="text-xs font-medium uppercase text-slate-500">
             Booking
           </p>
-          <p className="text-sm font-semibold text-slate-800">328</p>
+          <p className="text-[14px] font-semibold text-slate-800">328</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Completed</p>
-          <p className="text-sm font-semibold text-emerald-600">289</p>
+          <p className="text-xs font-medium text-slate-500">Completed</p>
+          <p className="text-[14px] font-semibold text-emerald-600">289</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-xs text-slate-500">Cancelled</p>
-          <p className="text-sm font-semibold text-rose-600">22</p>
+          <p className="text-xs font-medium text-slate-500">Cancelled</p>
+          <p className="text-[14px] font-semibold text-rose-600">22</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Total</p>
-          <p className="text-sm font-semibold text-slate-800">350</p>
+          <p className="text-xs font-medium text-slate-500">Total</p>
+          <p className="text-[14px] font-semibold text-slate-800">350</p>
         </div>
       </div>
     </AnalyticsCard>
   );
 }
+
+

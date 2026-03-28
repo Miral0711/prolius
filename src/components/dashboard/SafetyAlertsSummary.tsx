@@ -1,5 +1,7 @@
 import { Cell, Pie, PieChart } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const SAFETY_ALERT_DATA = [
@@ -12,7 +14,7 @@ const SAFETY_ALERT_DATA = [
 export function SafetyAlertsSummary() {
   return (
     <DashboardCard className="flex min-h-0 flex-col overflow-hidden">
-      <h3 className="mb-1.5 shrink-0 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1.5 shrink-0')}>
         Safety Alerts Summary
       </h3>
       <div className="flex items-center gap-2">
@@ -39,8 +41,8 @@ export function SafetyAlertsSummary() {
               key={item.name}
               className="flex items-center justify-between gap-2"
             >
-              <span className="text-xs text-slate-600">{item.name}</span>
-              <span className="text-xs font-medium text-slate-700">
+              <span className="text-xs font-medium text-slate-600">{item.name}</span>
+              <span className="text-xs font-normal text-slate-700">
                 {item.value}
               </span>
             </div>
@@ -50,3 +52,5 @@ export function SafetyAlertsSummary() {
     </DashboardCard>
   );
 }
+
+

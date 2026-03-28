@@ -19,7 +19,7 @@ import {
   ToggleSwitch,
   TripRemarkField,
 } from '@/components/job-dispatching/create-job-components';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 
 const COMMON_OPTIONS = ['Option 1', 'Option 2', 'Option 3'];
 
@@ -32,8 +32,8 @@ export default function CreateJobPage() {
       contentWrapperClassName={PAGE_SHELL_VIEWPORT_FILL_CONTENT_CLASSNAME}
     >
       <PageSurface
-        padding="sm"
-        sectionGap="sm"
+        padding={PAGE_SURFACE_FOOTER_PADDING}
+        sectionGap="none"
         fill
         className="min-h-0 flex-1 bg-[#edf4fb]"
       >
@@ -162,3 +162,5 @@ export default function CreateJobPage() {
     </PageShell>
   );
 }
+
+

@@ -1,5 +1,5 @@
-import { typography } from '@/lib/typography';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface SectionHeaderProps {
   title: string;
@@ -15,16 +15,15 @@ export function SectionHeader({
   return (
     <div className={cn('flex items-center gap-4 mb-2.5 group', className)}>
       <div className="flex flex-col">
-        <h2
-          className={cn(
-            typography.denseCaps,
-            'text-[10px] tracking-[0.2em] text-slate-400 group-hover:text-slate-500 transition-colors',
-          )}
-        >
+        <h2 className={cn(typography.sectionTitle, 'transition-colors')}>
           {title}
         </h2>
         {subtitle && (
-          <span className="text-[9px] font-normal text-slate-300 uppercase tracking-tighter -mt-0.5">
+          <span
+            className={cn(
+              '-mt-0.5 text-xs font-normal text-gray-400 tracking-tight',
+            )}
+          >
             {subtitle}
           </span>
         )}
@@ -33,3 +32,5 @@ export function SectionHeader({
     </div>
   );
 }
+
+

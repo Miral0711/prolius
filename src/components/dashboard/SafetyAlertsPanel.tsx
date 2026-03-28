@@ -64,14 +64,14 @@ export function SafetyAlertsPanel() {
         </div>
       </div>
       <div className="mt-1.5 border-t border-slate-100 pt-1.5">
-        <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+        <p className="mb-1 text-xs font-medium uppercase tracking-[0.02rem] text-slate-500">
           Recent Safety Events
         </p>
         <div className="space-y-1">
           {RECENT_EVENTS.map((e) => (
             <div
               key={e.id}
-              className="flex items-center justify-between rounded-md bg-slate-50 px-2 py-0.5 text-[11px]"
+              className="flex items-center justify-between rounded-md bg-slate-50 px-2 py-0.5 text-2sm"
             >
               <div>
                 <p className="font-medium text-slate-700">{e.event}</p>
@@ -85,3 +85,5 @@ export function SafetyAlertsPanel() {
     </AnalyticsCard>
   );
 }
+
+

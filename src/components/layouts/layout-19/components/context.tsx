@@ -8,7 +8,8 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
-const HEADER_HEIGHT = '56px';
+/** Global top bar height — keep in sync with `layout.css` and layout-19 `index.tsx` */
+const HEADER_HEIGHT = '48px';
 
 // Define the shape of the layout state
 interface LayoutState {
@@ -45,6 +46,7 @@ export function LayoutProvider({
   const defaultStyle = {
     '--sidebar-width': sidebarWidth,
     '--header-height': HEADER_HEIGHT,
+    '--header-height-mobile': HEADER_HEIGHT,
   };
 
   const style = {
@@ -104,3 +106,5 @@ export const useLayout = () => {
   }
   return context;
 };
+
+

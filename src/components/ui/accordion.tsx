@@ -34,7 +34,7 @@ const accordionItemVariants = cva('', {
 });
 
 const accordionTriggerVariants = cva(
-  'flex flex-1 items-center justify-between py-4 gap-2.5 text-foreground font-medium transition-all [&[data-state=open]>svg]:rotate-180 cursor-pointer',
+  'flex flex-1 items-center justify-between py-3 gap-2.5 text-foreground font-medium transition-all [&[data-state=open]>svg]:rotate-180 cursor-pointer',
   {
     variants: {
       variant: {
@@ -182,3 +182,5 @@ function AccordionContent(
 
 // Exports
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+
+

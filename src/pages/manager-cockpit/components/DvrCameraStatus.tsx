@@ -42,12 +42,12 @@ export function DvrCameraStatus({ sectionLead }: { sectionLead?: boolean }) {
               )}
             >
               <div className="min-w-0 flex-1">
-                <span className="block truncate text-[10px] uppercase tracking-wide text-slate-600 leading-tight">
+                <span className="block truncate text-xs uppercase tracking-[0.02rem] text-slate-600 leading-tight">
                   {c.label}
                 </span>
                 <StatusBadge
                   status={c.status}
-                  className="mt-0.5 px-1.5 py-0.5 text-[10px] font-medium leading-tight"
+                  className="mt-0.5 px-1.5 py-0.5 text-xs font-medium leading-tight"
                 />
               </div>
               <span className="shrink-0 text-base font-semibold text-slate-700 leading-tight">
@@ -60,3 +60,5 @@ export function DvrCameraStatus({ sectionLead }: { sectionLead?: boolean }) {
     </DataCard>
   );
 }
+
+

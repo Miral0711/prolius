@@ -224,7 +224,7 @@ function ContextMenuShortcut({
     <span
       data-slot="context-menu-shortcut"
       className={cn(
-        'text-muted-foreground ml-auto text-xs tracking-widest',
+        'text-muted-foreground ml-auto text-xs tracking-[0.08rem]',
         className,
       )}
       {...props}
@@ -249,3 +249,5 @@ export {
   ContextMenuSubTrigger,
   ContextMenuRadioGroup,
 };
+
+

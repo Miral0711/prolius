@@ -29,13 +29,13 @@ export function SubscriptionStatusCell({
 
   return (
     <div className={cn('min-w-0 text-left', className)}>
-      <div className="truncate font-mono text-[10px] font-medium leading-tight text-slate-800">
+      <div className="truncate font-mono text-xs font-medium leading-tight text-slate-800">
         {range}
       </div>
       {ctx.line ? (
         <div
           className={cn(
-            'mt-0.5 truncate text-[9px] font-semibold leading-tight',
+            'mt-0.5 truncate text-2xs font-semibold leading-tight',
             TONE_CLASS[ctx.tone],
           )}
         >
@@ -45,3 +45,5 @@ export function SubscriptionStatusCell({
     </div>
   );
 }
+
+

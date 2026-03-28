@@ -16,7 +16,7 @@ import {
 import { MapContainer, Marker, Polyline, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { cn } from '@/lib/utils';
-import { PageSectionCard } from './shared/DVRSharedComponents';
+import { dvrTypography, PageSectionCard } from './shared/DVRSharedComponents';
 
 function MapStatOverlayCell({
   icon: Icon,
@@ -33,15 +33,13 @@ function MapStatOverlayCell({
     <div className="flex min-h-0 min-w-0 flex-col items-center justify-center gap-1 px-2 py-2">
       <div className="flex items-center justify-center gap-1">
         <Icon className="h-3 w-3 shrink-0 text-blue-600" aria-hidden />
-        <span className="truncate text-[8px] font-semibold uppercase tracking-tight text-slate-500">
+        <span className={cn(dvrTypography.fieldLabel, 'truncate')}>
           {label}
         </span>
       </div>
       <div className="flex items-baseline justify-center gap-0.5">
-        <span className="text-[15px] font-semibold tabular-nums leading-none text-slate-900">
-          {value}
-        </span>
-        <span className="text-[9px] font-medium leading-none text-slate-500">
+        <span className={cn(dvrTypography.value, 'leading-none')}>{value}</span>
+        <span className={cn(dvrTypography.fieldLabel, 'leading-none')}>
           {unit}
         </span>
       </div>
@@ -226,10 +224,10 @@ export const GpsTrackCard = () => {
             <MapPin className="h-3.5 w-3.5" aria-hidden />
           </div>
           <div className="min-w-0 flex flex-col gap-0 leading-none">
-            <h2 className="text-[11px] font-medium uppercase tracking-wide text-slate-800">
+            <h3 className={cn(dvrTypography.sectionTitle, 'leading-none')}>
               GPS Track
-            </h2>
-            <p className="mt-px text-[9px] font-medium leading-tight text-slate-400">
+            </h3>
+            <p className={cn(dvrTypography.sectionSubtitle, 'mt-px leading-tight')}>
               Route awareness
             </p>
           </div>
@@ -242,7 +240,7 @@ export const GpsTrackCard = () => {
             className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-blue-500 shadow-[0_0_0_2px_rgba(59,130,246,0.22)]"
             aria-hidden
           />
-          <span className="text-[9px] font-semibold uppercase tracking-wide text-blue-700">
+          <span className={cn(dvrTypography.control, 'text-blue-700')}>
             Active track
           </span>
         </div>
@@ -251,7 +249,12 @@ export const GpsTrackCard = () => {
       {/* Map — primary focus; min height preserved; no internal scroll */}
       <div className="relative min-h-[360px] flex-1 overflow-hidden border-y border-slate-100/80 bg-slate-200/40 group/map">
         {!mounted || route.length < 2 ? (
-          <div className="absolute inset-0 z-[400] flex items-center justify-center bg-white/50 text-sm text-slate-500 backdrop-blur-sm">
+          <div
+            className={cn(
+              dvrTypography.metadata,
+              'absolute inset-0 z-[400] flex items-center justify-center bg-white/50 backdrop-blur-sm',
+            )}
+          >
             Loading route…
           </div>
         ) : null}
@@ -312,12 +315,16 @@ export const GpsTrackCard = () => {
 
         {/* Context chips — top of map (keeps bottom clear for stat strip) */}
         <div className="pointer-events-none absolute left-3 top-3 z-[500] flex max-w-[calc(100%-5rem)] flex-col gap-1.5">
-          <div className="flex items-center gap-2 rounded-lg border border-white/60 bg-white/85 px-2.5 py-1.5 text-[10px] font-semibold text-slate-800 shadow-md backdrop-blur-md">
+          <div className="flex items-center gap-2 rounded-lg border border-white/60 bg-white/85 px-2.5 py-1.5 shadow-md backdrop-blur-md">
             <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
-            <span className="truncate">Sheikh Zayed Rd, Dubai</span>
+            <span className={cn(dvrTypography.valueTight, 'truncate')}>
+              Sheikh Zayed Rd, Dubai
+            </span>
           </div>
-          <div className="w-fit rounded-lg border border-slate-200/80 bg-slate-900/88 px-2.5 py-1 text-[10px] font-medium tracking-tight text-white shadow-md backdrop-blur-md">
-            {distanceKm.toFixed(1)} km covered
+          <div className="w-fit rounded-lg border border-slate-200/80 bg-slate-900/88 px-2.5 py-1 shadow-md backdrop-blur-md">
+            <span className={cn(dvrTypography.control, 'text-white')}>
+              {distanceKm.toFixed(1)} km covered
+            </span>
           </div>
         </div>
 
@@ -379,10 +386,10 @@ export const GpsTrackCard = () => {
       {/* Coordinates — flat metadata row */}
       <div className="flex h-9 shrink-0 items-center justify-center gap-2 border-t border-slate-200/50 bg-slate-50/50 px-3">
         <MapPin className="h-3 w-3 shrink-0 text-blue-600" aria-hidden />
-        <span className="shrink-0 text-[8px] font-semibold uppercase tracking-tight text-slate-500">
+        <span className={cn(dvrTypography.fieldLabel, 'shrink-0')}>
           Coordinates
         </span>
-        <span className="min-w-0 truncate text-[11px] font-semibold tabular-nums text-slate-800">
+        <span className={cn(dvrTypography.value, 'min-w-0 truncate')}>
           25.20° N, 55.27° E
         </span>
       </div>
@@ -420,13 +427,11 @@ function TelemetryMetricRow({
           >
             <Icon className="h-3 w-3" aria-hidden />
           </div>
-          <span className="truncate text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <span className={cn(dvrTypography.fieldLabel, 'truncate')}>
             {label}
           </span>
         </div>
-        <span className="shrink-0 text-[11px] font-medium tabular-nums text-slate-800">
-          {pct}%
-        </span>
+        <span className={cn(dvrTypography.value, 'shrink-0')}>{pct}%</span>
       </div>
       <div className="h-1 overflow-hidden rounded-full bg-slate-100">
         <div
@@ -458,10 +463,10 @@ export function DvrRightPanel({ className }: DvrRightPanelProps) {
               <Zap className="h-3.5 w-3.5" aria-hidden />
             </div>
             <div>
-              <h3 className="text-[10px] font-medium uppercase tracking-wide text-slate-800">
-                Live telemetry
+              <h3 className={cn(dvrTypography.sectionTitle, 'leading-none')}>
+                Live Telemetry
               </h3>
-              <p className="text-[9px] font-medium text-slate-400">
+              <p className={cn(dvrTypography.sectionSubtitle, 'leading-tight')}>
                 Engine & route
               </p>
             </div>
@@ -494,3 +499,5 @@ export function DvrRightPanel({ className }: DvrRightPanelProps) {
     </div>
   );
 }
+
+

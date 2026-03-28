@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import {
   ActionButton,
   ChannelChipGroup,
+  dvrTypography,
   FilterInput,
   PageSectionCard,
   RecordingListItem,
@@ -36,9 +37,9 @@ const ArchiveControls = ({
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
-          <h2 className="text-[15px] font-semibold leading-none tracking-tight text-slate-800">
+          <h3 className={cn(dvrTypography.sectionTitle, 'leading-none')}>
             Archive Controls
-          </h2>
+          </h3>
           <div className="grid w-full min-w-0 grid-cols-3 gap-2">
             <StatBadge label="Clips" value="1,240" className="w-full min-w-0" />
             <StatBadge
@@ -74,7 +75,7 @@ const ArchiveControls = ({
           </div>
 
           <ChannelChipGroup
-            label="Select Channel"
+            label="Select channel"
             icon={Layers}
             channels={channels}
             selected={selectedChannel}
@@ -93,7 +94,7 @@ const ArchiveControls = ({
             label="Locate"
             icon={Search}
             variant="secondary"
-            className="flex-[1.5] tracking-normal"
+            className="flex-[1.5]"
           />
         </div>
       </div>
@@ -113,12 +114,12 @@ const DvrRecentList = () => (
       />
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain pr-1 scrollbar-thin scrollbar-thumb-slate-200">
         {[
-          { id: 'REC-2941', time: '14:20 - 14:45', cam: 'CAM 1', active: true },
-          { id: 'REC-2942', time: '13:10 - 13:30', cam: 'CAM 2', active: false },
-          { id: 'REC-2943', time: '12:05 - 12:40', cam: 'CAM 1', active: false },
-          { id: 'REC-2944', time: '11:15 - 11:50', cam: 'CAM 3', active: false },
-          { id: 'REC-2945', time: '10:00 - 10:30', cam: 'CAM 4', active: false },
-          { id: 'REC-2946', time: '09:15 - 09:45', cam: 'CAM 2', active: false },
+          { id: 'REC-2941', time: '14:20 - 14:45', cam: 'Cam 1', active: true },
+          { id: 'REC-2942', time: '13:10 - 13:30', cam: 'Cam 2', active: false },
+          { id: 'REC-2943', time: '12:05 - 12:40', cam: 'Cam 1', active: false },
+          { id: 'REC-2944', time: '11:15 - 11:50', cam: 'Cam 3', active: false },
+          { id: 'REC-2945', time: '10:00 - 10:30', cam: 'Cam 4', active: false },
+          { id: 'REC-2946', time: '09:15 - 09:45', cam: 'Cam 2', active: false },
         ].map((item, i) => (
           <RecordingListItem
             key={i}
@@ -185,3 +186,5 @@ export function DvrSidebar({
     </div>
   );
 }
+
+

@@ -53,7 +53,7 @@ export function FleetBreakdownCard() {
               </div>
             ))}
           </div>
-          <div className="mt-1 flex flex-wrap gap-2 border-t border-slate-100 pt-1 text-[11px]">
+          <div className="mt-1 flex flex-wrap gap-2 border-t border-slate-100 pt-1 text-2sm">
             <div>
               <p className="text-slate-500">Total Vehicles</p>
               <p className="font-semibold text-slate-800">427</p>
@@ -72,3 +72,5 @@ export function FleetBreakdownCard() {
     </AnalyticsCard>
   );
 }
+
+

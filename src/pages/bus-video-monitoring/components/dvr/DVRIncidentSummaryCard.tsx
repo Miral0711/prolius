@@ -1,6 +1,7 @@
 import React from 'react';
 import { Activity, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface IncidentStat {
   label: string;
@@ -19,7 +20,7 @@ export const DVRIncidentSummaryCard: React.FC<DVRIncidentSummaryCardProps> = ({ 
     <div className="rounded-xl border border-white bg-white shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] p-2.5 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <Activity className="h-3.5 w-3.5 text-slate-400" />
-        <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Incident Summary</h2>
+        <h2 className={cn(typography.cardTitle, 'leading-none')}>Incident Summary</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-1.5">
@@ -42,10 +43,10 @@ export const DVRIncidentSummaryCard: React.FC<DVRIncidentSummaryCardProps> = ({ 
             >
               <div className="flex items-center justify-between mb-1">
                 <Icon className="h-2.5 w-2.5 opacity-80" />
-                <span className="text-[13px] font-semibold tabular-nums leading-none tracking-tight">{stat.count}</span>
+                <span className="text-sm font-semibold tabular-nums leading-none tracking-tight">{stat.count}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[8.5px] font-medium uppercase tracking-tight opacity-70 leading-none truncate">{stat.label}</span>
+                <span className="text-2xs font-medium uppercase tracking-tight opacity-70 leading-none truncate">{stat.label}</span>
               </div>
             </div>
           );
@@ -55,8 +56,8 @@ export const DVRIncidentSummaryCard: React.FC<DVRIncidentSummaryCardProps> = ({ 
       <div className="mt-0.5 pt-2 border-t border-slate-50">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-             <span className="text-[8px] font-medium text-slate-400 uppercase tracking-widest leading-none">Global Score</span>
-             <span className="text-[11px] font-semibold text-slate-800 tracking-tight leading-none">88.4%</span>
+             <span className="text-2xs font-medium text-slate-400 uppercase tracking-[0.08rem] leading-none">Global Score</span>
+             <span className="text-2sm font-semibold text-slate-800 tracking-tight leading-none">88.4%</span>
           </div>
           <div className="h-6 w-6 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin-slow flex items-center justify-center">
             <ShieldCheck className="h-3 w-3 text-emerald-500 animate-pulse" />
@@ -66,3 +67,5 @@ export const DVRIncidentSummaryCard: React.FC<DVRIncidentSummaryCardProps> = ({ 
     </div>
   );
 };
+
+

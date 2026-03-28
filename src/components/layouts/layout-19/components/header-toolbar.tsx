@@ -15,13 +15,13 @@ export function HeaderToolbar() {
       </button>
       <button type="button" aria-label="Notifications" className={iconClass}>
         <Bell className="h-4.5 w-4.5" />
-        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
           6
         </span>
       </button>
       <button type="button" aria-label="Messages" className={iconClass}>
         <MessageSquare className="h-4.5 w-4.5" />
-        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
           3
         </span>
       </button>
@@ -36,3 +36,5 @@ export function HeaderToolbar() {
     </div>
   );
 }
+
+

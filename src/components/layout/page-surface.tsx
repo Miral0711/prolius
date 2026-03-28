@@ -13,6 +13,36 @@ export const PAGE_SURFACE_PADDING = {
 
 export type PageSurfacePadding = keyof typeof PAGE_SURFACE_PADDING;
 
+/**
+ * Matches Live Bus Tracking (`padding="xs"`): use this on any route that renders
+ * `PageSurface.Footer` so inset + space below the copyright line match the reference page.
+ */
+export const PAGE_SURFACE_FOOTER_PADDING: PageSurfacePadding = 'xs';
+
+const PAGE_SURFACE_PAD_X = {
+  xs: 'px-2',
+  sm: 'px-3',
+  md: 'px-4',
+  lg: 'px-5',
+  xl: 'px-6',
+} as const satisfies Record<PageSurfacePadding, string>;
+
+const PAGE_SURFACE_PAD_TOP = {
+  xs: 'pt-2',
+  sm: 'pt-3',
+  md: 'pt-4',
+  lg: 'pt-5',
+  xl: 'pt-6',
+} as const satisfies Record<PageSurfacePadding, string>;
+
+const PAGE_SURFACE_PAD_BOTTOM = {
+  xs: 'pb-2',
+  sm: 'pb-3',
+  md: 'pb-4',
+  lg: 'pb-5',
+  xl: 'pb-6',
+} as const satisfies Record<PageSurfacePadding, string>;
+
 const SECTION_GAP = {
   none: 'gap-0',
   sm: 'gap-1.5',
@@ -21,6 +51,30 @@ const SECTION_GAP = {
 } as const;
 
 export type PageSurfaceSectionGap = keyof typeof SECTION_GAP;
+
+function partitionPageSurfaceChildren(children: React.ReactNode) {
+  const rest: React.ReactNode[] = [];
+  let body: React.ReactElement | undefined;
+  let footer: React.ReactElement | undefined;
+
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) {
+      rest.push(child);
+      return;
+    }
+    if (child.type === PageSurfaceBody) {
+      body = child;
+      return;
+    }
+    if (child.type === PageSurfaceFooter) {
+      footer = child;
+      return;
+    }
+    rest.push(child);
+  });
+
+  return { rest, body, footer };
+}
 
 export interface PageSurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: PageSurfacePadding;
@@ -34,23 +88,53 @@ export interface PageSurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
 function PageSurfaceRoot({
   padding = 'md',
   fill = false,
-  sectionGap = 'md',
+  sectionGap = 'none',
   className,
   children,
   ...rest
 }: PageSurfaceProps) {
+  const { rest: otherChildren, body, footer } =
+    partitionPageSurfaceChildren(children);
+  const hasFooter = footer != null;
+
   return (
     <div
       className={cn(
-        'box-border flex flex-col',
-        PAGE_SURFACE_PADDING[padding],
+        'box-border flex min-h-0 min-w-0 flex-col',
+        !hasFooter && PAGE_SURFACE_PADDING[padding],
+        hasFooter && 'p-0',
         SECTION_GAP[sectionGap],
         fill && 'h-full min-h-0 min-w-0 flex-1 overflow-hidden',
         className,
       )}
       {...rest}
     >
-      {children}
+      {otherChildren}
+      {body != null &&
+        (hasFooter ? (
+          <div
+            className={cn(
+              'flex min-h-0 min-w-0 flex-1 flex-col',
+              PAGE_SURFACE_PAD_X[padding],
+              PAGE_SURFACE_PAD_TOP[padding],
+            )}
+          >
+            {body}
+          </div>
+        ) : (
+          body
+        ))}
+      {footer != null && (
+        <div
+          className={cn(
+            'flex min-w-0 shrink-0 flex-col',
+            PAGE_SURFACE_PAD_X[padding],
+            PAGE_SURFACE_PAD_BOTTOM[padding],
+          )}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 }
@@ -83,19 +167,23 @@ function PageSurfaceBody({
   );
 }
 
+PageSurfaceBody.displayName = 'PageSurfaceBody';
+
 export interface PageSurfaceFooterProps {
   className?: string;
-  /** Omit to render default subtle PageFooter */
+  /** Omit to render the shared compact app `PageFooter` */
   children?: React.ReactNode;
 }
 
 function PageSurfaceFooter({ className, children }: PageSurfaceFooterProps) {
   return (
-    <div className={cn('flex min-w-0 shrink-0 flex-col', className)}>
-      {children ?? <PageFooter variant="subtle" />}
+    <div className={cn('flex min-h-0 min-w-0 w-full shrink-0 flex-col', className)}>
+      {children ?? <PageFooter />}
     </div>
   );
 }
+
+PageSurfaceFooter.displayName = 'PageSurfaceFooter';
 
 export const PageSurface = Object.assign(PageSurfaceRoot, {
   Header: PageSurfaceHeader,

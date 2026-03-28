@@ -79,10 +79,10 @@ export function CriticalAlerts({ sectionLead }: { sectionLead?: boolean }) {
                   <Icon className="h-3 w-3" />
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-[10px] font-medium uppercase tracking-wide text-slate-500 leading-none">
+                  <p className="truncate text-xs font-medium uppercase tracking-[0.02rem] text-slate-500 leading-none">
                     {a.label}
                   </p>
-                  <p className="truncate text-[10px] text-slate-500 leading-none">
+                  <p className="truncate text-xs text-slate-500 leading-none">
                     {a.sub}
                   </p>
                 </div>
@@ -102,3 +102,5 @@ export function CriticalAlerts({ sectionLead }: { sectionLead?: boolean }) {
     </DataCard>
   );
 }
+
+

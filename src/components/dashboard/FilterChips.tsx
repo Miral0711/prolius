@@ -106,7 +106,7 @@ export function FilterChips({
   onSelect?: (id: FilterChipId) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-1 text-[13px]">
+    <div className="flex flex-wrap items-center justify-center gap-1 text-sm">
       {chips.map((chip) => {
         const Icon = chip.icon;
         const isActive = chip.id === activeId;
@@ -118,7 +118,7 @@ export function FilterChips({
             type="button"
             onClick={() => onSelect?.(chip.id)}
             className={cn(
-              'group flex items-center gap-1.5 rounded-sm border px-3 py-1.5 font-medium transition-all duration-200 uppercase tracking-tight text-[10px]',
+              'group flex items-center gap-1.5 rounded-sm border px-3 py-1.5 font-medium transition-all duration-200 uppercase tracking-tight text-xs',
               isActive ? styles.active : cn('border-transparent', styles.idle),
               chip.isCloseAction &&
                 'bg-rose-100 border-rose-100 text-rose-700 hover:bg-rose-200 hover:text-rose-800 rounded-sm',
@@ -136,7 +136,7 @@ export function FilterChips({
             {chip.count != null && (
               <span
                 className={cn(
-                  'ml-0.5 flex items-center justify-center min-w-[18px] h-[18px] rounded px-1 text-[9px] font-semibold transition-colors',
+                  'ml-0.5 flex items-center justify-center min-w-[18px] h-[18px] rounded px-1 text-2xs font-semibold transition-colors',
                   isActive ? styles.badgeActive : styles.badgeIdle,
                   chip.isCloseAction && 'bg-rose-500 text-white rounded p-0.5',
                 )}
@@ -150,3 +150,5 @@ export function FilterChips({
     </div>
   );
 }
+
+

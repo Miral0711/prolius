@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Bus } from 'lucide-react';
 import { BusLiveVehicle } from '@/data/bus-live-tracking-mock-data';
+import { typography } from '@/lib/typography';
 
 interface VehicleListItemProps {
   vehicle: BusLiveVehicle;
@@ -31,7 +32,13 @@ export function VehicleListItem({ vehicle, isSelected, onClick }: VehicleListIte
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-0 leading-tight">
-          <span className={cn("text-[10px] font-semibold tracking-tight uppercase truncate", isSelected ? "text-slate-800" : "text-slate-600")}>
+          <span
+            className={cn(
+              typography.body,
+              'font-medium tracking-tight truncate',
+              isSelected ? 'text-slate-800' : 'text-slate-700',
+            )}
+          >
             {vehicle.plate}
           </span>
           <div className="flex gap-1 items-center shrink-0">
@@ -39,21 +46,26 @@ export function VehicleListItem({ vehicle, isSelected, onClick }: VehicleListIte
               vehicle.status === 'Online' ? 'bg-emerald-400' : 
               vehicle.status === 'Idling' ? 'bg-amber-400' : 'bg-rose-400'
             )} />
-            <span className="text-[7px] font-semibold text-slate-400 uppercase tracking-tighter">{vehicle.status}</span>
+            <span className={cn(typography.meta, 'text-slate-500')}>
+              {vehicle.status}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-1 overflow-hidden leading-tight mt-0">
-          <span className={cn("text-[8.5px] font-medium truncate", isSelected ? "text-blue-600" : "text-slate-400")}>
+          <span className={cn(typography.caption, 'truncate font-normal text-slate-500', isSelected && 'text-slate-600')}>
             {vehicle.driver || 'No Driver'}
           </span>
         </div>
       </div>
 
       <div className="flex flex-col items-end shrink-0 leading-tight">
-        <span className={cn("text-[9.5px] font-semibold tracking-tight", isSelected ? "text-slate-800" : "text-slate-500")}>
-          {vehicle.speed}<span className="text-[7.5px] font-medium opacity-60 ml-0.5">K/H</span>
+        <span className={cn(typography.meta, 'tabular-nums text-slate-500', isSelected && 'text-slate-600')}>
+          {vehicle.speed}
+          <span className="ml-0.5 opacity-80">K/H</span>
         </span>
       </div>
     </div>
   );
 }
+
+

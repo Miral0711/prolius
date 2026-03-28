@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-table';
 import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useDataGrid } from '@/components/ui/data-grid';
 
@@ -29,7 +30,7 @@ const bodyCellSpacingVariants = cva('', {
   variants: {
     size: {
       dense: 'px-2.5 py-2',
-      default: 'px-4 py-3',
+      default: 'px-4 py-2',
     },
   },
   defaultVariants: {
@@ -150,7 +151,8 @@ function DataGridTableHeadRowCell<TData>({
         isLastLeftPinned ? 'left' : isFirstRightPinned ? 'right' : undefined
       }
       className={cn(
-        'relative h-10 text-left rtl:text-right align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pe-0',
+        'relative h-10 text-left rtl:text-right align-middle [&:has([role=checkbox])]:pe-0',
+        typography.tableHeader,
         headerCellSpacing,
         props.tableLayout?.cellBorder && 'border-e',
         props.tableLayout?.columnsResizable &&
@@ -591,3 +593,5 @@ export {
   DataGridTableRowSelectAll,
   DataGridTableRowSpacer,
 };
+
+

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
  * inset in `PageSurface` (`@/components/layout`) inside `contentWrapperClassName` / children so
  * footer and body share one padding system.
  */
-const pageContainerClass = 'relative mx-auto w-full space-y-2';
+const pageContainerClass = 'relative mx-auto w-full space-y-1.5';
 
 /** Full-viewport child under app header; used by DVR pages, Create Job, etc. */
 export const PAGE_SHELL_VIEWPORT_FILL_CLASSNAME =
@@ -26,11 +26,11 @@ const pageHeaderRowClass =
 
 const pageTitleClass = cn(
   typography.pageTitle,
-  'text-[18px] text-slate-900 uppercase leading-none',
+  'text-slate-900',
 );
 const pageSubtitleClass = cn(
   typography.pageSubtitle,
-  'mt-0.5 text-[9px] text-[#7b82a9] opacity-60 leading-none',
+  'mt-0.5 text-[#7b82a9] opacity-60',
 );
 
 export interface PageShellProps {
@@ -101,3 +101,5 @@ export {
   pageTitleClass,
   pageSubtitleClass,
 };
+
+

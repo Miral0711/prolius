@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertTriangle, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface EventLogItem {
   time: string;
@@ -27,7 +28,7 @@ const SevBadge = ({ s }: { s: 'high' | 'medium' | 'low' }) => {
   };
   return (
     <span className={cn(
-      'rounded-md px-1.5 py-0 text-[8.5px] font-semibold uppercase tracking-wider border shadow-sm inline-block leading-normal',
+      'rounded-md px-1.5 py-0 text-2xs font-semibold uppercase tracking-[0.04rem] border shadow-sm inline-block leading-normal',
       styles[s]
     )}>
       {s}
@@ -51,19 +52,19 @@ export const DVREventLogCard: React.FC<DVREventLogCardProps> = ({
           <div className="p-1 rounded-lg bg-rose-50">
             <AlertTriangle className="h-3.5 w-3.5 text-rose-600" />
           </div>
-          <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Incident Detailed Log</h2>
+          <h2 className={cn(typography.cardTitle, 'leading-none')}>Incident Detailed Log</h2>
         </div>
-        <span className="text-[9px] font-medium text-slate-400 uppercase tracking-tighter">Total: {events.length}</span>
+        <span className="text-2xs font-medium text-slate-400 uppercase tracking-tighter">Total: {events.length}</span>
       </div>
 
       <div className="overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-slate-200 min-h-[260px]">
         <table className="w-full text-left border-collapse">
           <thead className="sticky top-0 bg-white/95 backdrop-blur-sm z-10 border-b border-slate-100 shadow-sm">
             <tr>
-              <th className="px-4 py-2 text-[9px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Time</th>
-              <th className="px-4 py-2 text-[9px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Event Description</th>
-              <th className="px-4 py-2 text-[9px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Cam</th>
-              <th className="px-4 py-2 text-[9px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Severity</th>
+              <th className="px-4 py-2 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Time</th>
+              <th className="px-4 py-2 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Event Description</th>
+              <th className="px-4 py-2 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Cam</th>
+              <th className="px-4 py-2 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Severity</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
@@ -80,18 +81,18 @@ export const DVREventLogCard: React.FC<DVREventLogCardProps> = ({
                   onClick={() => onEventSelect(i)}
                 >
                   <td className="px-4 py-2.5">
-                    <span className="text-[10px] font-mono font-semibold text-slate-600 group-hover:text-blue-600 transition-colors">{ev.time}</span>
+                    <span className="text-xs font-mono font-semibold text-slate-600 group-hover:text-blue-600 transition-colors">{ev.time}</span>
                   </td>
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-2">
                       <div className={cn('p-1 rounded-lg transition-all group-hover:scale-110', isSelected ? 'bg-white shadow-sm' : 'bg-slate-50')}>
                         <Icon className={cn('h-3 w-3', ev.ic)} />
                       </div>
-                      <span className="text-[10px] font-medium text-slate-700 truncate max-w-[140px]">{ev.type}</span>
+                      <span className="text-xs font-medium text-slate-700 truncate max-w-[140px]">{ev.type}</span>
                     </div>
                   </td>
                   <td className="px-4 py-2.5">
-                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight">{ev.cam}</span>
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-tight">{ev.cam}</span>
                   </td>
                   <td className="px-4 py-2.5">
                     <SevBadge s={ev.severity} />
@@ -105,10 +106,12 @@ export const DVREventLogCard: React.FC<DVREventLogCardProps> = ({
         {events.length === 0 && (
           <div className="p-8 flex flex-col items-center justify-center gap-2 opacity-50">
             <AlertTriangle className="h-6 w-6 text-slate-300" />
-            <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">No recordings</p>
+            <p className="text-xs font-medium text-slate-400 uppercase tracking-[0.08rem]">No recordings</p>
           </div>
         )}
       </div>
     </div>
   );
 };
+
+

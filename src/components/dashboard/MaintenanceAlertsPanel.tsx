@@ -1,4 +1,6 @@
 import { CalendarDays, ChevronRight, Wrench } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const MOCK_ALERTS = [
@@ -9,7 +11,7 @@ const MOCK_ALERTS = [
 export function MaintenanceAlertsPanel() {
   return (
     <DashboardCard className="flex min-h-0 flex-col overflow-hidden">
-      <h3 className="mb-1 shrink-0 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1 shrink-0')}>
         Maintenance Alerts
       </h3>
       <div className="min-h-0 flex-1 space-y-0 overflow-hidden [&>div+div]:border-t [&>div+div]:border-slate-100">
@@ -34,3 +36,5 @@ export function MaintenanceAlertsPanel() {
     </DashboardCard>
   );
 }
+
+

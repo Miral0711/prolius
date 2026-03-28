@@ -1,5 +1,7 @@
 import React from 'react';
 import { MapPin, Navigation } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { BusLiveMapCard } from '@/pages/bus-tracking/components/BusLiveMapCard';
 import { DUMMY_MAP_CENTER } from '@/data/bus-live-tracking-mock-data';
 
@@ -20,13 +22,13 @@ export const DVRMapCard: React.FC<DVRMapCardProps> = ({
             <MapPin className="h-3 w-3 text-blue-600" />
           </div>
           <div className="flex flex-col">
-            <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Vehicle Location</h2>
-            <span className="text-[8.5px] font-medium text-slate-400 uppercase tracking-tighter mt-1 leading-none">{locationName}</span>
+            <h2 className={cn(typography.cardTitle, 'leading-none')}>Vehicle Location</h2>
+            <span className="text-2xs font-medium text-slate-400 uppercase tracking-tighter mt-1 leading-none">{locationName}</span>
           </div>
         </div>
         <div className="flex items-center gap-1 bg-slate-50 px-1.5 py-0.5 rounded-lg border border-slate-100">
            <Navigation className="h-2.5 w-2.5 text-slate-400 rotate-45" />
-           <span className="text-[8.5px] font-semibold text-slate-600 uppercase tracking-tight leading-none">{tripInfo}</span>
+           <span className="text-2xs font-semibold text-slate-600 uppercase tracking-tight leading-none">{tripInfo}</span>
         </div>
       </div>
       
@@ -42,3 +44,5 @@ export const DVRMapCard: React.FC<DVRMapCardProps> = ({
     </div>
   );
 };
+
+

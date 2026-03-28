@@ -6,6 +6,8 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 
 const fuelData = [
@@ -22,12 +24,12 @@ const chartConfig: ChartConfig = {
 export function FuelConsumptionCard() {
   return (
     <DashboardCard>
-      <h3 className="mb-1.5 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1.5')}>
         Fuel Consumption
       </h3>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-lg font-semibold text-slate-800">455 L</span>
-        <span className="text-[11px] text-slate-500">Avg 3.2 km/L</span>
+        <span className="text-[14px] font-semibold text-slate-800">455 L</span>
+        <span className="text-xs font-normal text-slate-500">Avg 3.2 km/L</span>
       </div>
       <div className="mt-1.5 h-12">
         <ChartContainer config={chartConfig} className="h-full w-full">
@@ -46,3 +48,5 @@ export function FuelConsumptionCard() {
     </DashboardCard>
   );
 }
+
+

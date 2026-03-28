@@ -40,11 +40,11 @@ export const fleetSurface = {
 } as const;
 
 export const fleetType = {
-  kpiLabel: 'text-[8px] font-medium uppercase leading-none tracking-wider text-slate-400',
-  kpiValue: 'text-[15px] font-semibold leading-none tabular-nums text-slate-800',
-  tableHead: 'text-[10px] font-medium uppercase tracking-wide text-slate-600',
-  bodyPrimary: 'text-[11px] font-medium text-slate-900',
-  bodyMuted: 'text-[9px] font-normal uppercase tracking-wide text-slate-500',
-  bodyMono: 'text-[10px] font-medium tabular-nums text-slate-800',
-  bodyMonoMuted: 'text-[10px] font-normal tabular-nums text-slate-600',
+  kpiLabel: 'text-2xs font-medium uppercase leading-none tracking-wider text-slate-400',
+  kpiValue: 'text-sm font-semibold leading-none tabular-nums text-slate-800',
+  tableHead: 'text-xs font-medium uppercase tracking-wide text-slate-600',
+  bodyPrimary: 'text-2sm font-medium text-slate-900',
+  bodyMuted: 'text-2xs font-normal uppercase tracking-wide text-slate-500',
+  bodyMono: 'text-xs font-medium tabular-nums text-slate-800',
+  bodyMonoMuted: 'text-xs font-normal tabular-nums text-slate-600',
 } as const;

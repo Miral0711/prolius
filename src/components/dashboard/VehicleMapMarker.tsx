@@ -110,7 +110,7 @@ export function VehicleMapMarker({
       {/* ID Label (always show for hovered, show for alerts) */}
       {(isHovered || status === 'Alert') && (
         <span
-          className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/50 px-2 py-0.5 text-[10px] font-semibold shadow-md backdrop-blur-md transition-all animate-in fade-in zoom-in duration-200"
+          className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/50 px-2 py-0.5 text-xs font-semibold shadow-md backdrop-blur-md transition-all animate-in fade-in zoom-in duration-200"
           style={{ background: meta.main, color: '#fff' }}
         >
           {id}
@@ -119,3 +119,5 @@ export function VehicleMapMarker({
     </div>
   );
 }
+
+

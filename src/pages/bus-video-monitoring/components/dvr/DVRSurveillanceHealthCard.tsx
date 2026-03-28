@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShieldCheck, Activity, Zap, HardDrive, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface DVRSurveillanceHealthCardProps {
   className?: string;
@@ -52,9 +53,9 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
           <div className="p-1 rounded-lg bg-emerald-50 border border-emerald-100/50">
             <ShieldCheck className="h-3 w-3 text-emerald-600" />
           </div>
-          <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Surveillance Health</h2>
+          <h2 className={cn(typography.cardTitle, 'leading-none')}>Surveillance Health</h2>
         </div>
-        <span className="text-[7.5px] font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded-full border border-emerald-100">STABLE</span>
+        <span className="text-2xs font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded-full border border-emerald-100">STABLE</span>
       </div>
 
       <div className="flex items-center gap-2.5 py-1 border-b border-slate-50">
@@ -64,12 +65,12 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
             <circle cx="18" cy="18" r="16" fill="none" className="stroke-emerald-500" strokeWidth="4" strokeDasharray="94 100" strokeLinecap="round" transform="rotate(-90 18 18)" />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[9px] font-semibold text-slate-800">94%</span>
+            <span className="text-2xs font-semibold text-slate-800">94%</span>
           </div>
         </div>
         <div className="flex flex-col">
-          <span className="text-[8.5px] font-semibold text-slate-700 uppercase tracking-tight leading-none">Reliability</span>
-          <p className="text-[8px] font-medium text-slate-400 leading-tight mt-0.5">Active across all channels.</p>
+          <span className="text-2xs font-semibold text-slate-700 uppercase tracking-tight leading-none">Reliability</span>
+          <p className="text-2xs font-medium text-slate-400 leading-tight mt-0.5">Active across all channels.</p>
         </div>
       </div>
 
@@ -82,9 +83,9 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
                 <div className={cn("p-1 rounded-lg transition-all group-hover:scale-110", item.bg)}>
                   <Icon className={cn("h-2.5 w-2.5", item.color)} />
                 </div>
-                <span className="text-[8.5px] font-medium text-slate-500 uppercase tracking-tight truncate">{item.label}</span>
+                <span className="text-2xs font-medium text-slate-500 uppercase tracking-tight truncate">{item.label}</span>
               </div>
-              <span className="text-[9.5px] font-semibold text-slate-800 tabular-nums shrink-0">{item.value}</span>
+              <span className="text-xs font-semibold text-slate-800 tabular-nums shrink-0">{item.value}</span>
             </div>
           );
         })}
@@ -92,8 +93,10 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
 
       <div className="mt-auto p-1 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center gap-1.5">
          <div className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
-         <span className="text-[7.5px] font-semibold text-slate-400 uppercase tracking-widest whitespace-nowrap">Pass: Mar 13, 13:03</span>
+         <span className="text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] whitespace-nowrap">Pass: Mar 13, 13:03</span>
       </div>
     </div>
   );
 };
+
+

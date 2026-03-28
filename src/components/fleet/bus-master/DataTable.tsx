@@ -170,9 +170,9 @@ export function TableHeaderCell({
         variant === 'navy' && 'border-r border-white/10 first:border-l',
         'max-w-0 align-middle overflow-hidden',
         variant === 'navy' &&
-          'text-[10px] font-semibold uppercase tracking-wide text-white/95',
+          'text-xs font-semibold uppercase tracking-[0.02rem] text-white/95',
         variant === 'default' &&
-          'text-[10px] font-bold uppercase tracking-[0.06em] text-slate-600',
+          'text-xs font-bold uppercase tracking-[0.06em] text-slate-600',
         align === 'center' && 'text-center',
         align === 'right' && 'text-right',
         align === 'left' && 'text-left',
@@ -201,3 +201,5 @@ export function DataTableFooter({ className, children, ...props }: DataTableFoot
     </div>
   );
 }
+
+

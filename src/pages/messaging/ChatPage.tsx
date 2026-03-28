@@ -26,6 +26,7 @@ import { PageShell } from '@/components/ui/page-shell';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import {
   Tooltip,
@@ -33,7 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 
 /* ═══════════════════════════════════════════════════════════════
    1. TYPES & MOCK DATA
@@ -236,7 +237,7 @@ function PanelHeader({ title, icon: Icon, action }: { title: string; icon?: any;
     <div className="flex items-center justify-between mb-4 px-1">
       <div className="flex items-center gap-2">
         {Icon && <Icon className="h-4 w-4 text-blue-500" />}
-        <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">{title}</h3>
+        <h3 className={typography.sectionTitle}>{title}</h3>
       </div>
       {action}
     </div>
@@ -281,7 +282,7 @@ export default function ChatPage() {
       className="max-w-none flex h-full min-h-0 flex-1 flex-col space-y-0 overflow-hidden 2xl:max-w-none pt-0 pb-0"
       contentWrapperClassName="flex min-h-0 flex-1 flex-col overflow-hidden p-0"
     >
-      <PageSurface padding="md" fill sectionGap="md">
+      <PageSurface padding={PAGE_SURFACE_FOOTER_PADDING} fill sectionGap="none">
         <PageSurface.Body className="min-h-0 flex-1 overflow-hidden">
       <div className={cn(
         "grid h-full min-h-0 flex-1 gap-4 overflow-hidden transition-all duration-300",
@@ -297,7 +298,10 @@ export default function ChatPage() {
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
                 <Input
                   placeholder="Search..."
-                  className="w-full h-8 pl-8 pr-8 bg-white/50 border-slate-100/60 rounded-lg focus:ring-1 focus:ring-blue-100 shadow-none transition-all text-xs font-semibold"
+                  className={cn(
+                    'h-8 w-full rounded-lg border-slate-100/60 bg-white/50 pl-8 pr-8 shadow-none transition-all placeholder:text-gray-400 focus:ring-1 focus:ring-blue-100',
+                    typography.chatComposerInput,
+                  )}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -311,8 +315,9 @@ export default function ChatPage() {
                   <button
                     key={tab}
                     className={cn(
-                      "px-2 py-1 text-[9px] font-semibold uppercase tracking-wider rounded-lg transition-all flex-1 whitespace-nowrap",
-                      tab === 'All' ? "bg-white text-blue-600 shadow-sm" : "text-slate-500 hover:bg-white/40"
+                      'flex-1 whitespace-nowrap rounded-lg px-2 py-1 transition-all',
+                      typography.chatActionLabel,
+                      tab === 'All' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:bg-white/40',
                     )}
                   >
                     {tab}
@@ -332,7 +337,7 @@ export default function ChatPage() {
                       "group w-full flex items-center gap-2 px-2 py-1 rounded-lg transition-all relative overflow-hidden",
                       activeChatId === chat.id 
                         ? "bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] ring-1 ring-slate-100" 
-                        : "hover:bg-white/40 text-slate-700"
+                        : "hover:bg-white/40 text-gray-600"
                     )}
                   >
                     {/* Active Highlight Border */}
@@ -358,28 +363,43 @@ export default function ChatPage() {
  
                     <div className="flex-1 min-w-0 text-left">
                       <div className="flex items-start justify-between">
-                        <div className="flex flex-col min-w-0">
-                          <span className={cn(
-                            "text-[11px] font-semibold truncate leading-tight",
-                            activeChatId === chat.id ? "text-blue-700" : "text-slate-800"
-                          )}>{chat.name}</span>
-                          <span className="text-[7.5px] font-semibold text-slate-400 uppercase tracking-tighter leading-none">
-                            {chat.type === 'group' ? 'Operations' : chat.participants[0]?.role}
+                        <div className="flex min-w-0 flex-col">
+                          <span
+                            className={cn(typography.chatConversationName, 'truncate')}
+                          >
+                            {chat.name}
+                          </span>
+                          <span
+                            className={cn(
+                              typography.chatRoleLabel,
+                              'uppercase leading-none',
+                            )}
+                          >
+                            {chat.type === 'group'
+                              ? 'Operations'
+                              : chat.participants[0]?.role}
                           </span>
                         </div>
-                        <span className="text-[7.5px] font-semibold text-slate-300 uppercase tracking-tighter shrink-0 mt-0.5">
+                        <span
+                          className={cn(
+                            typography.chatTimestamp,
+                            'mt-0.5 shrink-0',
+                          )}
+                        >
                           {chat.lastTime}
                         </span>
                       </div>
                       <div className="mt-1 flex items-center justify-between gap-2">
-                        <span className={cn(
-                          "text-[9.5px] font-medium truncate leading-none max-w-[140px]",
-                          activeChatId === chat.id ? "text-blue-600/80" : "text-slate-500"
-                        )}>
+                        <span
+                          className={cn(
+                            typography.chatSidebarPreview,
+                            'max-w-[140px] truncate',
+                          )}
+                        >
                           {chat.lastMessage}
                         </span>
                         {chat.unreadCount > 0 && (
-                          <span className="bg-blue-600 text-white text-[7px] font-semibold h-3 min-w-[12px] px-1 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                          <span className="flex h-3 min-w-[12px] shrink-0 items-center justify-center rounded-full bg-blue-500 px-1 text-xs font-normal tabular-nums text-white shadow-sm shadow-blue-500/20">
                             {chat.unreadCount}
                           </span>
                         )}
@@ -391,7 +411,13 @@ export default function ChatPage() {
             </div>
             
             <div className="p-3 bg-white/10 border-t border-white/40">
-              <Button variant="ghost" className="w-full bg-white/40 hover:bg-white text-blue-600 border border-white/60 rounded-sm h-8 font-semibold uppercase tracking-wider text-[9px] shadow-sm gap-2 transition-all">
+              <Button
+                variant="ghost"
+                className={cn(
+                  'h-8 w-full gap-2 rounded-sm border border-white/60 bg-white/40 text-blue-600 shadow-sm transition-all hover:bg-white',
+                  typography.chatActionLabel,
+                )}
+              >
                 <Plus className="h-3 w-3" />
                 New Conversation
               </Button>
@@ -417,30 +443,59 @@ export default function ChatPage() {
                   )}
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <h4 className="text-[13px] font-semibold text-slate-800 uppercase tracking-wide leading-none">{activeChat?.name}</h4>
+                  <div className="mb-0.5 flex items-center gap-2">
+                    <h4 className={cn(typography.chatConversationName, 'truncate')}>
+                      {activeChat?.name}
+                    </h4>
                     <div className="flex items-center gap-1">
                       {activeChat?.type === 'group' ? (
                         <>
-                          <span className="px-1.5 py-0.5 bg-blue-50/50 text-blue-600 text-[8px] font-semibold rounded border border-blue-100 uppercase tracking-widest leading-none">DRIVERS: 12</span>
-                          <span className="px-1.5 py-0.5 bg-emerald-50/50 text-emerald-600 text-[8px] font-semibold rounded border border-emerald-100 uppercase tracking-widest leading-none">ACTIVE: 9</span>
+                          <span
+                            className={cn(
+                              typography.chatTag,
+                              'rounded border border-blue-100 bg-blue-50/50 px-1.5 py-0.5 uppercase leading-none text-blue-600',
+                            )}
+                          >
+                            Drivers: 12
+                          </span>
+                          <span
+                            className={cn(
+                              typography.chatTag,
+                              'rounded border border-emerald-100 bg-emerald-50/50 px-1.5 py-0.5 uppercase leading-none text-emerald-600',
+                            )}
+                          >
+                            Active: 9
+                          </span>
                         </>
                       ) : (
-                        <span className="px-1.5 py-0.5 bg-emerald-50/50 text-emerald-600 text-[8px] font-semibold rounded border border-emerald-100 uppercase tracking-widest leading-none">ON ROUTE</span>
+                        <span
+                          className={cn(
+                            typography.chatTag,
+                            'rounded border border-emerald-100 bg-emerald-50/50 px-1.5 py-0.5 uppercase leading-none text-emerald-600',
+                          )}
+                        >
+                          On route
+                        </span>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[10px] font-semibold text-slate-400/80 uppercase tracking-tighter flex items-center gap-1.5">
+                  <div className="mt-1 flex items-center gap-2">
+                    <span
+                      className={cn(
+                        typography.chatRoleLabel,
+                        'flex items-center gap-1.5 normal-case',
+                      )}
+                    >
                       {activeChat?.type === 'group' ? (
                          <>
-                           <Shield className="h-3 w-3 text-slate-400" /> 
+                           <Shield className="h-3 w-3 shrink-0 text-gray-400" />
                            Shift: 06:00 - 14:00 • Central Ops
                          </>
                       ) : (
                          <>
-                           <Bus className="h-3 w-3 text-slate-400" /> 
-                           Vehicle: {activeChat?.participants[0]?.vehicle} • Route: {activeChat?.participants[0]?.route?.split(' ')[0]}
+                           <Bus className="h-3 w-3 shrink-0 text-gray-400" />
+                           Vehicle: {activeChat?.participants[0]?.vehicle} • Route:{' '}
+                           {activeChat?.participants[0]?.route?.split(' ')[0]}
                          </>
                       )}
                     </span>
@@ -466,7 +521,15 @@ export default function ChatPage() {
                           <btn.icon className="h-4 w-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent className="font-medium text-[10px] bg-slate-900 border-none capitalize">{btn.label}</TooltipContent>
+                      <TooltipContent
+                        className={cn(
+                          'border-none bg-slate-900 capitalize',
+                          typography.chatActionLabel,
+                          'text-white',
+                        )}
+                      >
+                        {btn.label}
+                      </TooltipContent>
                     </Tooltip>
                   ))}
                 </TooltipProvider>
@@ -492,9 +555,10 @@ export default function ChatPage() {
                 
                 if (msg.type === 'system') {
                   return (
-                    <div key={msg.id} className="flex justify-center my-4">
-                      <div className="px-3 py-1 bg-slate-100/50 backdrop-blur-md rounded-full border border-slate-200/30">
-                         <span className="text-[7.5px] font-semibold text-slate-400 uppercase tracking-[0.2em]">{msg.text} • {msg.time}</span>
+                    <div key={msg.id} className="my-4 flex justify-center">
+                      <div className="flex flex-wrap items-center justify-center gap-x-1 rounded-full border border-slate-200/30 bg-slate-100/50 px-3 py-1 text-center backdrop-blur-md">
+                        <span className={typography.chatMessageBody}>{msg.text}</span>
+                        <span className={typography.chatTimestamp}>• {msg.time}</span>
                       </div>
                     </div>
                   );
@@ -515,7 +579,14 @@ export default function ChatPage() {
                          {activeChat?.participants.find(p => p.id === msg.senderId)?.avatar ? (
                             <img src={toAbsoluteUrl(activeChat?.participants.find(p => p.id === msg.senderId)?.avatar || '')} alt="" className="h-full w-full object-cover" />
                          ) : (
-                            <div className="h-full w-full bg-blue-50 flex items-center justify-center text-[9px] font-semibold text-blue-500 uppercase">{msg.senderName.slice(0,2)}</div>
+                            <div
+                              className={cn(
+                                'flex h-full w-full items-center justify-center bg-blue-50 uppercase text-blue-500',
+                                typography.chatActionLabel,
+                              )}
+                            >
+                              {msg.senderName.slice(0, 2)}
+                            </div>
                          )}
                       </div>
                     )}
@@ -526,9 +597,15 @@ export default function ChatPage() {
                     )}>
                       {/* Sender Name & Details (Group Chat) */}
                       {!msg.isMe && activeChat?.type === 'group' && (
-                        <div className="flex items-center gap-2 ml-1 mb-1">
-                          <span className="text-[9px] font-semibold text-slate-800 uppercase tracking-tighter">{msg.senderName}</span>
-                          <span className="text-[8px] font-medium text-slate-400 uppercase tracking-widest">{activeChat?.participants.find(p => p.id === msg.senderId)?.role}</span>
+                        <div className="mb-1 ml-1 flex items-center gap-2">
+                          <span className={typography.chatConversationName}>
+                            {msg.senderName}
+                          </span>
+                          <span
+                            className={cn(typography.chatRoleLabel, 'uppercase')}
+                          >
+                            {activeChat?.participants.find((p) => p.id === msg.senderId)?.role}
+                          </span>
                         </div>
                       )}
 
@@ -536,13 +613,23 @@ export default function ChatPage() {
                       {msg.context && (
                         <div className="flex flex-wrap gap-1 mb-1.5 ml-0.5">
                            {msg.context.vehicle && (
-                             <span className="px-2 py-0.5 bg-blue-600/5 text-blue-600 text-[8px] font-semibold border border-blue-600/10 rounded-md uppercase tracking-tight shadow-sm flex items-center gap-1">
+                             <span
+                               className={cn(
+                                 typography.chatTag,
+                                 'flex items-center gap-1 rounded-md border border-blue-600/10 bg-blue-600/5 px-2 py-0.5 uppercase text-blue-600 shadow-sm',
+                               )}
+                             >
                                <Bus className="h-2.5 w-2.5" /> {msg.context.vehicle}
                              </span>
                            )}
                            {msg.context.shift && (
-                             <span className="px-2 py-0.5 bg-emerald-600/5 text-emerald-600 text-[8px] font-semibold border border-emerald-600/10 rounded-md uppercase tracking-tight shadow-sm flex items-center gap-1">
-                               <Clock className="h-2.5 w-2.5" /> {msg.context.shift} SHIFT
+                             <span
+                               className={cn(
+                                 typography.chatTag,
+                                 'flex items-center gap-1 rounded-md border border-emerald-600/10 bg-emerald-600/5 px-2 py-0.5 uppercase text-emerald-600 shadow-sm',
+                               )}
+                             >
+                               <Clock className="h-2.5 w-2.5" /> {msg.context.shift} Shift
                              </span>
                            )}
                         </div>
@@ -556,7 +643,7 @@ export default function ChatPage() {
                       )}>
                         {/* Message Content */}
                         {msg.type === 'text' && (
-                          <p className="text-[13px] font-medium leading-[1.6] antialiased">{msg.text}</p>
+                          <p className={typography.chatMessageBody}>{msg.text}</p>
                         )}
 
                         {msg.type === 'file' && (
@@ -567,12 +654,29 @@ export default function ChatPage() {
                             )}>
                                <FileText className="h-5 w-5" />
                             </div>
-                            <div className="flex flex-col min-w-0 flex-1">
-                              <span className="text-[12px] font-semibold truncate text-slate-800">{msg.fileName}</span>
+                            <div className="flex min-w-0 flex-1 flex-col">
+                              <span
+                                className={cn(
+                                  typography.chatSidebarPreview,
+                                  'truncate',
+                                )}
+                              >
+                                {msg.fileName}
+                              </span>
                               <div className="flex items-center gap-2">
-                                <span className="text-[9px] font-medium text-slate-400 uppercase">{msg.fileSize}</span>
+                                <span className={typography.chatTimestamp}>
+                                  {msg.fileSize}
+                                </span>
                                 <span className="h-0.5 w-0.5 rounded-full bg-slate-300" />
-                                <span className="text-[9px] font-medium text-blue-600 uppercase cursor-pointer hover:underline">Download</span>
+                                <button
+                                  type="button"
+                                  className={cn(
+                                    typography.chatActionLabel,
+                                    'cursor-pointer text-blue-600 hover:underline',
+                                  )}
+                                >
+                                  Download
+                                </button>
                               </div>
                             </div>
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg shrink-0 text-slate-400 hover:text-blue-600 hover:bg-white transition-all">
@@ -586,10 +690,9 @@ export default function ChatPage() {
                           "mt-1.5 flex items-center gap-1.5",
                           msg.isMe ? "justify-end" : "justify-start"
                         )}>
-                          <span className={cn(
-                            "text-[8px] font-semibold uppercase tracking-widest opacity-60",
-                            msg.isMe ? "text-blue-600" : "text-slate-400"
-                          )}>{msg.time}</span>
+                          <span className={typography.chatTimestamp}>
+                            {msg.time}
+                          </span>
                           {msg.isMe && (
                             <div className="flex items-center">
                               {msg.status === 'read' 
@@ -613,9 +716,12 @@ export default function ChatPage() {
                   <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-blue-600 transition-all shrink-0">
                     <Plus className="h-3.5 w-3.5" />
                   </Button>
-                  <Input 
-                    placeholder={`Write a message...`}
-                    className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 placeholder:text-slate-400 font-normal text-[12px] h-7"
+                  <Input
+                    placeholder="Write a message..."
+                    className={cn(
+                      'h-7 flex-1 border-none bg-transparent shadow-none placeholder:text-gray-400 focus-visible:ring-0',
+                      typography.chatComposerInput,
+                    )}
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -628,10 +734,13 @@ export default function ChatPage() {
                       <Paperclip className="h-3.5 w-3.5" />
                     </Button>
                     <div className="w-px h-3.5 bg-slate-200 mx-1" />
-                    <Button 
+                    <Button
                       onClick={handleSendMessage}
                       size="sm"
-                      className="h-7 px-4 rounded-sm bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 text-[11px] font-medium gap-2"
+                      className={cn(
+                        'h-7 gap-2 rounded-sm bg-blue-600 px-4 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700',
+                        typography.chatActionLabel,
+                      )}
                     >
                       <Send className="h-3 w-3" />
                     </Button>
@@ -647,7 +756,13 @@ export default function ChatPage() {
                   { label: 'Share Route', icon: ExternalLink },
                   { label: 'Alert Ops', icon: Bell }
                 ].map((act, i) => (
-                  <button key={i} className="flex items-center gap-1 px-2 py-0.5 bg-white/60 hover:bg-white rounded-md border border-slate-100 text-[7.5px] font-semibold uppercase tracking-widest text-slate-500 transition-all whitespace-nowrap shadow-sm">
+                  <button
+                    key={i}
+                    className={cn(
+                      'flex items-center gap-1 whitespace-nowrap rounded-md border border-slate-100 bg-white/60 px-2 py-0.5 text-gray-500 shadow-sm transition-all hover:bg-white',
+                      typography.chatActionLabel,
+                    )}
+                  >
                     <act.icon className="h-2 w-2 text-blue-500" />
                     {act.label}
                   </button>
@@ -683,10 +798,16 @@ export default function ChatPage() {
                       </div>
                       <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-white shadow-sm" />
                     </div>
-                    <h3 className="text-[14px] font-semibold text-slate-800 leading-tight mb-1 uppercase tracking-tight">{activeChat?.name}</h3>
-                    <div className="flex flex-col items-center gap-0.5 mb-4">
-                      <span className="text-[9px] font-semibold text-blue-600 uppercase tracking-widest">{activeChat?.participants[0]?.role || 'Operations'}</span>
-                      <span className="text-[8px] font-medium text-slate-500 tracking-tight">{activeChat?.participants[0]?.lastSeen || 'Active Now'}</span>
+                    <h3 className={cn(typography.chatConversationName, 'mb-1 truncate text-center')}>
+                      {activeChat?.name}
+                    </h3>
+                    <div className="mb-4 flex flex-col items-center gap-0.5">
+                      <span className={cn(typography.chatRoleLabel, 'uppercase')}>
+                        {activeChat?.participants[0]?.role || 'Operations'}
+                      </span>
+                      <span className={typography.chatTimestamp}>
+                        {activeChat?.participants[0]?.lastSeen || 'Active now'}
+                      </span>
                     </div>
 
                     <div className="grid grid-cols-4 gap-2 w-full">
@@ -704,7 +825,14 @@ export default function ChatPage() {
                             btn.color === 'rose' && "text-rose-500",
                             btn.color === 'slate' && "text-slate-500",
                           )} />
-                          <span className="text-[7.5px] font-semibold uppercase tracking-tighter text-slate-500 group-hover:text-slate-800">{btn.label}</span>
+                          <span
+                            className={cn(
+                              typography.chatActionLabel,
+                              'uppercase text-gray-500 group-hover:text-gray-800',
+                            )}
+                          >
+                            {btn.label}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -716,35 +844,59 @@ export default function ChatPage() {
               <div className="flex-1 min-h-0 p-4 border-b border-slate-100">
                 <PanelHeader title="Fleet Context" icon={Shield} />
                 <div className="space-y-3 mt-1">
-                  <div className="grid grid-cols-2 gap-3 pb-3 border-b border-slate-50 text-center">
+                  <div className="grid grid-cols-2 gap-3 border-b border-slate-50 pb-3 text-center">
                     <div className="flex flex-col">
-                      <span className="text-[7px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">Asset</span>
-                      <div className="flex items-center justify-center gap-1.5 px-2 py-1 rounded-lg bg-slate-50 border border-slate-100">
+                      <span className={cn(typography.chatFieldLabel, 'mb-1.5')}>
+                        Asset
+                      </span>
+                      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-100 bg-slate-50 px-2 py-1">
                         <Bus className="h-3 w-3 text-blue-500" />
-                        <span className="text-[10px] font-semibold text-slate-800 leading-none">{activeChat?.participants[0]?.vehicle || 'HQ-01'}</span>
+                        <span className={cn(typography.chatSidebarPreview, 'leading-none')}>
+                          {activeChat?.participants[0]?.vehicle || 'HQ-01'}
+                        </span>
                       </div>
                     </div>
                     <div className="flex flex-col border-s border-slate-100 pl-3">
-                      <span className="text-[7px] font-semibold text-slate-500 uppercase tracking-widest mb-1.5">Status</span>
-                      <div className="inline-flex items-center justify-center px-2 py-1 rounded-lg text-[9px] font-semibold uppercase leading-none bg-emerald-50 text-emerald-700 border border-emerald-100/50">
-                        {activeChat?.participants[0]?.status === 'On Route' ? 'ACTIVE' : 'ON-DUTY'}
+                      <span className={cn(typography.chatFieldLabel, 'mb-1.5')}>
+                        Status
+                      </span>
+                      <div
+                        className={cn(
+                          typography.chatTag,
+                          'inline-flex items-center justify-center rounded-lg border border-emerald-100/50 bg-emerald-50 px-2 py-1 uppercase leading-none text-emerald-700',
+                        )}
+                      >
+                        {activeChat?.participants[0]?.status === 'On Route'
+                          ? 'Active'
+                          : 'On-duty'}
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-col">
-                    <span className="text-[7px] font-semibold text-slate-500 uppercase tracking-widest mb-2 px-1">Current Assignment</span>
-                    <div className="p-2 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-between group cursor-pointer hover:bg-white hover:shadow-sm transition-all">
+                    <span className={cn(typography.sectionTitle, 'mb-2 px-1')}>
+                      Current Assignment
+                    </span>
+                    <div className="group flex cursor-pointer items-center justify-between rounded-lg border border-slate-100 bg-slate-50 p-2 transition-all hover:bg-white hover:shadow-sm">
                       <div className="flex items-center gap-2">
-                        <div className="h-7 w-7 rounded-sm flex items-center justify-center text-blue-600 bg-white border border-slate-100 shadow-sm">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-sm border border-slate-100 bg-white text-blue-600 shadow-sm">
                           <MapPin className="h-3 w-3" />
                         </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-[10px] font-semibold text-slate-800 leading-none mb-1 truncate">{activeChat?.participants[0]?.route || 'Admin Depot'}</span>
-                          <span className="text-[8px] font-medium text-slate-500 tracking-tight leading-none">ETA: 8m</span>
+                        <div className="flex min-w-0 flex-col">
+                          <span
+                            className={cn(
+                              typography.chatSidebarPreview,
+                              'mb-1 truncate leading-none',
+                            )}
+                          >
+                            {activeChat?.participants[0]?.route || 'Admin Depot'}
+                          </span>
+                          <span className={cn(typography.chatRoleLabel, 'leading-none')}>
+                            ETA: 8m
+                          </span>
                         </div>
                       </div>
-                      <ExternalLink className="h-3 w-3 text-slate-300 group-hover:text-blue-500 transition-colors" />
+                      <ExternalLink className="h-3 w-3 text-slate-300 transition-colors group-hover:text-blue-500" />
                     </div>
                   </div>
                 </div>
@@ -759,7 +911,14 @@ export default function ChatPage() {
                     { label: 'Assign Task', icon: Shield, color: 'emerald' },
                     { label: 'Broadcast Alert', icon: Bell, color: 'rose' }
                   ].map((btn, i) => (
-                    <Button key={i} variant="ghost" className="w-full justify-start gap-3 h-11 px-3 rounded-lg border border-transparent hover:border-slate-100 hover:bg-white text-[10px] font-semibold uppercase tracking-tight text-slate-600 transition-all group shadow-sm">
+                    <Button
+                      key={i}
+                      variant="ghost"
+                      className={cn(
+                        'group h-11 w-full justify-start gap-3 rounded-lg border border-transparent px-3 text-gray-600 shadow-sm transition-all hover:border-slate-100 hover:bg-white',
+                        typography.chatActionLabel,
+                      )}
+                    >
                       <btn.icon className={cn(
                         "h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100",
                         btn.color === 'blue' && "text-blue-600",
@@ -782,3 +941,5 @@ export default function ChatPage() {
     </PageShell>
   );
 }
+
+

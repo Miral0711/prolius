@@ -254,7 +254,7 @@ const MenubarShortcut = ({
     <span
       data-slot="menubar-shortcut"
       className={cn(
-        'ml-auto text-xs tracking-widest text-muted-foreground',
+        'ml-auto text-xs tracking-[0.08rem] text-muted-foreground',
         className,
       )}
       {...props}
@@ -280,3 +280,5 @@ export {
   MenubarSubTrigger,
   MenubarTrigger,
 };
+
+

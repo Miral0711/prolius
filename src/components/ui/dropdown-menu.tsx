@@ -233,7 +233,7 @@ function DropdownMenuShortcut({
   return (
     <span
       data-slot="dropdown-menu-shortcut"
-      className={cn('ms-auto text-xs tracking-widest opacity-60', className)}
+      className={cn('ms-auto text-xs tracking-[0.08rem] opacity-60', className)}
       {...props}
     />
   );
@@ -262,3 +262,5 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 };
+
+

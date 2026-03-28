@@ -29,7 +29,7 @@ export function FleetToolbarButton({
     <button
       type="button"
       className={cn(
-        'inline-flex h-8 shrink-0 items-center justify-center rounded-md px-3 text-[11px] font-semibold transition-colors',
+        'inline-flex h-8 shrink-0 items-center justify-center rounded-md px-3 text-2sm font-semibold transition-colors',
         tones[tone],
         className,
       )}
@@ -39,3 +39,5 @@ export function FleetToolbarButton({
     </button>
   );
 }
+
+

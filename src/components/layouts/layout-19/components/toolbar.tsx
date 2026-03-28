@@ -18,7 +18,7 @@ function ToolbarHeading({ children }: { children: ReactNode }) {
 
 function ToolbarPageTitle({ children }: { children: ReactNode }) {
   return (
-    <h1 className="text-base font-medium leading-none text-foreground">
+    <h1 className="text-lg font-medium leading-none text-foreground">
       {children}
     </h1>
   );
@@ -39,3 +39,5 @@ export {
   ToolbarPageTitle,
   ToolbarDescription,
 };
+
+

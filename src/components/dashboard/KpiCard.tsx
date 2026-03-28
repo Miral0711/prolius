@@ -1,5 +1,6 @@
 import { type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 export interface KpiCardProps {
   title: string;
@@ -50,13 +51,13 @@ export function KpiCard({
       )}
     >
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] text-slate-500">{title}</p>
-        <p className="text-sm font-semibold text-slate-900">{value}</p>
-        {subValue && <p className="text-[11px] text-slate-400">{subValue}</p>}
+        <p className={cn(typography.label, 'text-slate-500')}>{title}</p>
+        <p className={cn(typography.kpi, 'text-slate-900')}>{value}</p>
+        {subValue && <p className={cn(typography.meta, 'text-slate-400')}>{subValue}</p>}
         {trend && (
           <p
             className={cn(
-              'text-xs font-medium',
+              typography.label,
               trend.positive ? 'text-emerald-600' : 'text-rose-600',
             )}
           >
@@ -72,3 +73,5 @@ export function KpiCard({
     </div>
   );
 }
+
+

@@ -23,7 +23,7 @@ export function MetadataCell({
     <div className={cn('min-w-0 text-left', className)}>
       <div
         className={cn(
-          'truncate text-[11px] font-semibold leading-tight text-slate-800',
+          'truncate text-2sm font-semibold leading-tight text-slate-800',
           primaryClassName,
         )}
       >
@@ -32,7 +32,7 @@ export function MetadataCell({
       {secondary != null && secondary !== '' && (
         <div
           className={cn(
-            'mt-0.5 truncate text-[9px] font-medium leading-tight text-slate-500',
+            'mt-0.5 truncate text-2xs font-medium leading-tight text-slate-500',
             secondaryClassName,
           )}
         >
@@ -42,3 +42,5 @@ export function MetadataCell({
     </div>
   );
 }
+
+

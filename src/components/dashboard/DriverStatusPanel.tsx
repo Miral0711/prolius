@@ -1,5 +1,7 @@
 import { BarChart3, Signal } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 import { StatusBadge } from './StatusBadge';
 
@@ -30,7 +32,7 @@ const MOCK_DRIVERS = [
 export function DriverStatusPanel() {
   return (
     <DashboardCard className="flex min-h-0 flex-col overflow-hidden">
-      <h3 className="mb-1 shrink-0 text-xs font-semibold text-slate-800">
+      <h3 className={cn(typography.cardTitle, 'mb-1 shrink-0')}>
         Driver Status
       </h3>
       <div className="min-h-0 flex-1 space-y-0 overflow-hidden [&>div+div]:border-t [&>div+div]:border-slate-100">
@@ -45,7 +47,7 @@ export function DriverStatusPanel() {
               className="h-7 w-7 shrink-0 rounded-full border border-slate-200 object-cover"
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-slate-800">
+              <p className="truncate text-xs font-normal text-slate-800">
                 {driver.name}
               </p>
               <div className="flex items-center gap-1.5">
@@ -80,3 +82,5 @@ export function DriverStatusPanel() {
     </DashboardCard>
   );
 }
+
+

@@ -8,6 +8,7 @@ import {
   Video,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { dvrTypography } from './shared/DVRSharedComponents';
 
 interface DVRPlayerCardProps {
   isPlaying: boolean;
@@ -58,24 +59,42 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-rose-600/20 border border-rose-500/30 backdrop-blur-xl">
               <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
-              <span className="text-[10px] font-medium text-rose-500 uppercase tracking-widest">
-                ARCHIVE
+              <span
+                className={cn(
+                  dvrTypography.control,
+                  'text-rose-500',
+                )}
+              >
+                Archive
               </span>
             </div>
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2.5">
-                <span className="text-sm font-semibold text-white tracking-tight uppercase leading-none">
+                <span className={cn(dvrTypography.videoTitle, 'leading-none')}>
                   {channelName}
                 </span>
                 <span className="h-1 w-1 rounded-full bg-white/30" />
-                <span className="text-[10px] font-medium text-white/40 uppercase tracking-widest leading-none bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                <span
+                  className={cn(
+                    dvrTypography.videoTag,
+                    'leading-none bg-white/5 px-2 py-0.5 rounded border border-white/5',
+                  )}
+                >
                   {vehicleTag}
                 </span>
               </div>
-              <p className="text-[10px] font-medium text-white/40 tabular-nums uppercase tracking-widest leading-none mt-1.5">
-                {currentDate} •{' '}
-                <span className="text-white/60">{currentTime}</span>
+              <p
+                className={cn(
+                  dvrTypography.videoMeta,
+                  'mt-1.5 leading-none',
+                )}
+              >
+                {currentDate}
+                <span className={dvrTypography.videoMeta}> · </span>
+                <span className={dvrTypography.videoMetaStrong}>
+                  {currentTime}
+                </span>
               </p>
             </div>
           </div>
@@ -131,8 +150,14 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
               />
             </div>
 
-            <div className="text-[11px] font-medium text-white/60 tabular-nums bg-black/40 px-3 py-1 rounded-lg border border-white/5 backdrop-blur-md">
-              04:23:47 / <span className="text-white/30">10:00:00</span>
+            <div
+              className={cn(
+                dvrTypography.videoTimecode,
+                'bg-black/40 px-3 py-1 rounded-lg border border-white/5 backdrop-blur-md',
+              )}
+            >
+              04:23:47 /{' '}
+              <span className={dvrTypography.videoMeta}>10:00:00</span>
             </div>
           </div>
         </div>
@@ -140,3 +165,5 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
     </div>
   );
 };
+
+

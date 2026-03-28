@@ -78,7 +78,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       </div>
 
       {/* Navigation Main */}
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 scrollbar-hide">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-3 scrollbar-hide">
         <ul className="space-y-1">
           {navConfig.map((item) => {
             const Icon = item.icon;
@@ -237,7 +237,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               <p className="text-sm font-medium text-white truncate">
                 John Smith
               </p>
-              <p className="text-[10px] text-white/40 truncate">System Admin</p>
+              <p className="text-xs text-white/40 truncate">System Admin</p>
             </div>
           )}
         </div>
@@ -247,3 +247,5 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 }
 
 export { SIDEBAR_WIDTH_EXPANDED, SIDEBAR_WIDTH_COLLAPSED };
+
+

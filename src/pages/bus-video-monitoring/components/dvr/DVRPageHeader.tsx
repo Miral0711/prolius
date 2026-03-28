@@ -1,6 +1,7 @@
 import React from 'react';
 import { Video } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/status-badge';
+import { typography } from '@/lib/typography';
 
 interface DVRPageHeaderProps {
   vehicleName: string;
@@ -21,8 +22,8 @@ export const DVRPageHeader: React.FC<DVRPageHeaderProps> = ({
         </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <h1 className="text-[13px] font-semibold text-slate-800 tracking-tight uppercase">DVR Control Hub</h1>
-            <span className="rounded-md bg-indigo-50 px-1.5 py-0.5 text-[9px] font-medium uppercase text-indigo-600 tracking-wider border border-indigo-100/50">
+            <h1 className={typography.cardTitle}>DVR Control Hub</h1>
+            <span className="rounded-md bg-indigo-50 px-1.5 py-0.5 text-2xs font-medium uppercase text-indigo-600 tracking-[0.04rem] border border-indigo-100/50">
               Analysis Mode
             </span>
           </div>
@@ -33,13 +34,13 @@ export const DVRPageHeader: React.FC<DVRPageHeaderProps> = ({
         <div className="flex flex-col items-end">
           <div className="flex items-center gap-2.5">
             <div className="flex flex-col items-end leading-none">
-              <span className="text-[10px] font-semibold text-slate-800 tracking-tight">{vehicleName}</span>
-              <span className="text-[8.5px] font-medium text-slate-400 uppercase tracking-tighter mt-0.5">Vehicle Unit</span>
+              <span className="text-xs font-semibold text-slate-800 tracking-tight">{vehicleName}</span>
+              <span className="text-2xs font-medium text-slate-400 uppercase tracking-tighter mt-0.5">Vehicle Unit</span>
             </div>
             <div className="h-5 w-px bg-slate-200/60" />
             <div className="flex flex-col items-end leading-none">
-              <span className="text-[10px] font-medium text-slate-600">{date}</span>
-              <span className="text-[8.5px] font-medium text-slate-400 uppercase tracking-tighter mt-0.5">Selected Date</span>
+              <span className="text-xs font-medium text-slate-600">{date}</span>
+              <span className="text-2xs font-medium text-slate-400 uppercase tracking-tighter mt-0.5">Selected Date</span>
             </div>
           </div>
         </div>
@@ -52,3 +53,5 @@ export const DVRPageHeader: React.FC<DVRPageHeaderProps> = ({
     </header>
   );
 };
+
+

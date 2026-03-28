@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 function Table({
   className,
@@ -87,7 +88,8 @@ function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        'h-12 px-4 text-left rtl:text-right align-middle font-normal text-muted-foreground [&:has([role=checkbox])]:pe-0',
+        'px-4 py-2 text-left rtl:text-right align-middle [&:has([role=checkbox])]:pe-0',
+        typography.tableHeader,
         className,
       )}
       {...props}
@@ -103,7 +105,8 @@ function TableCell({
     <td
       data-slot="table-cell"
       className={cn(
-        'p-4 align-middle [&:has([role=checkbox])]:pe-0',
+        'py-2 px-4 align-middle [&:has([role=checkbox])]:pe-0',
+        typography.tableCell,
         className,
       )}
       {...props}
@@ -134,3 +137,5 @@ export {
   TableHeader,
   TableRow,
 };
+
+

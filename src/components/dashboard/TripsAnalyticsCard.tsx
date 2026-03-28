@@ -48,22 +48,24 @@ export function TripsAnalyticsCard() {
       </ChartPanel>
       <div className="mt-1.5 grid grid-cols-2 gap-1.5 sm:grid-cols-4">
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Total Rev</p>
-          <p className="text-sm font-semibold text-slate-800">SAR 125,932</p>
+          <p className="text-xs font-medium text-slate-500">Total Rev</p>
+          <p className="text-[14px] font-semibold text-slate-800">SAR 125,932</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Total Trips</p>
-          <p className="text-sm font-semibold text-slate-800">344,550</p>
+          <p className="text-xs font-medium text-slate-500">Total Trips</p>
+          <p className="text-[14px] font-semibold text-slate-800">344,550</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Avg Trip</p>
-          <p className="text-sm font-semibold text-slate-800">42 min</p>
+          <p className="text-xs font-medium text-slate-500">Avg Trip</p>
+          <p className="text-[14px] font-semibold text-slate-800">42 min</p>
         </div>
         <div className="rounded-md bg-slate-50 px-2.5 py-1.5">
-          <p className="text-[11px] text-slate-500">Week Rev</p>
-          <p className="text-sm font-semibold text-slate-800">SAR 28,450</p>
+          <p className="text-xs font-medium text-slate-500">Week Rev</p>
+          <p className="text-[14px] font-semibold text-slate-800">SAR 28,450</p>
         </div>
       </div>
     </AnalyticsCard>
   );
 }
+
+

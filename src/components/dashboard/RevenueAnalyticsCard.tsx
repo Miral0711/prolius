@@ -93,7 +93,7 @@ export function RevenueAnalyticsCard() {
           </div>
         </div>
       </div>
-      <div className="mt-1 flex flex-wrap gap-2 text-[11px] text-slate-500">
+      <div className="mt-1 flex flex-wrap gap-2 text-2sm text-slate-500">
         <span>Total KM: 12,450</span>
         <span>Avg Rev/Trip: SAR 146</span>
         <span>MTD Revenue: SAR 62,231</span>
@@ -101,3 +101,5 @@ export function RevenueAnalyticsCard() {
     </AnalyticsCard>
   );
 }
+
+

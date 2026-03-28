@@ -30,12 +30,12 @@ export function MdtDeviceCell({ mdtId, health, lastPingNote, className }: MdtDev
 
   return (
     <div className={cn('min-w-0 text-left', className)}>
-      <div className="truncate font-mono text-[10px] font-medium tabular-nums text-slate-800">
+      <div className="truncate font-mono text-xs font-medium tabular-nums text-slate-800">
         {mdtId}
       </div>
       <div
         className={cn(
-          'mt-0.5 truncate text-[9px] font-medium leading-tight',
+          'mt-0.5 truncate text-2xs font-medium leading-tight',
           HEALTH_CLASS[health],
         )}
       >
@@ -44,3 +44,5 @@ export function MdtDeviceCell({ mdtId, health, lastPingNote, className }: MdtDev
     </div>
   );
 }
+
+

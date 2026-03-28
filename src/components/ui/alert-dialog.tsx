@@ -98,7 +98,7 @@ function AlertDialogTitle({
   return (
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
-      className={cn('text-lg font-semibold', className)}
+      className={cn('typo-card-title', className)}
       {...props}
     />
   );
@@ -162,3 +162,5 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 };
+
+

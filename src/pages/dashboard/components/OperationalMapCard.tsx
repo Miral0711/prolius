@@ -96,16 +96,18 @@ export function OperationalMapCard() {
         ))}
       </MapContainer>
       <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 rounded-xl border border-white/40 bg-white/70 px-2 py-1.5 backdrop-blur-sm">
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-emerald-500" /> Available
         </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-violet-500" /> On Trip
         </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-slate-600">
+        <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-slate-500" /> Offline
         </span>
       </div>
     </div>
   );
 }
+
+

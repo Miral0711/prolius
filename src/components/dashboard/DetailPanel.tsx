@@ -26,9 +26,7 @@ export function DetailPanel({
       )}
     >
       <CardHeader className="shrink-0 pb-2 border-b border-gray-200">
-        <CardTitle className="text-base font-semibold leading-none tracking-tight text-gray-900">
-          {title}
-        </CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent
         className={cn('flex-1 min-h-0 overflow-y-auto', contentClassName)}
@@ -38,3 +36,5 @@ export function DetailPanel({
     </Card>
   );
 }
+
+

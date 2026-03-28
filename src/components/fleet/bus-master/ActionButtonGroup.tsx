@@ -69,9 +69,11 @@ function ActionIconButton({
           <Icon className={dense ? 'h-3 w-3' : 'h-4 w-4'} aria-hidden />
         </button>
       </TooltipTrigger>
-      <TooltipContent className="border-none bg-slate-900 px-2 py-1 text-[9px] font-medium text-white">
+      <TooltipContent className="border-none bg-slate-900 px-2 py-1 text-2xs font-medium text-white">
         {label}
       </TooltipContent>
     </Tooltip>
   );
 }
+
+

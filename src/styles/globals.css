@@ -136,6 +136,10 @@
     @apply border-border;
   }
 
+  body {
+    @apply text-sm text-foreground antialiased;
+  }
+
   *:focus-visible {
     @apply outline-ring rounded-xs shadow-none outline-2 outline-offset-3 transition-none!;
   }
@@ -200,3 +204,5 @@ body {
 
 /* Metronic Configs */
 @import './config.metronic.css';
+
+

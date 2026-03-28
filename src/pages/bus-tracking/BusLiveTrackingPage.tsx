@@ -1,10 +1,11 @@
 import { useMemo, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 import {
   BUS_LIVE_VEHICLES,
   DUMMY_MAP_CENTER,
 } from '@/data/bus-live-tracking-mock-data';
+import { typography } from '@/lib/typography';
 
 // Tracking Components
 import { FleetMap, type BusLiveMapMarker } from '@/components/tracking/FleetMap';
@@ -39,12 +40,8 @@ export default function BusLiveTrackingPage() {
     })), [vehicles]
   );
 
-  const mapCenter = useMemo(() => {
-    if (selectedVehicle && selectedVehicle.lat !== null && selectedVehicle.lng !== null) {
-      return { lat: selectedVehicle.lat, lng: selectedVehicle.lng };
-    }
-    return DUMMY_MAP_CENTER;
-  }, [selectedVehicle]);
+  // Stable viewport: do not tie center to selection — avoids flyTo/remount feel when changing plate.
+  const mapCenter = useMemo(() => DUMMY_MAP_CENTER, []);
 
   // Handlers
   const handleSelectVehicle = useCallback((id: number) => {
@@ -61,7 +58,7 @@ export default function BusLiveTrackingPage() {
 
   return (
     <PageSurface
-      padding="xs"
+      padding={PAGE_SURFACE_FOOTER_PADDING}
       fill
       sectionGap="none"
       className="bg-slate-50"
@@ -112,7 +109,9 @@ export default function BusLiveTrackingPage() {
                   ].map((st, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <div className={cn("h-2 w-2 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]", st.color)} />
-                      <span className="text-[10px] font-medium text-slate-600 uppercase tracking-wider">{st.label}</span>
+                      <span className={cn(typography.meta, 'leading-none text-slate-500')}>
+                        {st.label}
+                      </span>
                     </div>
                   ))}
               </div>
@@ -152,3 +151,5 @@ export default function BusLiveTrackingPage() {
     </PageSurface>
   );
 }
+
+

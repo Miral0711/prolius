@@ -44,15 +44,15 @@ export function CameraTile({
       <div className="absolute top-0 inset-x-0 p-2.5 flex items-start justify-between bg-gradient-to-b from-black/80 to-transparent z-10">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-white uppercase tracking-wider">{id}</span>
-            <span className="text-[10px] font-medium text-slate-400 opacity-80">&middot; {location}</span>
+            <span className="text-xs font-semibold text-white uppercase tracking-[0.04rem]">{id}</span>
+            <span className="text-xs font-medium text-slate-400 opacity-80">&middot; {location}</span>
           </div>
-          <p className="text-[9px] font-semibold text-blue-400 uppercase tracking-tighter leading-none">{plate}</p>
+          <p className="text-2xs font-semibold text-blue-400 uppercase tracking-tighter leading-none">{plate}</p>
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
           <div className={cn(
-            "flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase tracking-tight",
+            "flex items-center gap-1.5 px-1.5 py-0.5 rounded text-2xs font-semibold uppercase tracking-tight",
             isLive ? "bg-emerald-500 text-white animate-pulse" : "bg-slate-700 text-slate-300"
           )}>
             <div className={cn("h-1 w-1 rounded-full bg-white", isLive && "shadow-[0_0_5px_white]")} />
@@ -60,7 +60,7 @@ export function CameraTile({
           </div>
           
           {hasAlert && (
-            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-600 text-white text-[8px] font-semibold uppercase">
+            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-600 text-white text-2xs font-semibold uppercase">
               <AlertCircle className="h-2.5 w-2.5" />
               {alertType || 'ALERT'}
             </div>
@@ -76,9 +76,9 @@ export function CameraTile({
         <div className="flex flex-col gap-0.5">
            <div className="flex items-center gap-1 text-slate-300">
              <Clock className="h-2.5 w-2.5 text-blue-400" />
-             <span className="text-[9px] font-medium opacity-80">14:42:05 GST</span>
+             <span className="text-2xs font-medium opacity-80">14:42:05 GST</span>
            </div>
-           <p className="text-[10px] font-semibold text-white uppercase tracking-tight">{driver}</p>
+           <p className="text-xs font-semibold text-white uppercase tracking-tight">{driver}</p>
         </div>
 
         {/* Hover Controls */}
@@ -100,7 +100,7 @@ export function CameraTile({
                     <btn.icon className="h-3 w-3" />
                   </button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-slate-950 border-slate-800 text-[9px] font-semibold uppercase px-2 py-1">{btn.label}</TooltipContent>
+                <TooltipContent className="bg-slate-950 border-slate-800 text-2xs font-semibold uppercase px-2 py-1">{btn.label}</TooltipContent>
               </Tooltip>
             ))}
           </TooltipProvider>
@@ -109,3 +109,5 @@ export function CameraTile({
     </div>
   );
 }
+
+

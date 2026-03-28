@@ -1,4 +1,4 @@
-/* Metronic Components  */
+/* Metronic Components */
 @import './layout.css';
 @import './components/image-input.css';
 @import './components/apexcharts.css';
@@ -14,10 +14,24 @@
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:not(.dark *));
 
-/** Custom Font Size **/
+/** Micro typography (+~1.1%): barely larger than prior scale; hierarchy & line-height ratios preserved **/
 @theme {
-  --text-2sm: 0.8125rem;
-  --text-2sm--line-height: calc(1.075 / 0.8125);
-  --text-2xs: 0.6875rem;
-  --text-2xs--line-height: calc(0.825 / 0.6875);
+  --text-2xs: 0.739rem;
+  --text-2xs--line-height: calc(1.112 / 0.739);
+  --text-xs: 0.768rem;
+  --text-xs--line-height: calc(1.132 / 0.768);
+  --text-2sm: 0.827rem;
+  --text-2sm--line-height: calc(1.173 / 0.827);
+  --text-sm: 0.887rem;
+  --text-sm--line-height: calc(1.234 / 0.887);
+  --text-base: 0.946rem;
+  --text-base--line-height: calc(1.335 / 0.946);
+  --text-lg: 1.005rem;
+  --text-lg--line-height: calc(1.355 / 1.005);
+  --text-xl: 1.064rem;
+  --text-xl--line-height: calc(1.395 / 1.064);
+  --text-2xl: 1.241rem;
+  --text-2xl--line-height: calc(1.496 / 1.241);
+  --text-3xl: 1.536rem;
+  --text-3xl--line-height: calc(1.668 / 1.536);
 }

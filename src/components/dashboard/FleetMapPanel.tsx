@@ -334,12 +334,12 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
               {hoveredVehicle.id}
             </span>
             <span
-              className={`rounded-sm px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_META[hoveredVehicle.status].label}`}
+              className={`rounded-sm px-1.5 py-0.5 text-xs font-medium ${STATUS_META[hoveredVehicle.status].label}`}
             >
               {hoveredVehicle.status}
             </span>
           </div>
-          <div className="space-y-0.5 text-[11px]">
+          <div className="space-y-0.5 text-xs">
             <div className="flex justify-between">
               <span className="text-slate-500">Driver</span>
               <span className="font-medium text-slate-700">
@@ -364,7 +364,7 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
 
       {/* ── MAP LEGEND (top-right) ─────────────────────────────── */}
       <div className="absolute right-3 top-3 z-20 flex flex-col gap-1.5 rounded-md border border-white/60 bg-white/90 px-3 py-2.5 shadow-sm backdrop-blur-md">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-0.5">
+        <p className="text-xs font-semibold uppercase tracking-[0.04rem] text-slate-400 mb-0.5">
           Fleet Legend
         </p>
         {(
@@ -380,7 +380,7 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
             >
               <Bus className="h-2 w-2 text-white" />
             </span>
-            <span className="text-[11px] font-semibold text-slate-700">
+            <span className="text-xs font-medium text-slate-700">
               {status}
             </span>
           </div>
@@ -421,11 +421,11 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
       {/* ── SCALE INDICATOR ───────────────────────────────────── */}
       <div className="absolute bottom-4 right-14 z-20 flex items-end gap-1">
         <div className="h-3 w-12 border-b-2 border-l-2 border-r-2 border-slate-500/40" />
-        <span className="text-[9px] text-slate-500 font-medium">2 km</span>
+        <span className="text-2xs text-slate-500 font-medium">2 km</span>
       </div>
 
       {/* ── ZOOM BADGE ────────────────────────────────────────── */}
-      <div className="absolute bottom-3 right-3 z-20 rounded-md border border-white/60 bg-white/90 px-2 py-0.5 text-[10px] font-semibold text-slate-500 shadow-sm backdrop-blur-md">
+      <div className="absolute bottom-3 right-3 z-20 rounded-md border border-white/60 bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-sm backdrop-blur-md">
         <Maximize2 className="inline-block h-3 w-3 mr-1" />
         {Math.round(zoom * 100)}%
       </div>
@@ -436,13 +436,15 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
         </span>
-        <span className="text-[10px] font-semibold text-emerald-700">
+        <span className="text-xs font-semibold text-emerald-700">
           Live Tracking
         </span>
-        <span className="text-[9px] text-slate-400 ml-0.5">
+        <span className="text-xs text-slate-400 ml-0.5">
           • {VEHICLES.length} vehicles
         </span>
       </div>
     </div>
   );
 }
+
+

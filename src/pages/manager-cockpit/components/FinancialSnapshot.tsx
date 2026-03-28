@@ -9,20 +9,20 @@ export function FinancialSnapshot({ sectionLead }: { sectionLead?: boolean }) {
       sectionLead={sectionLead}
     >
       <div className="rounded-lg border border-white/35 bg-white/50 px-2 py-2">
-        <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-slate-500 leading-tight">
+        <div className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.02rem] text-slate-500 leading-tight">
           <Calendar className="h-3 w-3" />
           Today&apos;s Revenue
         </div>
         <p className="mt-0.5 text-lg font-semibold tracking-tight text-slate-800 leading-tight">
           SAR 0
         </p>
-        <p className="mt-0.5 text-[10px] text-slate-400/90 leading-tight">
+        <p className="mt-0.5 text-xs text-slate-400/90 leading-tight">
           0 trips · Avg SAR 0
         </p>
       </div>
       <div className="mt-1.5 grid grid-cols-2 gap-2 text-xs">
         <div className="rounded-lg border border-white/35 bg-white/50 px-2 py-1.5">
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide leading-tight">
+          <p className="text-xs text-slate-500 uppercase tracking-[0.02rem] leading-tight">
             This Week
           </p>
           <p className="mt-0.5 text-base font-semibold text-slate-700 leading-tight">
@@ -30,7 +30,7 @@ export function FinancialSnapshot({ sectionLead }: { sectionLead?: boolean }) {
           </p>
         </div>
         <div className="rounded-lg border border-white/35 bg-white/50 px-2 py-1.5">
-          <p className="text-[10px] text-slate-500 uppercase tracking-wide leading-tight">
+          <p className="text-xs text-slate-500 uppercase tracking-[0.02rem] leading-tight">
             This Month
           </p>
           <p className="mt-0.5 text-base font-semibold text-slate-700 leading-tight">
@@ -41,3 +41,5 @@ export function FinancialSnapshot({ sectionLead }: { sectionLead?: boolean }) {
     </DataCard>
   );
 }
+
+

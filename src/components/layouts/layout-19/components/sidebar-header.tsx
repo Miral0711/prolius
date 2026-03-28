@@ -72,11 +72,11 @@ export function SidebarHeader() {
           <selectedTeam.icon className="size-5" />
         </Button>
         <div className="flex flex-col">
-          <span className="text-mono text-sm font-medium text-gray-900">
+          <span className="text-mono text-xs font-medium text-gray-900">
             {selectedTeam.name}
           </span>
 
-          <span className="text-gray-500 font-inter text-[12px] font-normal leading-[12px]">
+          <span className="text-gray-500 font-inter text-xs font-normal leading-tight">
             {new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: 'USD',
@@ -124,7 +124,7 @@ export function SidebarHeader() {
               >
                 <team.icon className="size-4" />
               </div>
-              <span className="text-mono text-sm font-medium">{team.name}</span>
+              <span className="text-mono text-xs font-medium">{team.name}</span>
               {selectedTeam.name === team.name && (
                 <Check className="ms-auto size-4 text-green-600" />
               )}
@@ -135,3 +135,5 @@ export function SidebarHeader() {
     </div>
   );
 }
+
+

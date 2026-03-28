@@ -1,6 +1,7 @@
 import React from 'react';
 import { Download, ZoomIn, Share2, Flag, LayoutGrid } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 export const DVRQuickActionsCard: React.FC = () => {
   const actions = [
@@ -14,7 +15,7 @@ export const DVRQuickActionsCard: React.FC = () => {
     <div className="rounded-xl border border-white bg-white shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] p-2.5 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <LayoutGrid className="h-3.5 w-3.5 text-slate-400" />
-        <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Control Manifest</h2>
+        <h2 className={cn(typography.cardTitle, 'leading-none')}>Control Manifest</h2>
       </div>
 
       <div className="grid grid-cols-2 gap-1.5">
@@ -25,7 +26,7 @@ export const DVRQuickActionsCard: React.FC = () => {
               key={idx}
               type="button"
               className={cn(
-                'flex flex-col items-center justify-center gap-1 rounded-xl border p-1.5 text-[8.5px] font-semibold uppercase tracking-widest transition-all hover:translate-y-[-1px] active:translate-y-[0px] shadow-sm',
+                'flex flex-col items-center justify-center gap-1 rounded-xl border p-1.5 text-2xs font-semibold uppercase tracking-[0.08rem] transition-all hover:translate-y-[-1px] active:translate-y-[0px] shadow-sm',
                 action.bg,
                 action.c
               )}
@@ -40,8 +41,10 @@ export const DVRQuickActionsCard: React.FC = () => {
       </div>
       
       <div className="mt-0.5 flex items-center justify-center py-1 px-3 bg-slate-50 rounded-lg border border-dashed border-slate-200 group cursor-pointer hover:bg-slate-100 transition-colors">
-        <span className="text-[8px] font-medium text-slate-400 uppercase tracking-widest group-hover:text-slate-600">Advanced Hub</span>
+        <span className="text-2xs font-medium text-slate-400 uppercase tracking-[0.08rem] group-hover:text-slate-600">Advanced Hub</span>
       </div>
     </div>
   );
 };
+
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Camera, Play, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 interface CameraEvent {
   cam: string;
@@ -23,7 +24,7 @@ const SevPill = ({ s }: { s: 'high' | 'medium' | 'low' }) => {
   return (
     <div className="flex items-center gap-1.5">
       <span className={cn('h-1.5 w-1.5 rounded-full', styles[s])} />
-      <span className="text-[9px] font-semibold text-slate-500 uppercase tracking-tighter">{s}</span>
+      <span className="text-2xs font-semibold text-slate-500 uppercase tracking-tighter">{s}</span>
     </div>
   );
 };
@@ -34,7 +35,7 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
       <div className="p-2.5 border-b border-slate-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Camera className="h-3.5 w-3.5 text-slate-400" />
-          <h2 className="text-[10px] font-semibold text-slate-800 uppercase tracking-widest leading-none">Camera Alerts</h2>
+          <h2 className={cn(typography.cardTitle, 'leading-none')}>Camera Alerts</h2>
         </div>
         <AlertCircle className="h-3 w-3 text-slate-200" />
       </div>
@@ -43,9 +44,9 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
         <table className="w-full text-left">
           <thead className="sticky top-0 bg-slate-50 border-b border-slate-100 z-10">
             <tr>
-              <th className="px-3 py-1.5 text-[8.5px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Cam</th>
-              <th className="px-3 py-1.5 text-[8.5px] font-semibold text-slate-400 uppercase tracking-widest leading-none">Severity</th>
-              <th className="px-3 py-1.5 text-[8.5px] font-semibold text-slate-400 uppercase tracking-widest leading-none text-right">Jump</th>
+              <th className="px-3 py-1.5 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Cam</th>
+              <th className="px-3 py-1.5 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Severity</th>
+              <th className="px-3 py-1.5 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none text-right">Jump</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
@@ -53,8 +54,8 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
               <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
                 <td className="px-3 py-1.5">
                   <div className="flex flex-col">
-                    <span className="text-[9.5px] font-semibold text-slate-700 uppercase tracking-tight leading-none">{ev.cam}</span>
-                    <span className="text-[8.5px] font-medium text-slate-400 leading-none mt-1 truncate max-w-[80px]">{ev.event}</span>
+                    <span className="text-xs font-semibold text-slate-700 uppercase tracking-tight leading-none">{ev.cam}</span>
+                    <span className="text-2xs font-medium text-slate-400 leading-none mt-1 truncate max-w-[80px]">{ev.event}</span>
                   </div>
                 </td>
                 <td className="px-3 py-1.5">
@@ -76,3 +77,5 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
     </div>
   );
 };
+
+

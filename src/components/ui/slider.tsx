@@ -43,3 +43,5 @@ function SliderThumb({
 }
 
 export { Slider, SliderThumb };
+
+

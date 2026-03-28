@@ -1,4 +1,6 @@
 import { DataTableCard } from './DataTableCard';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 
 const RECENT_TRIPS = [
   {
@@ -41,22 +43,22 @@ const RECENT_TRIPS = [
 export function ActivityFeedPanel() {
   return (
     <DataTableCard title="Recent Trips">
-      <table className="w-full min-w-[500px] text-sm">
+      <table className="w-full min-w-[500px]">
         <thead>
           <tr className="border-b border-slate-200">
-            <th className="pb-1.5 text-left text-[11px] font-medium text-slate-500">
+            <th className={cn('pb-1.5 text-left text-slate-500', typography.tableHeader)}>
               Trip ID
             </th>
-            <th className="pb-1.5 text-left text-xs font-medium text-slate-500">
+            <th className={cn('pb-1.5 text-left text-slate-500', typography.tableHeader)}>
               Vehicle
             </th>
-            <th className="pb-1.5 text-left text-xs font-medium text-slate-500">
+            <th className={cn('pb-1.5 text-left text-slate-500', typography.tableHeader)}>
               Driver
             </th>
-            <th className="pb-1.5 text-left text-xs font-medium text-slate-500">
+            <th className={cn('pb-1.5 text-left text-slate-500', typography.tableHeader)}>
               Route
             </th>
-            <th className="pb-1.5 text-right text-xs font-medium text-slate-500">
+            <th className={cn('pb-1.5 text-right text-slate-500', typography.tableHeader)}>
               Revenue
             </th>
           </tr>
@@ -67,15 +69,15 @@ export function ActivityFeedPanel() {
               key={trip.id}
               className="border-b border-slate-100 last:border-0"
             >
-              <td className="py-2 text-[11px] font-medium text-slate-800">
+              <td className={cn('py-2 text-slate-800', typography.tableCell)}>
                 {trip.id}
               </td>
-              <td className="py-2 text-xs text-slate-600">{trip.vehicle}</td>
-              <td className="py-2 text-xs text-slate-700 font-medium">
+              <td className={cn('py-2 text-slate-600', typography.tableCell)}>{trip.vehicle}</td>
+              <td className={cn('py-2 text-slate-700', typography.tableCell)}>
                 {trip.driver}
               </td>
-              <td className="py-2 text-xs text-slate-500">{trip.route}</td>
-              <td className="py-2 text-right text-xs font-semibold text-emerald-600">
+              <td className={cn('py-2 text-slate-500', typography.tableCell)}>{trip.route}</td>
+              <td className={cn('py-2 text-right text-emerald-600', typography.tableCell)}>
                 {trip.revenue}
               </td>
             </tr>
@@ -85,3 +87,5 @@ export function ActivityFeedPanel() {
     </DataTableCard>
   );
 }
+
+

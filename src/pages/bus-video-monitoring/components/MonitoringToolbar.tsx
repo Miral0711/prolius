@@ -24,7 +24,7 @@ export function MonitoringToolbar({
 }: MonitoringToolbarProps) {
   const tabClass = (active: boolean) =>
     cn(
-      'inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-all',
+      'inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.03rem] transition-all',
       active
         ? 'bg-blue-600 text-white shadow-md'
         : 'text-slate-500 hover:bg-white hover:text-slate-800'
@@ -66,16 +66,18 @@ export function MonitoringToolbar({
                      <action.icon className="h-3.5 w-3.5" />
                    </button>
                 </TooltipTrigger>
-                <TooltipContent className="text-[9px] font-semibold uppercase">{action.label}</TooltipContent>
+                <TooltipContent className="text-2xs font-semibold uppercase">{action.label}</TooltipContent>
               </Tooltip>
             ))}
           </TooltipProvider>
         </div>
         
-        <button className="h-7 px-3 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-semibold uppercase border border-blue-200 hover:bg-blue-100 transition-colors">
+        <button className="h-7 px-3 bg-blue-50 text-blue-600 rounded-lg text-2xs font-semibold uppercase border border-blue-200 hover:bg-blue-100 transition-colors">
           LIVE_RECORDS (124)
         </button>
       </div>
     </div>
   );
 }
+
+

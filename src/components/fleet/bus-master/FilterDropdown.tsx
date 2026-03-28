@@ -32,7 +32,7 @@ export function FilterDropdown({
     <Select defaultValue={defaultValue}>
       <SelectTrigger
         className={cn(
-          'h-8 border-slate-200 bg-white text-[11px] font-medium text-slate-700 shadow-none',
+          'h-8 border-slate-200 bg-white text-2sm font-medium text-slate-700 shadow-none',
           widthClassName,
           triggerClassName,
         )}
@@ -49,3 +49,5 @@ export function FilterDropdown({
     </Select>
   );
 }
+
+

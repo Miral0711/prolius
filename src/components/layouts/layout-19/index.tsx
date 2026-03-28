@@ -22,8 +22,6 @@ export function Layout19() {
           {
             '--sidebar-width': '72px',
             '--sidebar-width-mobile': '240px',
-            '--header-height': '56px',
-            '--header-height-mobile': '56px',
           } as React.CSSProperties
         }
       >
@@ -32,3 +30,5 @@ export function Layout19() {
     </>
   );
 }
+
+

@@ -121,7 +121,7 @@ const DEFAULT_TOOLBAR_ACTIONS = (
       type="button"
       variant="ghost"
       size="sm"
-      className="h-8 gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-3 text-[11px] font-semibold text-blue-700 shadow-sm hover:border-blue-300 hover:bg-blue-100 hover:text-blue-800"
+      className="h-8 gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-3 text-2sm font-semibold text-blue-700 shadow-sm hover:border-blue-300 hover:bg-blue-100 hover:text-blue-800"
     >
       <FileSpreadsheet className="h-3.5 w-3.5" />
       Excel
@@ -130,7 +130,7 @@ const DEFAULT_TOOLBAR_ACTIONS = (
       type="button"
       variant="ghost"
       size="sm"
-      className="h-8 gap-1.5 rounded-md border border-rose-200 bg-rose-50 px-3 text-[11px] font-semibold text-rose-700 shadow-sm hover:border-rose-300 hover:bg-rose-100 hover:text-rose-800"
+      className="h-8 gap-1.5 rounded-md border border-rose-200 bg-rose-50 px-3 text-2sm font-semibold text-rose-700 shadow-sm hover:border-rose-300 hover:bg-rose-100 hover:text-rose-800"
     >
       <FileDown className="h-3.5 w-3.5" />
       PDF
@@ -169,7 +169,7 @@ export function BusListTable({
       <DataTableToolbar>
         <div className="flex min-w-0 items-center gap-2">
           <TitleIcon className="h-4 w-4 shrink-0 text-slate-600" />
-          <h3 className="text-[13px] font-bold uppercase tracking-wide text-slate-800">
+          <h3 className="text-sm font-bold uppercase tracking-[0.02rem] text-slate-800">
             {title}
           </h3>
         </div>
@@ -221,7 +221,7 @@ export function BusListTable({
                 <TableCell
                   colSpan={BUS_LIST_TABLE_COLUMN_COUNT}
                   align="center"
-                  className="py-10 text-[11px] text-slate-500"
+                  className="py-10 text-2sm text-slate-500"
                 >
                   {emptyState ?? 'No buses match your filters.'}
                 </TableCell>
@@ -251,27 +251,27 @@ export function BusListTable({
                     />
                   </TableCell>
                   <TableCell align="center">
-                    <span className="block w-full text-center font-mono text-[11px] font-semibold tabular-nums text-blue-700">
+                    <span className="block w-full text-center font-mono text-2sm font-semibold tabular-nums text-blue-700">
                       {row.plateNo}
                     </span>
                   </TableCell>
                   <TableCell align="center">
-                    <span className="font-mono text-[11px] font-medium tabular-nums text-slate-800">
+                    <span className="font-mono text-2sm font-medium tabular-nums text-slate-800">
                       {row.seqNo}
                     </span>
                   </TableCell>
                   <TableCell align="center">
-                    <span className="block w-full truncate text-center font-mono text-[11px] font-medium tabular-nums text-slate-800">
+                    <span className="block w-full truncate text-center font-mono text-2sm font-medium tabular-nums text-slate-800">
                       {row.mdtId}
                     </span>
                   </TableCell>
                   <TableCell align="center">
-                    <span className="block w-full truncate text-center text-[11px] tabular-nums text-slate-700">
+                    <span className="block w-full truncate text-center text-2sm tabular-nums text-slate-700">
                       {row.subStart} – {row.subEnd}
                     </span>
                   </TableCell>
                   <TableCell align="center">
-                    <span className="block w-full truncate text-center text-[11px] text-slate-600">
+                    <span className="block w-full truncate text-center text-2sm text-slate-600">
                       {row.tariff}
                     </span>
                   </TableCell>
@@ -325,10 +325,10 @@ export function BusListTable({
 
       <DataTableFooter className="w-full flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1">
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
+          <div className="flex items-center gap-1.5 text-xs text-slate-500">
             <span>Show</span>
             <Select defaultValue="25">
-              <SelectTrigger className="h-7 w-[60px] border-slate-200 bg-white px-2 text-[10px] font-medium shadow-none">
+              <SelectTrigger className="h-7 w-[60px] border-slate-200 bg-white px-2 text-xs font-medium shadow-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -339,7 +339,7 @@ export function BusListTable({
             </Select>
             <span>entries</span>
           </div>
-          <p className="text-[10px] text-slate-500">
+          <p className="text-xs text-slate-500">
             Showing{' '}
             <span className="font-medium tabular-nums text-slate-700">
               {showingFrom}
@@ -357,7 +357,7 @@ export function BusListTable({
         <div className="flex shrink-0 flex-wrap items-center justify-end gap-0.5">
           <button
             type="button"
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-medium text-slate-600 transition-colors hover:bg-slate-50"
+            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
           >
             Previous
           </button>
@@ -366,7 +366,7 @@ export function BusListTable({
               key={p}
               type="button"
               className={cn(
-                'flex h-6 min-w-[1.5rem] items-center justify-center rounded border px-0.5 text-[10px] font-medium transition-all',
+                'flex h-6 min-w-[1.5rem] items-center justify-center rounded border px-0.5 text-xs font-medium transition-all',
                 p === 1
                   ? 'border-blue-500 bg-blue-600 text-white shadow-sm'
                   : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50',
@@ -375,18 +375,18 @@ export function BusListTable({
               {p}
             </button>
           ))}
-          <span className="px-0.5 text-[10px] font-medium text-slate-400">
+          <span className="px-0.5 text-xs font-medium text-slate-400">
             …
           </span>
           <button
             type="button"
-            className="flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-slate-200 bg-white px-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-50"
+            className="flex h-6 min-w-[1.5rem] items-center justify-center rounded border border-slate-200 bg-white px-0.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
           >
             32
           </button>
           <button
             type="button"
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-medium text-slate-600 transition-colors hover:bg-slate-50"
+            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50"
           >
             Next
           </button>
@@ -395,3 +395,5 @@ export function BusListTable({
     </DataTable>
   );
 }
+
+

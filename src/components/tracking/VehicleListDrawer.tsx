@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Search, Filter, ChevronRight, ChevronDown, Bus, ChevronLeft, MapPin } from 'lucide-react';
 import { BusLiveVehicle } from '@/data/bus-live-tracking-mock-data';
 import { VehicleListItem } from './VehicleListItem';
+import { typography } from '@/lib/typography';
 
 interface VehicleListDrawerProps {
   vehicles: BusLiveVehicle[];
@@ -50,11 +51,13 @@ export function VehicleListDrawer({ vehicles, onClose, selectedId, onSelect }: O
               <Bus className="h-4 w-4" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-[13px] font-semibold text-slate-800 uppercase tracking-widest leading-none mb-1">Fleet Management</h3>
-              <div className="flex items-center gap-1.5 opacity-60">
+              <h3 className={cn(typography.pageTitle, 'text-slate-900 leading-tight mb-0.5')}>
+                Live Bus Tracking
+              </h3>
+              <div className="flex items-center gap-1.5">
                 <div className="h-1 w-1 rounded-full bg-emerald-500" />
-                <p className="text-[9px] font-extrabold text-slate-500 uppercase tracking-tighter">
-                   {vehicles.filter(v => v.status === 'Online').length} Active / {vehicles.length} Total
+                <p className={cn(typography.pageSubtitle, 'text-slate-500')}>
+                   {vehicles.filter(v => v.status === 'Online').length} active / {vehicles.length} total
                 </p>
               </div>
             </div>
@@ -73,7 +76,10 @@ export function VehicleListDrawer({ vehicles, onClose, selectedId, onSelect }: O
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
             <Input
               placeholder="Search assets..."
-              className="w-full h-9 pl-9 pr-4 bg-slate-100/50 border-transparent hover:border-slate-200 focus:bg-white focus:border-blue-400 transition-all rounded-xl text-[11px] font-medium"
+              className={cn(
+                "w-full h-9 pl-9 pr-4 bg-slate-100/50 border-transparent hover:border-slate-200 focus:bg-white focus:border-blue-400 transition-all rounded-xl",
+                typography.body,
+              )}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -108,14 +114,16 @@ export function VehicleListDrawer({ vehicles, onClose, selectedId, onSelect }: O
                       <MapPin className="h-3.5 w-3.5" />
                     </div>
                     <div className="flex flex-col items-start min-w-0">
-                      <span className="text-[10px] font-semibold text-slate-700 uppercase tracking-wider truncate">{company}</span>
-                      <span className="text-[8px] font-medium text-slate-400 group-hover/btn:text-blue-400 transition-colors">
+                      <span className={cn(typography.body, 'font-medium text-slate-700 truncate tracking-tight')}>
+                        {company}
+                      </span>
+                      <span className={cn(typography.meta, 'text-slate-500 group-hover/btn:text-blue-500 transition-colors')}>
                         {groupVehicles.length} Units • {onlineCount} Live
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
-                     <span className="text-[10px] font-semibold text-slate-300">#{groupVehicles.length}</span>
+                     <span className={cn(typography.meta, 'text-slate-400')}>#{groupVehicles.length}</span>
                      {isCollapsed ? <ChevronRight className="h-4 w-4 text-slate-300" /> : <ChevronDown className="h-4 w-4 text-blue-400" />}
                   </div>
                 </button>
@@ -137,7 +145,9 @@ export function VehicleListDrawer({ vehicles, onClose, selectedId, onSelect }: O
           {groups.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
               <Search className="h-10 w-10 mb-3 text-slate-300" />
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">No assets matching view</p>
+              <p className={cn(typography.meta, 'text-slate-500')}>
+                No assets matching view
+              </p>
             </div>
           )}
         </div>
@@ -145,3 +155,5 @@ export function VehicleListDrawer({ vehicles, onClose, selectedId, onSelect }: O
     </div>
   );
 }
+
+

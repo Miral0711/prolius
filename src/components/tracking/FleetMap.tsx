@@ -3,6 +3,7 @@ import L from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { Button } from '@/components/ui/button';
 import { Maximize2, Layers, Crosshair, ZoomIn, ZoomOut } from 'lucide-react';
 
@@ -45,15 +46,10 @@ const getVehicleIcon = (color: string, isSelected: boolean) =>
     iconAnchor: isSelected ? [14, 14] : [10, 10],
   });
 
-// Component to handle map view updates and resizing
-const MapController = ({ center }: { center: [number, number] }) => {
+/** Resize / layout only — never flyTo on prop changes (selection updates stay smooth). */
+const MapResizeHandler = () => {
   const map = useMap();
 
-  useEffect(() => {
-    map.flyTo(center, 15, { duration: 1.5 });
-  }, [center, map]);
-
-  // Handle container resizing
   useEffect(() => {
     const timer = setTimeout(() => {
       map.invalidateSize();
@@ -95,16 +91,16 @@ const VehicleMarker = memo(({ marker, isSelected, onClick }: {
         <div className="p-1 min-w-[130px]">
           <div className="flex items-center gap-2 mb-2 border-b border-slate-100 pb-1.5">
              <div className={cn("h-2 w-2 rounded-full", marker.status === 'Online' ? 'bg-emerald-500' : 'bg-slate-400')} />
-             <p className="font-semibold text-slate-800 text-[11px] uppercase tracking-wider">{marker.label}</p>
+             <p className={cn(typography.body, 'truncate font-medium text-slate-800 tracking-tight')}>{marker.label}</p>
           </div>
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center">
-              <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-tighter">Velocity</span>
-              <span className="text-[10px] font-semibold text-slate-700">{marker.speed || 0} KM/H</span>
+            <div className="flex justify-between items-center gap-2">
+              <span className={cn(typography.meta, 'text-slate-500')}>Velocity</span>
+              <span className={cn(typography.body, 'font-medium text-slate-800 tabular-nums')}>{marker.speed || 0} KM/H</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-tighter">Engine</span>
-              <span className={cn("text-[10px] font-semibold uppercase", marker.engineStatus === 'On' ? 'text-emerald-600' : 'text-slate-500')}>{marker.engineStatus || 'Off'}</span>
+            <div className="flex justify-between items-center gap-2">
+              <span className={cn(typography.meta, 'text-slate-500')}>Engine</span>
+              <span className={cn(typography.body, 'font-medium', marker.engineStatus === 'On' ? 'text-emerald-600' : 'text-slate-500')}>{marker.engineStatus || 'Off'}</span>
             </div>
           </div>
         </div>
@@ -135,7 +131,7 @@ export function FleetMap({
 
   if (!mounted) {
     return (
-      <div className="h-full w-full flex items-center justify-center bg-slate-50 text-slate-400 font-medium animate-pulse">
+      <div className={cn('flex h-full w-full items-center justify-center bg-slate-50 animate-pulse', typography.meta, 'text-slate-400')}>
         Initializing Dynamic Map Layer...
       </div>
     );
@@ -165,7 +161,7 @@ export function FleetMap({
           />
         ))}
 
-        <MapController center={[center.lat, center.lng]} />
+        <MapResizeHandler />
       </MapContainerAny>
 
       {/* Structured Utilities Overlay */}
@@ -197,3 +193,5 @@ function GlassButton({ icon: Icon, className }: { icon: any; className?: string 
     </Button>
   );
 }
+
+

@@ -16,6 +16,7 @@ import { BusLiveVehicle } from '@/data/bus-live-tracking-mock-data';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { typography } from '@/lib/typography';
 
 interface VehicleDetailsDrawerProps {
   vehicle: BusLiveVehicle | null;
@@ -24,13 +25,42 @@ interface VehicleDetailsDrawerProps {
 
 function PanelHeader({ title, icon: Icon, extra }: { title: string; icon?: any; extra?: string }) {
   return (
-    <div className="flex items-center justify-between gap-1 mb-2 px-1 border-b border-slate-100 pb-1.5 mt-2 first:mt-0">
-      <div className="flex items-center gap-1.5">
-          {Icon && <Icon className="h-3 w-3 text-blue-500" />}
-        <h3 className="text-[10px] font-medium text-slate-700 uppercase tracking-wider leading-none truncate">{title}</h3>
+    <header className="mb-2 border-b border-slate-100 pb-2">
+      <div className="flex flex-nowrap items-baseline justify-between gap-3 px-2">
+        <div
+          className={cn(
+            'min-w-0 flex-1',
+            Icon &&
+              'grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-1.5',
+          )}
+        >
+          {Icon ? (
+            <span className="inline-flex translate-y-0.5 text-blue-500" aria-hidden>
+              <Icon className="size-3.5" />
+            </span>
+          ) : null}
+          <h3
+            className={cn(
+              typography.sectionTitle,
+              'min-w-0 truncate',
+              Icon && 'col-start-2',
+            )}
+          >
+            {title}
+          </h3>
+        </div>
+        {extra ? (
+          <span
+            className={cn(
+              typography.meta,
+              'max-w-[42%] shrink-0 whitespace-nowrap text-right text-slate-500 tabular-nums',
+            )}
+          >
+            {extra}
+          </span>
+        ) : null}
       </div>
-      {extra && <span className="text-[8px] font-semibold text-slate-400 uppercase tracking-tighter shrink-0">{extra}</span>}
-    </div>
+    </header>
   );
 }
 
@@ -48,7 +78,9 @@ function GridRow({ label, value, status, theme = 'light', icon: Icon }: {
     )}>
       <div className="flex items-center gap-1">
         {Icon && <Icon className="h-2 w-2 text-slate-400 group-hover:text-blue-500 transition-colors" />}
-        <span className="text-[7px] font-medium text-slate-400 uppercase tracking-widest leading-none truncate">{label}</span>
+        <span className={cn(typography.caption, 'truncate font-normal leading-tight text-slate-500 tracking-tight')}>
+          {label}
+        </span>
       </div>
       <div className="flex items-center gap-1.5 min-w-0">
         {status && (
@@ -58,7 +90,9 @@ function GridRow({ label, value, status, theme = 'light', icon: Icon }: {
             status === 'offline' ? 'bg-slate-300' : 'bg-rose-500'
           )} />
         )}
-        <span className="text-[10px] font-semibold text-slate-700 truncate leading-none">{value || '--'}</span>
+        <span className={cn(typography.body, 'font-medium text-slate-800 truncate leading-tight')}>
+          {value || '--'}
+        </span>
       </div>
     </div>
   );
@@ -88,22 +122,23 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
             </div>
             <div className="flex flex-col min-w-0">
               <div className="flex items-center gap-1.5 mb-0.5">
-                <h2 className="text-[12px] font-semibold text-slate-800 leading-none truncate uppercase tracking-tight">
+                <h2 className="truncate text-sm font-semibold leading-tight tracking-normal text-gray-900 normal-case">
                   {vehicle.driver || 'Driver Unknown'}
                 </h2>
                 <span className={cn(
-                  "px-1.5 py-0.5 rounded text-[8px] font-semibold uppercase tracking-widest leading-none scale-90 origin-left",
+                  typography.caption,
+                  'rounded px-1.5 py-0.5 font-medium leading-none scale-90 origin-left',
                   vehicle.status === 'Online' ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"
                 )}>
                   {vehicle.status}
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-slate-800 text-white rounded text-[9px] font-medium uppercase tracking-tight">
+                <div className={cn(typography.body, 'flex items-center gap-1 rounded bg-slate-800 px-1.5 py-0.5 font-medium leading-none text-white')}>
                   {vehicle.plate}
                 </div>
-                <div className="flex items-center gap-1 text-[9px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded uppercase tracking-tighter">
-                  R-101 <span className="text-blue-300 mx-0.5">•</span> Trip Active
+                <div className={cn(typography.meta, 'flex items-center gap-1 rounded bg-blue-50 px-1.5 py-0.5 font-normal leading-none text-blue-600')}>
+                  R-101 <span className="mx-0.5 text-blue-300">•</span> Trip Active
                 </div>
               </div>
             </div>
@@ -135,10 +170,10 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
                     btn.variant === 'rose' && "bg-white border-rose-100 text-rose-500 hover:bg-rose-50 hover:text-rose-600",
                   )}>
                     <btn.icon className={cn("h-3.5 w-3.5 transition-transform group-hover:scale-110", btn.variant === 'blue' ? "text-white" : "text-slate-400 group-hover:text-current")} />
-                    <span className={cn("text-[8px] font-extrabold uppercase tracking-widest leading-none", btn.variant === 'blue' ? "text-white/90" : "text-slate-400 group-hover:text-inherit")}>{btn.label}</span>
+                    <span className={cn(typography.caption, 'font-medium leading-none tracking-tight', btn.variant === 'blue' ? "text-white/90" : "text-slate-500 group-hover:text-inherit")}>{btn.label}</span>
                   </button>
                 </TooltipTrigger>
-                <TooltipContent className="bg-slate-900 border-none text-[10px] font-medium text-white px-3 py-1.5 rounded-lg shadow-xl translate-y-[-4px]">{btn.label} Action</TooltipContent>
+                <TooltipContent className="bg-slate-900 border-none text-xs font-medium text-white px-3 py-1.5 rounded-lg shadow-xl translate-y-[-4px]">{btn.label} Action</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           ))}
@@ -239,12 +274,14 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
 
       {/* Footer Branding - Subtle */}
       <div className="px-4 py-2 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
-        <span className="text-[8px] font-semibold text-slate-400 uppercase tracking-[0.2em]">Fleet Intel v4.0</span>
+        <span className={cn(typography.meta, 'text-slate-400')}>Fleet Intel v4.0</span>
         <div className="flex items-center gap-1.5">
           <div className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[8px] font-medium text-slate-500 uppercase">Live Stream</span>
+          <span className={cn(typography.meta, 'text-slate-500')}>Live stream</span>
         </div>
       </div>
     </div>
   );
 }
+
+

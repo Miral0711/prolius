@@ -36,7 +36,7 @@ import { AppCard } from '@/components/ui/app-card';
 import { StatusBadge, type StatusVariant } from '@/components/dashboard/StatusBadge';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { AnalyticsCard } from '@/components/dashboard/AnalyticsCard';
-import { PageSurface } from '@/components/layout';
+import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
 
 /* ─── HELPERS ─────────────────────────────────────────────────────── */
 
@@ -54,7 +54,7 @@ function Card({ className, children }: { className?: string; children: React.Rea
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 mb-2">
-      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-400 whitespace-nowrap">{children}</p>
+      <p className="text-2xs font-semibold uppercase tracking-[0.14em] text-slate-400 whitespace-nowrap">{children}</p>
       <div className="h-px flex-1 bg-slate-200/60" />
     </div>
   );
@@ -65,7 +65,7 @@ function CardHead({ icon, title, children }: { icon: React.ReactNode; title: str
     <div className="flex items-center justify-between gap-2 mb-2.5">
       <div className="flex items-center gap-1.5">
         {icon}
-        <p className="text-[11px] font-semibold text-slate-700">{title}</p>
+        <p className="text-2sm font-semibold text-slate-700">{title}</p>
       </div>
       {children && <div className="flex items-center gap-1.5">{children}</div>}
     </div>
@@ -83,7 +83,7 @@ function Pill({ children, color = 'slate' }: { children: React.ReactNode; color?
     violet:  'bg-violet-100 text-violet-700',
   };
   return (
-    <span className={cn('rounded-full px-1.5 py-0.5 text-[9px] font-medium', map[color] ?? map.slate)}>
+    <span className={cn('rounded-full px-1.5 py-0.5 text-2xs font-medium', map[color] ?? map.slate)}>
       {children}
     </span>
   );
@@ -197,11 +197,12 @@ const INTEL_ROWS = [
 export function ManagerCockpitPage() {
   return (
     <PageSurface
-      padding="md"
-      sectionGap="lg"
+      padding={PAGE_SURFACE_FOOTER_PADDING}
+      fill
+      sectionGap="none"
       className="min-h-0 flex-1 bg-[#eef2f7]"
     >
-      <PageSurface.Body className="gap-3">
+      <PageSurface.Body className="min-h-0 flex-1 gap-3 overflow-y-auto">
 
       {/* ── KPI STRIP (8 cards) ───────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
@@ -239,15 +240,15 @@ export function ManagerCockpitPage() {
                   <div className="flex items-center gap-2 min-w-0">
                     <div className={cn('h-1.5 w-1.5 rounded-full shrink-0', a.severity === 'rose' ? 'bg-rose-500' : 'bg-amber-500')} />
                     <Icon className={cn('h-3.5 w-3.5 shrink-0', a.c)} />
-                    <span className="truncate text-[10px] font-semibold tracking-tight text-slate-700 uppercase">{a.label}</span>
+                    <span className="truncate text-xs font-semibold tracking-tight text-slate-700 uppercase">{a.label}</span>
                   </div>
-                  <span className={cn('text-[12px] font-semibold tabular-nums', a.cc)}>{a.count}</span>
+                  <span className={cn('text-sm font-semibold tabular-nums', a.cc)}>{a.count}</span>
                 </div>
               );
             })}
             <div className="mt-1 flex items-center justify-between rounded-sm bg-rose-500 border border-rose-600/20 px-3 py-2 text-white shadow-sm ring-1 ring-white/20">
-              <span className="text-[10px] font-semibold uppercase tracking-widest">15 Active Total</span>
-              <span className="text-[9px] font-semibold px-1.5 py-0.5 bg-white/20 rounded-[2px]">CRITICAL_FLT</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.08rem]">15 Active Total</span>
+              <span className="text-2xs font-semibold px-1.5 py-0.5 bg-white/20 rounded-[2px]">CRITICAL_FLT</span>
             </div>
           </div>
         </AppCard>
@@ -259,7 +260,7 @@ export function ManagerCockpitPage() {
             {FLEET_ROW1.map((s) => (
               <div key={s.label} className={cn('flex flex-col items-center justify-center rounded-sm border border-white/50 py-2.5 transition-all hover:bg-white', s.bg)}>
                 <p className={cn('text-lg font-semibold leading-none tabular-nums', s.c)}>{s.value}</p>
-                <p className="text-[8px] font-semibold uppercase tracking-tighter text-slate-500 mt-1">{s.label}</p>
+                <p className="text-2xs font-semibold uppercase tracking-tighter text-slate-500 mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -269,9 +270,9 @@ export function ManagerCockpitPage() {
           {/* Capacity bar */}
           <div className="mb-2">
             <div className="flex justify-between items-baseline mb-1.5">
-              <span className="text-[9px] font-semibold uppercase tracking-widest text-slate-400">allocation_index</span>
+              <span className="text-2xs font-semibold uppercase tracking-[0.08rem] text-slate-400">allocation_index</span>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-blue-600">34.4%</span>
+                <span className="text-2sm font-semibold text-blue-600">34.4%</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
               </div>
             </div>
@@ -282,8 +283,8 @@ export function ManagerCockpitPage() {
               </div>
             </div>
             <div className="flex justify-between mt-1.5">
-              <span className="text-[8px] font-medium text-slate-400 uppercase tracking-tight">avail: 427 units</span>
-              <span className="text-[8px] font-medium text-slate-400 uppercase tracking-tight">target: 65% utilization</span>
+              <span className="text-2xs font-medium text-slate-400 uppercase tracking-tight">avail: 427 units</span>
+              <span className="text-2xs font-medium text-slate-400 uppercase tracking-tight">target: 65% utilization</span>
             </div>
           </div>
         </AppCard>
@@ -298,10 +299,10 @@ export function ManagerCockpitPage() {
             {/* Left: daily info */}
             <div className="flex flex-col justify-between rounded-md bg-emerald-50/60 border border-emerald-100/60 p-3 ring-1 ring-white/40">
               <div>
-                <p className="text-[9px] font-semibold uppercase tracking-widest text-emerald-800">gross_rev</p>
+                <p className="text-2xs font-semibold uppercase tracking-[0.08rem] text-emerald-800">gross_rev</p>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <p className="text-[28px] font-semibold tracking-tight text-slate-800 leading-none">0</p>
-                  <span className="text-[11px] font-semibold text-slate-400">SAR</span>
+                  <p className="text-3xl font-semibold tracking-tight text-slate-800 leading-none">0</p>
+                  <span className="text-2sm font-semibold text-slate-400">SAR</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2.5 pt-3 mt-3 border-t border-emerald-100">
@@ -312,8 +313,8 @@ export function ManagerCockpitPage() {
                   { label: 'Monthly',value: '0 M'},
                 ].map(s => (
                   <div key={s.label}>
-                    <p className="text-[8px] text-slate-400 font-semibold uppercase tracking-tighter">{s.label}</p>
-                    <p className="text-[11px] font-semibold text-slate-700 tabular-nums">{s.value}</p>
+                    <p className="text-2xs text-slate-400 font-semibold uppercase tracking-tighter">{s.label}</p>
+                    <p className="text-2sm font-semibold text-slate-700 tabular-nums">{s.value}</p>
                   </div>
                 ))}
               </div>
@@ -328,7 +329,7 @@ export function ManagerCockpitPage() {
                 { label: 'Pending Pymts',   value: '4 jobs',  variant: 'rose' as StatusVariant    },
               ].map(m => (
                 <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-3 py-2 border border-slate-200/40">
-                  <span className="text-[9px] font-semibold uppercase tracking-tight text-slate-500">{m.label}</span>
+                  <span className="text-2xs font-semibold uppercase tracking-tight text-slate-500">{m.label}</span>
                   <StatusBadge label={m.value} variant={m.variant} className="border-none shadow-none font-semibold" />
                 </div>
               ))}
@@ -346,12 +347,12 @@ export function ManagerCockpitPage() {
           <div className="flex gap-2 mb-2.5">
             <div className="flex flex-1 items-center gap-1.5 rounded-sm bg-amber-50 border border-amber-100 px-2 py-1.5">
               <div className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
-              <span className="text-[9px] font-semibold text-amber-800 truncate flex-1">1 Low Stock Item</span>
+              <span className="text-2xs font-semibold text-amber-800 truncate flex-1">1 Low Stock Item</span>
               <Wrench className="h-3 w-3 text-amber-400 shrink-0" />
             </div>
             <div className="flex flex-1 items-center gap-1.5 rounded-sm bg-emerald-50 border border-emerald-100 px-2 py-1.5">
               <CheckCircle className="h-3 w-3 text-emerald-500 shrink-0" />
-              <span className="text-[9px] font-semibold text-emerald-800 truncate">Status: Nominal</span>
+              <span className="text-2xs font-semibold text-emerald-800 truncate">Status: Nominal</span>
             </div>
           </div>
 
@@ -366,14 +367,14 @@ export function ManagerCockpitPage() {
                   <div className={cn('flex h-6 w-6 items-center justify-center rounded-sm', a.bg)}>
                     <Icon className={cn('h-3 w-3', a.c)} />
                   </div>
-                  <span className="text-[8px] font-semibold text-slate-500 group-hover:text-slate-700">{a.label}</span>
+                  <span className="text-2xs font-semibold text-slate-500 group-hover:text-slate-700">{a.label}</span>
                 </Link>
               );
             })}
           </div>
 
           {/* Quick Dispatch Controls */}
-          <p className="text-[8px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Quick Dispatch Controls</p>
+          <p className="text-2xs font-semibold uppercase tracking-[0.04rem] text-slate-400 mb-1.5">Quick Dispatch Controls</p>
           <div className="grid grid-cols-4 gap-1.5">
             {DISPATCH_ACTIONS.map((a) => {
               const Icon = a.icon;
@@ -384,7 +385,7 @@ export function ManagerCockpitPage() {
                   <div className={cn('flex h-7 w-7 items-center justify-center rounded-sm', a.bg)}>
                     <Icon className={cn('h-3.5 w-3.5', a.c)} />
                   </div>
-                  <span className="text-[7.5px] font-semibold text-slate-500 text-center leading-tight">{a.label}</span>
+                  <span className="text-2xs font-semibold text-slate-500 text-center leading-tight">{a.label}</span>
                 </button>
               );
             })}
@@ -411,8 +412,8 @@ export function ManagerCockpitPage() {
                     <Icon className={cn('h-3 w-3', s.c)} />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-[7px] font-medium uppercase tracking-tight text-slate-400 leading-none mb-0.5">{s.label}</p>
-                    <p className={cn('text-[13px] font-semibold leading-none', s.c)}>{s.value}</p>
+                    <p className="truncate text-2xs font-medium uppercase tracking-tight text-slate-400 leading-none mb-0.5">{s.label}</p>
+                    <p className={cn('text-sm font-semibold leading-none', s.c)}>{s.value}</p>
                   </div>
                 </div>
               );
@@ -433,8 +434,8 @@ export function ManagerCockpitPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="truncate text-[9px] font-semibold text-slate-600">{h.label}</span>
-                      <span className={cn('shrink-0 ml-2 text-[10px] font-semibold', h.c)}>{h.value}</span>
+                      <span className="truncate text-2xs font-semibold text-slate-600">{h.label}</span>
+                      <span className={cn('shrink-0 ml-2 text-xs font-semibold', h.c)}>{h.value}</span>
                     </div>
                     <div className="h-1 w-full rounded-full bg-slate-200 overflow-hidden">
                       <div className={cn('h-full rounded-full', h.bar)} style={{ width: `${h.pct}%` }} />
@@ -477,10 +478,10 @@ export function ManagerCockpitPage() {
               <div key={r.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
                 <div className="flex items-center gap-2 min-w-0">
                   <div className={cn('h-2 w-2 rounded-full shrink-0', r.trend === 'up' ? 'bg-rose-500' : r.trend === 'down' ? 'bg-emerald-500' : 'bg-slate-300')} />
-                  <span className="truncate text-[10px] font-medium text-slate-600">{r.label}</span>
+                  <span className="truncate text-xs font-medium text-slate-600">{r.label}</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                  <span className={cn('text-[11px] font-semibold', r.c)}>{r.value}</span>
+                  <span className={cn('text-2sm font-semibold', r.c)}>{r.value}</span>
                   {r.trend === 'up'   && <ArrowUp className="h-3 w-3 text-rose-400" />}
                   {r.trend === 'down' && <ArrowDown className="h-3 w-3 text-emerald-400" />}
                   {r.trend === 'same' && <Minus className="h-3 w-3 text-slate-300" />}
@@ -508,12 +509,12 @@ export function ManagerCockpitPage() {
                     <div className={cn('flex h-5 w-5 shrink-0 items-center justify-center rounded-sm', s.bg)}>
                       <Icon className={cn('h-2.5 w-2.5', s.c)} />
                     </div>
-                    <span className="truncate text-[10px] font-medium text-slate-600">{s.label}</span>
+                    <span className="truncate text-xs font-medium text-slate-600">{s.label}</span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0 ml-2">
-                    <span className="text-[9px] text-slate-400 font-mono">{s.latency}</span>
+                    <span className="text-2xs text-slate-400 font-mono">{s.latency}</span>
                     <span className={cn(
-                      'rounded-full px-1.5 py-0.5 text-[8px] font-semibold uppercase',
+                      'rounded-full px-1.5 py-0.5 text-2xs font-semibold uppercase',
                       online ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700',
                     )}>
                       {s.status}
@@ -538,16 +539,16 @@ export function ManagerCockpitPage() {
           <div className="mb-2 flex items-center gap-2 rounded-sm bg-emerald-50 border border-emerald-100 px-2.5 py-2">
             <CheckCircle className="h-4 w-4 text-emerald-500 shrink-0" />
             <div className="min-w-0 flex-1">
-              <p className="text-[9px] font-semibold uppercase tracking-wider text-emerald-700">Log Clear</p>
-              <p className="text-[8px] text-emerald-600">No active anomalies</p>
+              <p className="text-2xs font-semibold uppercase tracking-[0.04rem] text-emerald-700">Log Clear</p>
+              <p className="text-2xs text-emerald-600">No active anomalies</p>
             </div>
-            <span className="text-[9px] font-semibold text-emerald-600">2% CLEAR</span>
+            <span className="text-2xs font-semibold text-emerald-600">2% CLEAR</span>
           </div>
           <div className="flex flex-col gap-0.5">
             {ANOMALY_META.map((m) => (
               <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
-                <span className="text-[10px] font-medium text-slate-500">{m.label}</span>
-                <span className="text-[10px] font-semibold text-slate-700">{m.value}</span>
+                <span className="text-xs font-medium text-slate-500">{m.label}</span>
+                <span className="text-xs font-semibold text-slate-700">{m.value}</span>
               </div>
             ))}
           </div>
@@ -569,15 +570,15 @@ export function ManagerCockpitPage() {
                   <span key={d} className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: d }} />
                 ))}
               </div>
-              <span className="text-[9px] font-semibold uppercase text-blue-700">AWAITING SYNC</span>
+              <span className="text-2xs font-semibold uppercase text-blue-700">AWAITING SYNC</span>
             </div>
-            <span className="text-[8px] text-slate-400">34m ago</span>
+            <span className="text-2xs text-slate-400">34m ago</span>
           </div>
           <div className="flex flex-col gap-0.5">
             {FLOW_META.map((m) => (
               <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
-                <span className="text-[10px] font-medium text-slate-500">{m.label}</span>
-                <span className="text-[10px] font-semibold text-slate-700">{m.value}</span>
+                <span className="text-xs font-medium text-slate-500">{m.label}</span>
+                <span className="text-xs font-semibold text-slate-700">{m.value}</span>
               </div>
             ))}
           </div>
@@ -598,9 +599,9 @@ export function ManagerCockpitPage() {
                 <div className="flex items-center gap-1.5 min-w-0">
                   {r.trend === 'up'   ? <ArrowUp className="h-2.5 w-2.5 shrink-0 text-rose-400" />
                                       : <ArrowDown className="h-2.5 w-2.5 shrink-0 text-emerald-400" />}
-                  <span className="truncate text-[10px] font-medium text-slate-600">{r.label}</span>
+                  <span className="truncate text-xs font-medium text-slate-600">{r.label}</span>
                 </div>
-                <span className={cn('shrink-0 ml-2 text-[10px] font-semibold', r.c)}>{r.value}</span>
+                <span className={cn('shrink-0 ml-2 text-xs font-semibold', r.c)}>{r.value}</span>
               </div>
             ))}
           </div>
@@ -614,3 +615,5 @@ export function ManagerCockpitPage() {
 }
 
 export default ManagerCockpitPage;
+
+
