@@ -63,15 +63,15 @@ const ArchiveControls = ({
 
       <div className="flex flex-col gap-3 border-t border-slate-100 pt-2.5">
         <div className="grid grid-cols-1 gap-2.5">
-          <div className="grid min-w-0 grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1fr)] items-end gap-2.5">
+          <div className="grid min-w-0 grid-cols-[minmax(8rem,1.75fr)_minmax(3.25rem,1fr)_minmax(3.25rem,1fr)] items-start gap-2">
             <FilterInput
               label="Date"
               type="date"
               defaultValue="2026-03-12"
-              className="min-w-0"
+              className="min-w-[8rem] max-w-none"
             />
-            <TimeInput label="From" defaultValue="07:00" />
-            <TimeInput label="To" defaultValue="17:00" />
+            <TimeInput className="min-w-0" label="From" defaultValue="07:00" />
+            <TimeInput className="min-w-0" label="To" defaultValue="17:00" />
           </div>
 
           <ChannelChipGroup
@@ -115,11 +115,36 @@ const DvrRecentList = () => (
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain pr-1 scrollbar-thin scrollbar-thumb-slate-200">
         {[
           { id: 'REC-2941', time: '14:20 - 14:45', cam: 'Cam 1', active: true },
-          { id: 'REC-2942', time: '13:10 - 13:30', cam: 'Cam 2', active: false },
-          { id: 'REC-2943', time: '12:05 - 12:40', cam: 'Cam 1', active: false },
-          { id: 'REC-2944', time: '11:15 - 11:50', cam: 'Cam 3', active: false },
-          { id: 'REC-2945', time: '10:00 - 10:30', cam: 'Cam 4', active: false },
-          { id: 'REC-2946', time: '09:15 - 09:45', cam: 'Cam 2', active: false },
+          {
+            id: 'REC-2942',
+            time: '13:10 - 13:30',
+            cam: 'Cam 2',
+            active: false,
+          },
+          {
+            id: 'REC-2943',
+            time: '12:05 - 12:40',
+            cam: 'Cam 1',
+            active: false,
+          },
+          {
+            id: 'REC-2944',
+            time: '11:15 - 11:50',
+            cam: 'Cam 3',
+            active: false,
+          },
+          {
+            id: 'REC-2945',
+            time: '10:00 - 10:30',
+            cam: 'Cam 4',
+            active: false,
+          },
+          {
+            id: 'REC-2946',
+            time: '09:15 - 09:45',
+            cam: 'Cam 2',
+            active: false,
+          },
         ].map((item, i) => (
           <RecordingListItem
             key={i}
@@ -186,5 +211,3 @@ export function DvrSidebar({
     </div>
   );
 }
-
-

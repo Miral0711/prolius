@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, LucideIcon } from 'lucide-react';
+import { Calendar, ChevronRight, Clock, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
 
@@ -197,47 +197,145 @@ interface FilterInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   inline?: boolean;
 }
 
-/**
- * In-flow picker icon (not absolute) so native text never draws underneath it.
- * Slightly smaller, darker neutral gray — calendar + clock match.
- */
-const nativePickerIndicator = [
-  '[&::-webkit-calendar-picker-indicator]:ml-2',
-  '[&::-webkit-calendar-picker-indicator]:mr-1.5',
-  '[&::-webkit-calendar-picker-indicator]:h-3',
-  '[&::-webkit-calendar-picker-indicator]:w-3',
-  '[&::-webkit-calendar-picker-indicator]:min-h-3',
-  '[&::-webkit-calendar-picker-indicator]:min-w-3',
-  '[&::-webkit-calendar-picker-indicator]:shrink-0',
-  '[&::-webkit-calendar-picker-indicator]:cursor-pointer',
-  '[&::-webkit-calendar-picker-indicator]:opacity-100',
-  '[&::-webkit-calendar-picker-indicator]:[filter:brightness(0)_saturate(100%)_invert(32%)_sepia(12%)_saturate(480%)_hue-rotate(176deg)_brightness(0.94)_contrast(0.96)]',
-].join(' ') as const;
-
-/** Minimal WebKit tweaks — avoid flex/gap on fields-wrapper (breaks 12-03-2026 / 07:00). */
-const dateDatetimeEdit = [
-  '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-  '[&::-webkit-datetime-edit]:text-sm [&::-webkit-datetime-edit]:font-normal [&::-webkit-datetime-edit]:text-gray-800',
-  '[&::-webkit-datetime-edit]:text-center',
-  '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
-  '[&::-webkit-datetime-edit-fields-wrapper]:text-center',
-].join(' ') as const;
-
-const timeDatetimeEdit = [
-  '[&::-webkit-datetime-edit]:m-0 [&::-webkit-datetime-edit]:min-w-0 [&::-webkit-datetime-edit]:flex-1 [&::-webkit-datetime-edit]:p-0',
-  '[&::-webkit-datetime-edit]:text-sm [&::-webkit-datetime-edit]:font-normal [&::-webkit-datetime-edit]:text-gray-800',
-  '[&::-webkit-datetime-edit]:text-center',
-  '[&::-webkit-datetime-edit-fields-wrapper]:m-0 [&::-webkit-datetime-edit-fields-wrapper]:p-0',
-  '[&::-webkit-datetime-edit-fields-wrapper]:text-center',
-].join(' ') as const;
-
 const dvrFilterLabelClass = cn(
-  'ml-0.5 flex h-[13px] shrink-0 items-center gap-1.5 leading-none',
+  'ml-0.5 flex min-h-4 shrink-0 items-center gap-1.5 leading-none',
   dvrTypography.fieldLabel,
 );
 
-/** Left inset + right inset for trailing icon (in-flow; no overlap). */
-const dvrDateTimeInputPad = 'pl-3 pr-1.5' as const;
+/** Strict equal height + flex shell; native picker sits full-size on top (opacity-0) */
+const dvrDateTimeShellClass = cn(
+  'relative box-border flex h-10 min-h-10 max-h-10 w-full min-w-0 items-stretch overflow-hidden rounded-lg border border-slate-200/80 bg-slate-50/50',
+  'transition-all hover:border-slate-300 hover:bg-white [color-scheme:light]',
+  'focus-within:border-blue-400 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500/10',
+);
+
+/** Single shared row: same padding, gap, vertical centering for Date + time overlays */
+const dvrOverlayDisplayRowClass =
+  'pointer-events-none absolute inset-0 z-[1] flex h-full min-h-0 w-full min-w-0 flex-nowrap items-center justify-center gap-1.5 px-2.5' as const;
+
+const dvrOverlayIconClass = 'size-3.5 shrink-0 text-gray-700' as const;
+
+/** Formatted display from ISO yyyy-mm-dd → DD-MM-YYYY (always 2-digit day/month) */
+function formatIsoDateToDvrDisplay(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim());
+  if (!m) return '';
+  return `${m[3]}-${m[2]}-${m[1]}`;
+}
+
+function normalizeTimeDisplay(t: string): string {
+  if (!t?.trim()) return '';
+  const parts = t.trim().split(':');
+  const h = (parts[0] ?? '').padStart(2, '0');
+  const min = (parts[1] ?? '').padStart(2, '0');
+  return `${h}:${min}`;
+}
+
+type DvrOverlayPickerProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'type' | 'className' | 'size'
+> & { className?: string };
+
+function DvrOverlayDateInput({ className, id, ...props }: DvrOverlayPickerProps) {
+  const { value, defaultValue, onChange, disabled, ...rest } = props;
+  const isControlled = value !== undefined;
+  const [uncontrolled, setUncontrolled] = React.useState(
+    () => (typeof defaultValue === 'string' ? defaultValue : '') || '',
+  );
+  const current = (isControlled ? String(value ?? '') : uncontrolled) || '';
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isControlled) setUncontrolled(e.target.value);
+    onChange?.(e);
+  };
+
+  const display = formatIsoDateToDvrDisplay(current);
+
+  return (
+    <div
+      className={cn(
+        dvrDateTimeShellClass,
+        'min-w-[7.75rem] shrink-0',
+        className,
+      )}
+    >
+      <input
+        id={id}
+        type="date"
+        {...(isControlled
+          ? { value: current || '', onChange: handleChange }
+          : { defaultValue: defaultValue as string | undefined, onChange: handleChange })}
+        disabled={disabled}
+        className="absolute inset-0 z-[2] m-0 box-border h-full min-h-0 w-full min-w-0 cursor-pointer border-0 bg-transparent p-0 opacity-0 disabled:cursor-not-allowed"
+        {...rest}
+      />
+      <div className={dvrOverlayDisplayRowClass} aria-hidden>
+        <span
+          className={cn(
+            'inline-flex min-h-0 items-center whitespace-nowrap text-sm font-medium tabular-nums leading-none',
+            current ? 'text-gray-800' : 'text-slate-400',
+          )}
+        >
+          {display || 'DD-MM-YYYY'}
+        </span>
+        <span className="inline-flex size-3.5 shrink-0 items-center justify-center">
+          <Calendar
+            className={dvrOverlayIconClass}
+            aria-hidden
+            strokeWidth={1.75}
+          />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function DvrOverlayTimeInput({ className, id, ...props }: DvrOverlayPickerProps) {
+  const { value, defaultValue, onChange, disabled, ...rest } = props;
+  const isControlled = value !== undefined;
+  const [uncontrolled, setUncontrolled] = React.useState(
+    () => (typeof defaultValue === 'string' ? defaultValue : '') || '',
+  );
+  const current = (isControlled ? String(value ?? '') : uncontrolled) || '';
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isControlled) setUncontrolled(e.target.value);
+    onChange?.(e);
+  };
+
+  const display = normalizeTimeDisplay(current);
+
+  return (
+    <div className={cn(dvrDateTimeShellClass, className)}>
+      <input
+        id={id}
+        type="time"
+        {...(isControlled
+          ? { value: current || '', onChange: handleChange }
+          : { defaultValue: defaultValue as string | undefined, onChange: handleChange })}
+        disabled={disabled}
+        className="absolute inset-0 z-[2] m-0 box-border h-full min-h-0 w-full min-w-0 cursor-pointer border-0 bg-transparent p-0 opacity-0 disabled:cursor-not-allowed"
+        {...rest}
+      />
+      <div className={dvrOverlayDisplayRowClass} aria-hidden>
+        <span
+          className={cn(
+            'inline-flex min-h-0 items-center whitespace-nowrap text-sm font-medium tabular-nums leading-none',
+            current ? 'text-gray-800' : 'text-slate-400',
+          )}
+        >
+          {display || 'HH:MM'}
+        </span>
+        <span className="inline-flex size-3.5 shrink-0 items-center justify-center">
+          <Clock
+            className={dvrOverlayIconClass}
+            aria-hidden
+            strokeWidth={1.75}
+          />
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export const FilterInput: React.FC<FilterInputProps> = ({
   label,
@@ -245,26 +343,34 @@ export const FilterInput: React.FC<FilterInputProps> = ({
   className,
   type,
   inline = false,
+  id: idProp,
   ...props
 }) => {
-  const inputClassName = cn(
-    'box-border flex h-10 w-full min-h-10 min-w-0 items-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-sm leading-normal text-gray-800 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-400 transition-all hover:bg-white hover:border-slate-300 [color-scheme:light]',
-    type === 'date'
-      ? cn(
-          'justify-center text-center font-normal',
-          dvrDateTimeInputPad,
-          nativePickerIndicator,
-          dateDatetimeEdit,
-        )
-      : 'justify-start px-2.5 text-left font-medium',
-  );
+  const autoId = React.useId();
+  const fieldId = idProp ?? `dvr-filter-${autoId}`;
 
-  const control = <input type={type} {...props} className={inputClassName} />;
+  const control =
+    type === 'date' ? (
+      <DvrOverlayDateInput id={fieldId} {...props} />
+    ) : (
+      <input
+        id={fieldId}
+        type={type}
+        {...props}
+        className={cn(
+          'box-border flex h-10 min-h-10 w-full min-w-0 items-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-sm text-gray-800 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-400 transition-all hover:bg-white hover:border-slate-300 [color-scheme:light]',
+          'justify-start px-2.5 text-left font-medium leading-normal',
+        )}
+      />
+    );
 
   if (inline) {
     return (
       <div className={cn('flex min-w-0 items-center gap-1.5', className)}>
-        <label className={cn(dvrFilterLabelClass, 'ml-0')}>
+        <label
+          htmlFor={fieldId}
+          className={cn(dvrFilterLabelClass, 'ml-0')}
+        >
           {Icon && <Icon className="h-2.5 w-2.5 shrink-0 text-slate-400" />}
           {label}
         </label>
@@ -276,8 +382,8 @@ export const FilterInput: React.FC<FilterInputProps> = ({
   }
 
   return (
-    <div className={cn('flex min-w-0 flex-col gap-0.5', className)}>
-      <label className={dvrFilterLabelClass}>
+    <div className={cn('flex min-w-0 flex-col gap-1', className)}>
+      <label htmlFor={fieldId} className={dvrFilterLabelClass}>
         {Icon && <Icon className="h-2.5 w-2.5 shrink-0 text-slate-400" />}
         {label}
       </label>
@@ -291,33 +397,34 @@ export const FilterInput: React.FC<FilterInputProps> = ({
 /* ─── 6. TIME INPUT ───────────────────────────────────────────── */
 export const TimeInput: React.FC<
   FilterInputProps & { position?: 'from' | 'to' }
-> = ({ label, icon: Icon, position, className, ...props }) => (
-  <div
-    className={cn(
-      'group/input flex min-w-0 w-full flex-col gap-0.5',
-      className,
-    )}
-  >
-    <label className={dvrFilterLabelClass}>
-      {Icon && <Icon className="h-2.5 w-2.5 shrink-0 text-slate-400" />}
-      {label}
-    </label>
-    <div className="relative min-w-0 overflow-visible">
-      <input
-        type="time"
-        {...props}
-        className={cn(
-          'box-border flex h-10 w-full min-h-10 min-w-0 items-center justify-center rounded-lg border border-slate-200/80 bg-slate-50/50 py-0 text-center text-sm font-normal leading-normal text-gray-800',
-          dvrDateTimeInputPad,
-          'focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/10',
-          'transition-all hover:border-slate-300 hover:bg-white [color-scheme:light]',
-          nativePickerIndicator,
-          timeDatetimeEdit,
-        )}
-      />
+> = ({
+  label,
+  icon: Icon,
+  position: _position,
+  className,
+  id: idProp,
+  ...props
+}) => {
+  const autoId = React.useId();
+  const fieldId = idProp ?? `dvr-time-${autoId}`;
+
+  return (
+    <div
+      className={cn(
+        'group/input flex min-w-0 w-full flex-col gap-1',
+        className,
+      )}
+    >
+      <label htmlFor={fieldId} className={dvrFilterLabelClass}>
+        {Icon && <Icon className="h-2.5 w-2.5 shrink-0 text-slate-400" />}
+        {label}
+      </label>
+      <div className="relative min-w-0 overflow-visible">
+        <DvrOverlayTimeInput id={fieldId} className="min-w-0" {...props} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ─── 7. CHANNEL CHIP GROUP ───────────────────────────────────── */
 interface ChannelChipGroupProps {
