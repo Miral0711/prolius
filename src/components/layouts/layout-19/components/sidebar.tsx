@@ -864,7 +864,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-[100] flex h-screen flex-col bg-[#001e3c] text-white/70 transition-all duration-300 ease-in-out border-r border-white/5 shadow-2xl overflow-visible',
+        'fixed left-0 top-0 z-[100] flex h-screen flex-col bg-gradient-to-b from-[#193b5d] to-[#204f78] text-white/85 transition-all duration-300 ease-in-out border-r border-[#5f84a7]/30 shadow-[0_16px_30px_-22px_rgba(8,18,32,0.75)] overflow-visible',
         collapsed && 'items-center',
       )}
       style={{
@@ -935,7 +935,7 @@ export function Sidebar() {
               >
                 {/* Active Accent Bar */}
                 {active && (
-                  <div className="absolute left-[-8px] top-1 bottom-1 w-[3px] bg-blue-500 rounded-r-sm shadow-[0_0_8px_rgba(59,130,246,0.3)] z-10" />
+                  <div className="absolute left-[-8px] top-1 bottom-1 w-[3px] rounded-r-sm bg-[#EB7A45] shadow-[0_0_10px_rgba(235,122,69,0.42)] z-10" />
                 )}
 
                 <Link
@@ -944,8 +944,8 @@ export function Sidebar() {
                   className={cn(
                     'flex items-center rounded-sm transition-all duration-200 relative',
                     active
-                      ? 'bg-white/10 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.02)]'
-                      : 'text-white/50 hover:bg-white/[0.05] hover:text-white',
+                      ? 'bg-[#24557f] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_18px_-14px_rgba(7,20,36,0.55)]'
+                      : 'text-white/70 hover:bg-white/[0.12] hover:text-white',
                     collapsed
                       ? 'justify-center w-7 h-7'
                       : 'gap-2 px-1.5 w-full',
@@ -957,8 +957,8 @@ export function Sidebar() {
                       className={cn(
                         'h-[17px] w-[17px] transition-colors',
                         active
-                          ? 'text-blue-400'
-                          : 'group-hover/mainitem:text-blue-300',
+                          ? 'text-white'
+                          : 'group-hover/mainitem:text-white',
                       )}
                     />
                   </div>
@@ -970,7 +970,7 @@ export function Sidebar() {
 
                   {/* Collapsed Tooltip */}
                   {collapsed && hoveredItem === item.id && !hasChildren && (
-                    <div className="fixed left-[84px] px-3 py-2 bg-[#1a1f37] text-white text-xs font-medium rounded-md shadow-2xl border border-white/10 z-[200] pointer-events-none whitespace-nowrap backdrop-blur-md">
+                    <div className="fixed left-[84px] px-3 py-2 bg-[#2F4B69] text-white text-xs font-medium rounded-md shadow-2xl border border-white/15 z-[200] pointer-events-none whitespace-nowrap">
                       {item.label}
                     </div>
                   )}
@@ -989,7 +989,7 @@ export function Sidebar() {
                         stiffness: 400,
                         damping: 30,
                       }}
-                      className="fixed z-[150] overflow-visible bg-[#1a2333]/95 border border-white/5 rounded-md shadow-[0_30px_70px_rgba(0,0,0,0.7)] p-2 flex flex-col backdrop-blur-xl min-w-[140px] max-w-[180px] w-max"
+                      className="fixed z-[150] overflow-visible bg-[#1d466b] border border-[#6c8fb0]/30 rounded-md shadow-[0_18px_36px_-18px_rgba(0,0,0,0.55)] p-2 flex flex-col min-w-[140px] max-w-[180px] w-max"
                       style={{
                         left: collapsed
                           ? SIDEBAR_WIDTH_COLLAPSED + 8
@@ -1059,14 +1059,14 @@ export function Sidebar() {
                                 className={cn(
                                   'group/subitem flex items-center justify-between px-1.5 rounded-sm text-xs font-medium leading-normal transition-all duration-200',
                                   subActive
-                                    ? 'bg-blue-600/20 text-blue-100 shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
-                                    : 'text-white/60 hover:bg-white/5 hover:text-white',
+                                    ? 'bg-white/18 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.08)]'
+                                    : 'text-white/80 hover:bg-white/12 hover:text-white',
                                 )}
                                 style={{ height: `${ITEM_HEIGHT}px` }}
                               >
                                 <span className="flex min-w-0 flex-1 items-center gap-1.5 truncate pr-2">
                                   {subActive && (
-                                    <div className="w-1 h-1 rounded-full bg-blue-400 shadow-[0_0_5px_rgba(96,165,250,0.8)]" />
+                                    <div className="w-1 h-1 rounded-full bg-[#EB7A45] shadow-[0_0_5px_rgba(235,122,69,0.8)]" />
                                   )}
                                   <span className="min-w-0 truncate leading-normal">
                                     {sub.label}
@@ -1095,7 +1095,7 @@ export function Sidebar() {
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -10 }}
-                                className="absolute bg-[#1a2333]/98 border border-white/5 rounded-md shadow-[0_30px_80px_rgba(0,0,0,0.8)] p-2 flex flex-col z-[155] backdrop-blur-2xl min-w-[140px] max-w-[180px] w-max"
+                                className="absolute bg-[#1d466b] border border-[#6c8fb0]/30 rounded-md shadow-[0_18px_36px_-18px_rgba(0,0,0,0.58)] p-2 flex flex-col z-[155] min-w-[140px] max-w-[180px] w-max"
                                 style={{
                                   left: `calc(100% + 8px)`,
                                   top: subMouseY,
@@ -1130,14 +1130,14 @@ export function Sidebar() {
                                       className={cn(
                                         'flex items-center px-1.5 text-xs font-medium leading-normal transition-all rounded-sm',
                                         isActive(leaf.path)
-                                          ? 'bg-blue-600/20 text-white shadow-[inset_0_0_10px_rgba(37,99,235,0.1)]'
-                                          : 'text-white/60 hover:bg-white/5 hover:text-white',
+                                          ? 'bg-white/18 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.08)]'
+                                          : 'text-white/80 hover:bg-white/12 hover:text-white',
                                       )}
                                       style={{ height: `${ITEM_HEIGHT}px` }}
                                     >
                                       <span className="flex min-w-0 flex-1 items-center gap-1.5 truncate">
                                         {isActive(leaf.path) && (
-                                          <div className="w-1 h-1 rounded-full bg-blue-300" />
+                                          <div className="w-1 h-1 rounded-full bg-[#EB7A45]" />
                                         )}
                                         <span className="min-w-0 truncate leading-normal">
                                           {leaf.label}
