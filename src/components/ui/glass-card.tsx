@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 /** Refined glassmorphism card: frosted glass, soft layered shadow, subtle hover */
 const glassCardBase =
-  'rounded-md border border-white/50 ' +
+  'rounded-lg border border-white/50 ' +
   'shadow-[0_2px_8px_rgba(31,38,135,0.04),0_1px_4px_rgba(0,0,0,0.03)] ' +
   'transition-all duration-200 ' +
   'hover:bg-white/65 hover:shadow-[0_4px_12px_rgba(31,38,135,0.06)]';

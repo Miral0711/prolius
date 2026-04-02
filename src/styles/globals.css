@@ -1,4 +1,5 @@
 /* Tailwind Core */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @source "../**/*.{js,ts,jsx,tsx}";
 /* Explicit pages/features for Bus Live Tracking and other route components */
@@ -138,6 +139,8 @@
 
   body {
     @apply text-sm text-foreground antialiased;
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.4;
   }
 
   *:focus-visible {
@@ -204,5 +207,32 @@ body {
 
 /* Metronic Configs */
 @import './config.metronic.css';
+
+/* Dashboard spacing debug + clean ending */
+.main-container {
+  outline: 2px solid red;
+}
+
+.main-container :last-child {
+  margin-bottom: 0;
+}
+
+@layer components {
+  /* Dashboard: align Trend arrows + enforce consistent row height */
+  .drivers-table tr {
+    height: 44px;
+  }
+
+  .drivers-table .trend-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drivers-table .trend-cell svg {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
 
 

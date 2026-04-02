@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  AlertTriangle,
   BarChart3,
   Bell,
   BookOpen,
@@ -9,18 +10,24 @@ import {
   ChevronRight,
   ClipboardList,
   Clock,
+  BriefcaseBusiness,
   Gauge,
   Globe,
   LayoutDashboard,
   LogOut,
   MapPin,
+  Search,
   MessageSquare,
   Package,
   Settings,
+  ShieldCheck,
   Shield,
   ShieldAlert,
+  Trophy,
   Truck,
+  UserRound,
   Users,
+  Wrench,
   Video,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -58,7 +65,7 @@ const SUBMENU_CLOSE_DELAY_MS = 100;
    2. NAV CONFIGURATION
    ═══════════════════════════════════════════════════════════════ */
 
-const NAV_ITEMS: NavItem[] = [
+const LEGACY_NAV_ITEMS: NavItem[] = [
   {
     id: 'dashboard',
     label: 'Dashboard',
@@ -720,6 +727,111 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'logout', label: 'Logout', icon: LogOut, path: '/logout' },
 ];
 
+const NAV_ITEMS: NavItem[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+    path: '/dashboard/overview',
+  },
+  {
+    id: 'fleet-planning',
+    label: 'Fleet Planning',
+    icon: Truck,
+    path: '/dashboard/fleet-planning',
+  },
+  {
+    id: 'vehicle-checks',
+    label: 'Vehicle Checks',
+    icon: ClipboardList,
+    path: '/dashboard/vehicle-checks',
+  },
+  {
+    id: 'vehicle-defects',
+    label: 'Vehicle Defects',
+    icon: AlertTriangle,
+    path: '/dashboard/vehicle-defects',
+  },
+  {
+    id: 'reported-incidents',
+    label: 'Reported Incidents',
+    icon: ShieldAlert,
+    path: '/dashboard/reported-incidents',
+  },
+  {
+    id: 'vehicle-profiles',
+    label: 'Vehicle Profiles',
+    icon: UserRound,
+    path: '/dashboard/vehicle-profiles',
+  },
+  {
+    id: 'vehicle-search',
+    label: 'Vehicle Search',
+    icon: Search,
+    path: '/dashboard/vehicle-search',
+  },
+  {
+    id: 'asset-checks',
+    label: 'Asset Checks',
+    icon: ShieldCheck,
+    path: '/dashboard/asset-checks',
+  },
+  {
+    id: 'asset-defects',
+    label: 'Asset Defects',
+    icon: AlertTriangle,
+    path: '/dashboard/asset-defects',
+  },
+  {
+    id: 'asset-profiles',
+    label: 'Asset Profiles',
+    icon: BriefcaseBusiness,
+    path: '/dashboard/asset-profiles',
+  },
+  {
+    id: 'asset-search',
+    label: 'Asset Search',
+    icon: Search,
+    path: '/dashboard/asset-search',
+  },
+  {
+    id: 'workshops',
+    label: 'Workshops',
+    icon: Wrench,
+    path: '/dashboard/workshops',
+  },
+  {
+    id: 'messaging',
+    label: 'Messaging',
+    icon: MessageSquare,
+    path: '/messaging/chat',
+  },
+  {
+    id: 'earned-recognition',
+    label: 'Earned Recognition',
+    icon: Trophy,
+    path: '/dashboard/earned-recognition',
+  },
+  {
+    id: 'reports',
+    label: 'Reports',
+    icon: BarChart3,
+    path: '/reports/overview',
+  },
+  {
+    id: 'user-management',
+    label: 'User Management',
+    icon: Users,
+    path: '/system-management/user',
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: Settings,
+    path: '/system-management/settings',
+  },
+];
+
 /* ═══════════════════════════════════════════════════════════════
    3. SIDEBAR COMPONENT
    ═══════════════════════════════════════════════════════════════ */
@@ -736,8 +848,8 @@ export function Sidebar() {
   }, [setSidebarCollapsed]);
 
   const level1FlyoutRef = useRef<HTMLDivElement | null>(null);
-  const flyoutCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const subCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flyoutCloseTimerRef = useRef<number | null>(null);
+  const subCloseTimerRef = useRef<number | null>(null);
 
   const cancelFlyoutCloseTimer = useCallback(() => {
     if (flyoutCloseTimerRef.current) {
@@ -864,7 +976,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-[100] flex h-screen flex-col bg-gradient-to-b from-[#193b5d] to-[#204f78] text-white/85 transition-all duration-300 ease-in-out border-r border-[#5f84a7]/30 shadow-[0_16px_30px_-22px_rgba(8,18,32,0.75)] overflow-visible',
+        'fixed left-0 top-0 z-[100] flex h-screen flex-col bg-[#1E293B] text-white/85 transition-all duration-300 ease-in-out border-r border-white/5 shadow-[0_16px_30px_-22px_rgba(0,0,0,0.5)] overflow-visible',
         collapsed && 'items-center',
       )}
       style={{
@@ -888,8 +1000,8 @@ export function Sidebar() {
             className="flex group/logo cursor-pointer px-1"
           >
             <img
-              src="/media/brand-logos/triden_white.png"
-              alt="Triden Fleet"
+              src="/media/brand-logos/prolius-logo.svg"
+              alt="Prolius Fleet"
               className="h-[40px] w-auto transition-all duration-300 group-hover/logo:scale-[1.02]"
             />
           </motion.div>
@@ -898,9 +1010,9 @@ export function Sidebar() {
           <div className="flex items-center justify-center w-full">
             <div className="h-10 w-10 flex items-center justify-center transition-all cursor-pointer group-hover/logo:scale-110">
               <img
-                src="/media/brand-logos/logo.png"
-                alt="Logo"
-                className="h-8 w-8 object-contain brightness-0 invert opacity-100 transition-all"
+                src="/media/brand-logos/fav-icon.png"
+                alt="Prolius"
+                className="h-8 w-8 object-contain opacity-100 transition-all"
               />
             </div>
           </div>
@@ -935,17 +1047,17 @@ export function Sidebar() {
               >
                 {/* Active Accent Bar */}
                 {active && (
-                  <div className="absolute left-[-8px] top-1 bottom-1 w-[3px] rounded-r-sm bg-[#EB7A45] shadow-[0_0_10px_rgba(235,122,69,0.42)] z-10" />
+                  <div className="absolute left-[-8px] top-1 bottom-1 w-[3px] rounded-r-md bg-[#3B82F6] z-10" />
                 )}
 
                 <Link
                   to={item.path || '#'}
                   onClick={(e) => !item.path && e.preventDefault()}
                   className={cn(
-                    'flex items-center rounded-sm transition-all duration-200 relative',
+                    'flex items-center rounded-md transition-all duration-200 relative',
                     active
-                      ? 'bg-[#24557f] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_10px_18px_-14px_rgba(7,20,36,0.55)]'
-                      : 'text-white/70 hover:bg-white/[0.12] hover:text-white',
+                      ? 'bg-[#3B82F6]/20 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]'
+                      : 'text-white/50 hover:bg-white/[0.05] hover:text-white',
                     collapsed
                       ? 'justify-center w-7 h-7'
                       : 'gap-2 px-1.5 w-full',
@@ -1057,7 +1169,7 @@ export function Sidebar() {
                                 to={sub.path || '#'}
                                 onClick={(e) => !sub.path && e.preventDefault()}
                                 className={cn(
-                                  'group/subitem flex items-center justify-between px-1.5 rounded-sm text-xs font-medium leading-normal transition-all duration-200',
+                                'group/subitem flex items-center justify-between px-1.5 rounded-md text-xs font-medium leading-normal transition-all duration-200',
                                   subActive
                                     ? 'bg-white/18 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.08)]'
                                     : 'text-white/80 hover:bg-white/12 hover:text-white',
@@ -1128,7 +1240,7 @@ export function Sidebar() {
                                       key={leaf.id}
                                       to={leaf.path || '#'}
                                       className={cn(
-                                        'flex items-center px-1.5 text-xs font-medium leading-normal transition-all rounded-sm',
+                                      'flex items-center px-1.5 text-xs font-medium leading-normal transition-all rounded-md',
                                         isActive(leaf.path)
                                           ? 'bg-white/18 text-white shadow-[inset_0_0_10px_rgba(255,255,255,0.08)]'
                                           : 'text-white/80 hover:bg-white/12 hover:text-white',
@@ -1161,14 +1273,14 @@ export function Sidebar() {
       </div>
 
       {/* ── User Profile Footer ───────────────────────────────── */}
-      <div className="shrink-0 border-t border-white/5 bg-white/[0.01] p-4 backdrop-blur-sm">
+      <div className="shrink-0 border-t border-slate-600/40 bg-[#1E293B] p-4">
         <div
           className={cn(
-            'flex items-center rounded-sm transition-all duration-300 hover:bg-white/5 cursor-pointer group/user p-1',
+            'flex items-center rounded-md transition-all duration-300 hover:bg-white/5 cursor-pointer group/user p-1',
             collapsed && 'justify-center',
           )}
         >
-          <div className="h-8 w-8 rounded-sm bg-gradient-to-tr from-blue-600/20 to-white/5 flex items-center justify-center text-xs font-semibold text-white border border-white/10 transition-all group-hover/user:border-blue-500/50 shadow-inner">
+          <div className="h-8 w-8 rounded-md bg-gradient-to-tr from-blue-600/20 to-white/5 flex items-center justify-center text-xs font-semibold text-white border border-white/10 transition-all group-hover/user:border-blue-500/50 shadow-inner">
             AD
           </div>
           {!collapsed && (

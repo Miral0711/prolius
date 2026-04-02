@@ -1,6 +1,6 @@
 import { Truck } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
+import { cn } from '@/lib/utils';
 import {
   dashboardTableHeaderCellClass,
   dashboardTableHeaderLiftShadow,
@@ -50,19 +50,22 @@ export function CompactTripsTable({
   const displaySubtitle = subtitle || `${data.length} ACTIVE_RUNS`;
 
   return (
-    <div className="flex flex-col h-full rounded-md border border-slate-200/60 bg-white shadow-sm overflow-hidden min-w-0">
+    <div className="flex flex-col h-full rounded-lg border border-slate-200/60 bg-white shadow-sm overflow-hidden min-w-0">
       {/* Card header */}
       <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2 bg-slate-50/10 shrink-0">
         <div className="flex items-center gap-2">
           <div className="h-6 w-6 rounded-md bg-blue-50 flex items-center justify-center border border-blue-100/50">
             <Truck className="h-3.5 w-3.5 text-blue-600" />
           </div>
-          <h3 className={typography.cardTitle}>
-            {title}
-          </h3>
+          <h3 className={typography.cardTitle}>{title}</h3>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className={cn(typography.meta, 'text-slate-400 uppercase tracking-[0.08rem]')}>
+          <span
+            className={cn(
+              typography.meta,
+              'text-slate-400 uppercase tracking-[0.08rem]',
+            )}
+          >
             {displaySubtitle}
           </span>
           <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
@@ -102,7 +105,12 @@ export function CompactTripsTable({
                 {/* Trip ID */}
                 <td className={cn(TD_BASE, 'text-center')}>
                   <div className="flex flex-col items-center leading-tight overflow-hidden">
-                    <span className={cn(typography.tableCell, 'text-slate-800 tabular-nums truncate')}>
+                    <span
+                      className={cn(
+                        typography.tableCell,
+                        'text-slate-800 tabular-nums truncate',
+                      )}
+                    >
                       {trip.id}
                     </span>
                     <span className="text-2xs font-normal text-slate-400 tracking-tighter tabular-nums truncate">
@@ -113,14 +121,24 @@ export function CompactTripsTable({
 
                 {/* Driver */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className={cn(typography.tableCell, 'text-slate-700 truncate block')}>
+                  <span
+                    className={cn(
+                      typography.tableCell,
+                      'text-slate-700 truncate block',
+                    )}
+                  >
                     {trip.driver}
                   </span>
                 </td>
 
                 {/* Route */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className={cn(typography.tableCell, 'text-slate-700 truncate block')}>
+                  <span
+                    className={cn(
+                      typography.tableCell,
+                      'text-slate-700 truncate block',
+                    )}
+                  >
                     {trip.route}
                   </span>
                 </td>
@@ -128,13 +146,20 @@ export function CompactTripsTable({
                 {/* Duration / Distance */}
                 <td className={cn(TD_BASE, 'text-center')}>
                   <div className="flex items-baseline justify-center gap-1 overflow-hidden">
-                    <span className={cn(typography.tableCell, 'text-slate-700 shrink-0')}>
+                    <span
+                      className={cn(
+                        typography.tableCell,
+                        'text-slate-700 shrink-0',
+                      )}
+                    >
                       {trip.duration}
                     </span>
                     <span className="text-2xs text-slate-300 font-normal shrink-0">
                       ·
                     </span>
-                    <span className={cn(typography.meta, 'text-slate-500 truncate')}>
+                    <span
+                      className={cn(typography.meta, 'text-slate-500 truncate')}
+                    >
                       {trip.distance}
                     </span>
                   </div>
@@ -142,14 +167,24 @@ export function CompactTripsTable({
 
                 {/* Revenue */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className={cn(typography.tableCell, 'text-emerald-600 tabular-nums')}>
+                  <span
+                    className={cn(
+                      typography.tableCell,
+                      'text-emerald-600 tabular-nums',
+                    )}
+                  >
                     {trip.revenue}
                   </span>
                 </td>
 
                 {/* Fuel Usage */}
                 <td className={cn(TD_BASE, 'text-center')}>
-                  <span className={cn(typography.tableCell, 'text-slate-600 tabular-nums')}>
+                  <span
+                    className={cn(
+                      typography.tableCell,
+                      'text-slate-600 tabular-nums',
+                    )}
+                  >
                     {trip.fuel}
                   </span>
                 </td>
@@ -182,5 +217,3 @@ export function CompactTripsTable({
     </div>
   );
 }
-
-

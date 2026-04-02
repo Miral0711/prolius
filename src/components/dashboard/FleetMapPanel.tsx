@@ -153,7 +153,7 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
 
   return (
     <div
-      className="relative w-full overflow-hidden rounded-md border border-white/40 shadow-sm"
+      className="relative w-full overflow-hidden rounded-lg border border-white/40 shadow-sm"
       style={{ height }}
     >
       {/* ── MAP BACKGROUND ─────────────────────────────────────── */}
@@ -323,7 +323,7 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
       {/* ── HOVER TOOLTIP ─────────────────────────────────────── */}
       {hoveredVehicle && (
         <div
-          className="pointer-events-none absolute z-20 min-w-[190px] rounded-md border border-white/60 bg-white shadow-xl backdrop-blur-md p-3"
+          className="pointer-events-none absolute z-20 min-w-[190px] rounded-lg border border-white/60 bg-white shadow-xl backdrop-blur-md p-3"
           style={{
             left: Math.min(hoveredVehicle.x + 3, 65) + '%',
             top: Math.max(hoveredVehicle.y - 18, 2) + '%',
@@ -363,7 +363,7 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
       )}
 
       {/* ── MAP LEGEND (top-right) ─────────────────────────────── */}
-      <div className="absolute right-3 top-3 z-20 flex flex-col gap-1.5 rounded-md border border-white/60 bg-white/90 px-3 py-2.5 shadow-sm backdrop-blur-md">
+      <div className="absolute right-3 top-3 z-20 flex flex-col gap-1.5 rounded-lg border border-white/60 bg-white/90 px-3 py-2.5 shadow-sm backdrop-blur-md">
         <p className="text-xs font-semibold uppercase tracking-[0.04rem] text-slate-400 mb-0.5">
           Fleet Legend
         </p>
@@ -375,14 +375,12 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
         ).map(([status, meta]) => (
           <div key={status} className="flex items-center gap-2">
             <span
-              className="block h-3 w-3 rounded-[3px] border border-white shadow-sm flex items-center justify-center"
+              className="block h-3 w-3 rounded-[4px] border border-white shadow-sm flex items-center justify-center"
               style={{ background: meta.color }}
             >
               <Bus className="h-2 w-2 text-white" />
             </span>
-            <span className="text-xs font-medium text-slate-700">
-              {status}
-            </span>
+            <span className="text-xs font-medium text-slate-700">{status}</span>
           </div>
         ))}
       </div>
@@ -425,13 +423,13 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
       </div>
 
       {/* ── ZOOM BADGE ────────────────────────────────────────── */}
-      <div className="absolute bottom-3 right-3 z-20 rounded-md border border-white/60 bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-sm backdrop-blur-md">
+      <div className="absolute bottom-3 right-3 z-20 rounded-full border border-white/60 bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-sm backdrop-blur-md">
         <Maximize2 className="inline-block h-3 w-3 mr-1" />
         {Math.round(zoom * 100)}%
       </div>
 
       {/* ── "LIVE" badge ─────────────────────────────────────── */}
-      <div className="absolute left-3 top-3 z-20 flex items-center gap-2 rounded-md border border-emerald-200/60 bg-white/90 pl-2.5 pr-3 py-1.5 shadow-sm backdrop-blur-md">
+      <div className="absolute left-3 top-3 z-20 flex items-center gap-2 rounded-full border border-emerald-200/60 bg-white/90 pl-2.5 pr-3 py-1.5 shadow-sm backdrop-blur-md">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -446,5 +444,3 @@ export function FleetMapPanel({ height = 420 }: { height?: number | string }) {
     </div>
   );
 }
-
-

@@ -42,13 +42,13 @@ export function StripKpiCard({
   return (
     <div
       className={cn(
-        'group/card flex h-[46px] min-h-[46px] shrink-0 items-center gap-2.5 rounded-xl border border-white/60 bg-white/90 px-3 shadow-md backdrop-blur-xl transition-all hover:border-blue-200 hover:bg-white',
+        'group/card flex h-[46px] min-h-[46px] shrink-0 items-center gap-2.5 rounded-lg border border-white/60 bg-white/90 px-3 shadow-md backdrop-blur-xl transition-all hover:border-blue-200 hover:bg-white',
         className,
       )}
     >
       <div
         className={cn(
-          'flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-black/5 shadow-inner transition-transform group-hover/card:scale-105',
+          'flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-black/5 shadow-inner transition-transform group-hover/card:scale-105',
           TINT_BOX[tint],
         )}
       >

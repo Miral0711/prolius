@@ -4,7 +4,7 @@
  * Do not mix multiple font sizes/weights for same-purpose text.
  */
 @utility typo-page-title {
-  @apply text-lg leading-tight font-semibold tracking-tight;
+  @apply text-[22px] leading-[1.4] font-semibold tracking-[-0.2px] text-[#0f172a];
 }
 
 @utility typo-page-subtitle {
@@ -13,7 +13,7 @@
 
 /** Section / panel / card chrome titles — uppercase, dark, one size app-wide */
 @utility typo-section-title {
-  @apply text-xs leading-tight font-medium uppercase tracking-normal text-gray-800;
+  @apply text-[13px] leading-[1.4] font-semibold uppercase tracking-[0.6px] text-[#1f2d3d];
 }
 
 @utility typo-section-label {
@@ -21,7 +21,11 @@
 }
 
 @utility typo-card-title {
-  @apply text-xs leading-tight font-medium uppercase tracking-normal text-gray-800;
+  @apply text-[13px] leading-[1.4] font-medium text-[#6b7a90];
+}
+
+@utility typo-kpi-label {
+  @apply text-[11px] leading-[1.4] font-medium uppercase tracking-[0.2px] text-[#94a3b8];
 }
 
 @utility typo-label {
@@ -29,7 +33,7 @@
 }
 
 @utility typo-body {
-  @apply text-xs leading-snug font-normal;
+  @apply text-[13px] leading-[1.4] font-normal text-[#64748b];
 }
 
 @utility typo-meta {
@@ -42,11 +46,11 @@
 }
 
 @utility typo-kpi {
-  @apply text-[14px] leading-tight font-semibold tabular-nums;
+  @apply text-[20px] leading-[1.4] font-bold text-[#0f172a] tabular-nums;
 }
 
 @utility typo-table-header {
-  @apply text-[13px] leading-snug font-medium text-muted-foreground;
+  @apply text-[12px] leading-[1.4] font-semibold text-[#94a3b8];
 }
 
 @utility typo-table-cell {

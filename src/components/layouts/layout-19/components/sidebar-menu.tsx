@@ -5,6 +5,23 @@ import { Link, useLocation } from 'react-router';
 import { MENU_SIDEBAR } from '@/config/layout-19.config';
 import type { MenuItem } from '@/config/types';
 import {
+  AlertTriangle,
+  BarChart3,
+  BriefcaseBusiness,
+  ClipboardList,
+  LayoutDashboard,
+  MessageSquare,
+  Search,
+  ShieldAlert,
+  ShieldCheck,
+  Settings,
+  Trophy,
+  Truck,
+  UserRound,
+  Users,
+  Wrench,
+} from 'lucide-react';
+import {
   AccordionMenu,
   AccordionMenuGroup,
   AccordionMenuItem,
@@ -18,7 +35,101 @@ import { SidebarFlyout } from './sidebar-flyout';
 
 const FLYOUT_CLOSE_DELAY_MS = 120;
 
-export function SidebarMenu() {
+const SIDEBAR_ITEMS: MenuItem[] = [
+  {
+    title: 'Dashboard',
+    path: '/dashboard/overview',
+    icon: LayoutDashboard,
+  },
+  {
+    title: 'Fleet Planning',
+    path: '/dashboard/fleet-planning',
+    icon: Truck,
+  },
+  {
+    title: 'Vehicle Checks',
+    path: '/dashboard/vehicle-checks',
+    icon: ClipboardList,
+  },
+  {
+    title: 'Vehicle Defects',
+    path: '/dashboard/vehicle-defects',
+    icon: AlertTriangle,
+  },
+  {
+    title: 'Reported Incidents',
+    path: '/dashboard/reported-incidents',
+    icon: ShieldAlert,
+  },
+  {
+    title: 'Vehicle Profiles',
+    path: '/dashboard/vehicle-profiles',
+    icon: UserRound,
+  },
+  {
+    title: 'Vehicle Search',
+    path: '/dashboard/vehicle-search',
+    icon: Search,
+  },
+  {
+    title: 'Asset Checks',
+    path: '/dashboard/asset-checks',
+    icon: ShieldCheck,
+  },
+  {
+    title: 'Asset Defects',
+    path: '/dashboard/asset-defects',
+    icon: AlertTriangle,
+  },
+  {
+    title: 'Asset Profiles',
+    path: '/dashboard/asset-profiles',
+    icon: BriefcaseBusiness,
+  },
+  {
+    title: 'Asset Search',
+    path: '/dashboard/asset-search',
+    icon: Search,
+  },
+  {
+    title: 'Workshops',
+    path: '/dashboard/workshops',
+    icon: Wrench,
+  },
+  {
+    title: 'Messaging',
+    path: '/messaging/chat',
+    icon: MessageSquare,
+  },
+  {
+    title: 'Earned Recognition',
+    path: '/dashboard/earned-recognition',
+    icon: Trophy,
+  },
+  {
+    title: 'Reports',
+    path: '/reports/overview',
+    icon: BarChart3,
+  },
+  {
+    title: 'User Management',
+    path: '/system-management/user',
+    icon: Users,
+  },
+  {
+    title: 'Settings',
+    path: '/system-management/settings',
+    icon: Settings,
+  },
+];
+
+const itemRowClass =
+  'flex h-10 items-center gap-3 rounded-md px-3 text-xs font-medium text-slate-700 transition-colors ' +
+  'hover:bg-white/18 ' +
+  'data-[selected=true]:bg-white/22 data-[selected=true]:text-slate-900 data-[selected=true]:border-l-2 data-[selected=true]:border-l-slate-400/80 ' +
+  '[&_svg]:size-4 [&_svg]:shrink-0';
+
+function LegacySidebarMenu() {
   const { pathname } = useLocation();
   const { isMobile } = useLayout();
   const [flyout, setFlyout] = useState<{
@@ -72,11 +183,9 @@ export function SidebarMenu() {
     [clearCloseTimer],
   );
 
-  const itemRowClass =
-    'flex h-10 items-center gap-3 rounded-sm px-3 text-xs font-medium text-slate-700 transition-colors ' +
-    'hover:bg-white/18 ' +
-    'data-[selected=true]:bg-white/22 data-[selected=true]:text-slate-900 data-[selected=true]:border-l-2 data-[selected=true]:border-l-slate-400/80 ' +
-    '[&_svg]:size-4 [&_svg]:shrink-0';
+  // Kept for legacy layout; new SidebarMenu renders a simpler flat list.
+  // eslint-disable-next-line unused-vars
+  const legacyItemRowClass = itemRowClass;
 
   if (isMobile) {
     const renderChild = (
@@ -159,77 +268,40 @@ export function SidebarMenu() {
 
   return (
     <>
-      <div className="space-y-1">
-        {MENU_SIDEBAR.map((group, groupIndex) => (
-          <div key={groupIndex}>
-            <div className="mb-0.5 mt-1.5 px-3 py-1 text-xs font-normal uppercase tracking-[0.02rem] text-slate-500 leading-tight">
-              {group.title}
-            </div>
-            <div className="space-y-0.5">
-              {group.children?.map((child, childIndex) => {
-                const hasChildren = child.children && child.children.length > 0;
-                const itemKey = `g${groupIndex}-c${childIndex}`;
-
-                if (hasChildren) {
-                  return (
-                    <div
-                      key={childIndex}
-                      ref={(el) => {
-                        if (el) itemRefsRef.current.set(itemKey, el);
-                      }}
-                      onMouseEnter={() =>
-                        openFlyout(
-                          itemKey,
-                          child.title ?? '',
-                          child.children ?? [],
-                        )
-                      }
-                      onMouseLeave={scheduleClose}
-                      data-slot="sidebar-parent"
-                      className="cursor-default"
-                    >
-                      <div className={itemRowClass} data-selected={false}>
-                        <span className="flex w-9 shrink-0 justify-center">
-                          {child.icon ? <child.icon /> : null}
-                        </span>
-                        <span className="truncate">{child.title}</span>
-                      </div>
-                    </div>
-                  );
-                }
-
-                const isActive = matchPath(child.path ?? '');
-                return (
-                  <Link
-                    key={childIndex}
-                    to={child.path || '#'}
-                    className={itemRowClass}
-                    data-selected={isActive ? 'true' : undefined}
-                  >
-                    <span className="flex w-9 shrink-0 justify-center">
-                      {child.icon ? <child.icon /> : null}
-                    </span>
-                    <span className="truncate">{child.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {flyout && (
-        <SidebarFlyout
-          visible={!!flyout}
-          top={flyout.top}
-          left={flyout.left}
-          title={flyout.title}
-          items={flyout.items}
-          onMouseEnter={clearCloseTimer}
-          onMouseLeave={scheduleClose}
-        />
-      )}
+      {/* Legacy component kept for reference only. */}
     </>
+  );
+}
+
+export function SidebarMenu() {
+  const { pathname } = useLocation();
+
+  const matchPath = (path?: string): boolean => {
+    if (!path) return false;
+    return path === pathname || (path.length > 1 && pathname.startsWith(path));
+  };
+
+  return (
+    <div className="space-y-1">
+      {SIDEBAR_ITEMS.map((item) => {
+        const isActive = matchPath(item.path);
+        const Icon = item.icon;
+
+        return (
+          <Link
+            key={item.path || item.title}
+            to={item.path || '#'}
+            className={itemRowClass}
+            data-selected={isActive ? 'true' : undefined}
+          >
+            <span className="w-9 flex justify-center shrink-0">
+              {Icon ? <Icon /> : null}
+            </span>
+            <span className="truncate">{item.title}</span>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 

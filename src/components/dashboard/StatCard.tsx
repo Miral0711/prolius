@@ -27,7 +27,7 @@ export function StatCard({
     return (
       <div
         className={cn(
-          'flex h-[38px] flex-1 items-center gap-2 rounded-md border border-white/40 bg-white/70 px-2 py-1',
+          'flex h-[38px] flex-1 items-center gap-2 rounded-lg border border-white/40 bg-white/70 px-2 py-1',
           'shadow-[0_2px_10px_-4px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all hover:shadow-md',
           className,
         )}
@@ -55,13 +55,13 @@ export function StatCard({
   return (
     <div
       className={cn(
-        'flex items-center gap-2 p-2 transition-all hover:bg-white hover:shadow-lg rounded-md border border-white/40 bg-white/70 backdrop-blur-md',
+        'flex items-center gap-2 p-2 transition-all hover:bg-white hover:shadow-lg rounded-lg border border-white/40 bg-white/70 backdrop-blur-md',
         className,
       )}
     >
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg shadow-sm border border-white/50',
+          'flex h-8 w-8 shrink-0 items-center justify-center rounded-md shadow-sm border border-white/50',
           bgColor,
         )}
       >

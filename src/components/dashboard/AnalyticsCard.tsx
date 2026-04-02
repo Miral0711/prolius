@@ -24,7 +24,7 @@ export function AnalyticsCard({
   return (
     <div
       className={cn(
-        'p-2 flex flex-col gap-2 rounded-md border border-white/60 bg-white/70 shadow-sm backdrop-blur-md transition-all hover:bg-white hover:shadow-md border-white/40',
+        'p-2 flex flex-col gap-2 rounded-lg border border-white/60 bg-white/70 shadow-sm backdrop-blur-md transition-all hover:bg-white hover:shadow-md border-white/40',
         className,
       )}
     >

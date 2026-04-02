@@ -1,1563 +1,1443 @@
 import { useState, type ReactNode } from 'react';
 import {
   Activity,
-  AlertCircle,
   AlertTriangle,
-  Bell,
-  Calendar,
-  CheckCircle2,
-  ChevronDown,
-  Ellipsis,
+  ArrowDownRight,
+  ArrowUpRight,
+  Clock,
+  Fuel,
   Gauge,
-  Leaf,
-  Menu,
-  Settings,
+  MapPinned,
   ShieldCheck,
-  SlidersHorizontal,
+  Star,
+  PenTool as Tool,
   Truck,
+  Zap,
 } from 'lucide-react';
 import {
   Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   ComposedChart,
+  Legend,
   Line,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import { cn } from '@/lib/utils';
-import { DashboardShell } from '@/components/dashboard/DashboardShell';
-import { PAGE_SURFACE_FOOTER_PADDING, PageSurface } from '@/components/layout';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-type TabOption = { id: string; label: string };
-type StatusTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
-type KpiTone = 'fleet' | 'fuel' | 'distance' | 'active' | 'safety';
-
-const DASHBOARD_TOKENS = {
-  pageBg: 'bg-[#f1f5f9]',
-  sectionSurface: 'rounded-[16px] bg-[#f8fafc]/50 p-2',
-  sectionGap: 'gap-2.5',
-  cardSurface: 'rounded-[12px] bg-white border border-slate-200/60 shadow-sm',
-  cardPadding: 'p-3.5',
-  cardRadius: 'rounded-[12px]',
-  cardBorder: 'border border-slate-200/60',
-  cardShadow: 'shadow-sm',
+const TOKENS = {
+  pageBg: 'bg-[#EEF5FB]',
+  sectionBg: 'bg-transparent',
+  cardBg: 'bg-white',
+  cardRadius: 'rounded-[8px]',
+  cardShadow: 'shadow-[0_1px_8px_rgba(0,0,0,0.04)]',
+  strongShadow: 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]',
+  cardBorder: 'border border-transparent',
+  titleColor: 'text-[#243648]',
+  valueColor: 'text-[#1E293B]',
+  labelColor: 'text-[#5d7288]',
+  subLabelColor: 'text-[#7f93a7]',
 };
 
-const TOP_TABS: TabOption[] = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'vehicles', label: 'Vehicles' },
-  { id: 'drivers', label: 'Drivers' },
-  { id: 'maintenance', label: 'Maintenance' },
-];
-
-const ANALYTICS_TABS: TabOption[] = [
-  { id: 'fleet-analytics', label: 'Fleet Analytics' },
-  { id: 'driver-insights', label: 'Driver Insights' },
-  { id: 'recent-activity', label: 'Recent Activity' },
-];
-
-const KPI_CARDS = [
-  {
-    label: 'Fleet Score',
-    value: '95.3%',
-    sub: 'From 30-day trend score',
-    progress: 95,
-    topBorder: 'border-t-[#10b981]',
-    tone: 'fleet' as KpiTone,
+const SEMANTIC_COLORS = {
+  blue: {
+    main: '#2F4B69',
+    soft: 'bg-[#EEF5FB]',
+    border: 'border-[#2F4B69]/18',
+    accent: 'text-[#2F4B69]',
+    iconBg: 'bg-[#E5EFF9]',
   },
-  {
-    label: 'Fuel Efficiency',
-    value: '4.48 L/km',
-    sub: 'Under target by 1.2%',
-    progress: 79,
-    topBorder: 'border-t-[#3b82f6]',
-    tone: 'fuel' as KpiTone,
+  green: {
+    main: '#22C55E',
+    soft: 'bg-[#22C55E]/05',
+    border: 'border-[#22C55E]/10',
+    accent: 'text-[#22C55E]',
+    iconBg: 'bg-[#22C55E]/10',
   },
+  orange: {
+    main: '#EB7A45',
+    soft: 'bg-[#FFF4ED]',
+    border: 'border-[#EB7A45]/20',
+    accent: 'text-[#EB7A45]',
+    iconBg: 'bg-[#FFF4ED]',
+  },
+  secondaryBlue: {
+    main: '#3E5F82',
+    soft: 'bg-[#EEF5FB]',
+    border: 'border-[#3E5F82]/18',
+    accent: 'text-[#3E5F82]',
+    iconBg: 'bg-[#dce9f6]',
+  },
+  red: {
+    main: '#DC2626',
+    soft: 'bg-[#FEECEC]',
+    border: 'border-[#DC2626]/18',
+    accent: 'text-[#DC2626]',
+    iconBg: 'bg-[#FEECEC]',
+  },
+};
+
+const KPI_DATA = [
   {
-    label: 'Avg. Daily Distance',
-    value: '44.6 km',
-    sub: 'Across all active routes',
-    progress: 63,
-    topBorder: 'border-t-[#3b82f6]',
-    tone: 'distance' as KpiTone,
+    label: 'Total Vehicles',
+    value: '512',
+    group: 'Operations',
+    icon: Truck,
+    variant: 'blue',
   },
   {
     label: 'Active Vehicles',
-    value: '54K',
-    sub: '2,151 currently online',
-    progress: 88,
-    topBorder: 'border-t-[#f59e0b]',
-    tone: 'active' as KpiTone,
+    value: '468',
+    group: 'Operations',
+    icon: Zap,
+    variant: 'blue',
   },
   {
-    label: 'Safety Events',
-    value: '95.3%',
-    sub: 'Compliant incidents',
-    progress: 84,
-    topBorder: 'border-t-[#10b981]',
-    tone: 'safety' as KpiTone,
-  },
-];
-
-const LIVE_ROWS = [
-  {
-    vehicle: 'Ford Transit',
-    driver: 'Adam Lowell',
-    status: 'Active',
-    lastActive: '11 minutes ago',
-    location: 'South Quarter',
+    label: 'Vehicles Off Road',
+    value: '44',
+    group: 'Risk',
+    icon: AlertTriangle,
+    variant: 'orange',
   },
   {
-    vehicle: 'Toyota Hilux',
-    driver: 'Ruben Perez',
-    status: 'Idle',
-    lastActive: '26 minutes ago',
-    location: 'Customs Gate',
+    label: 'Fleet Availability',
+    value: '91.4%',
+    group: 'Performance',
+    icon: ShieldCheck,
+    variant: 'green',
   },
   {
-    vehicle: 'Nissan Leaf',
-    driver: 'Emma Brown',
-    status: 'Driver Alert',
-    lastActive: '36 minutes ago',
-    location: 'Northfront',
-  },
-];
-
-const INSPECTION_ROWS = [
-  [
-    'Ford Transit',
-    'Inspection',
-    'Apr 06, 2026',
-    'Overdue',
-    'Adam Lowell',
-    'Brake pad wear',
-  ],
-  [
-    'Toyota Hilux',
-    'Engine Service',
-    'Apr 09, 2026',
-    'Due Soon',
-    'Ruben Perez',
-    'Oil change + filter',
-  ],
-  [
-    'Nissan Leaf',
-    'Safety Service',
-    'Apr 12, 2026',
-    'Scheduled',
-    'Emma Brown',
-    'ABS sensor check',
-  ],
-  [
-    'Mercedes Sprinter',
-    'Inspection',
-    'Apr 15, 2026',
-    'Scheduled',
-    'Ali Kareem',
-    'Tire rotation',
-  ],
-];
-
-const DRIVER_METRIC_ROWS = [
-  ['1221', '16.007', 'Watch', 'Due Soon', 'Overdue'],
-  ['2201', '16.048', 'Safety Device', 'Due Soon', 'Overdue'],
-  ['2601', '16.002', 'Dispatch Patrol', 'Due Soon', 'On route'],
-  ['2001', '16.003', 'Safety Device', 'Out Soon', 'On route'],
-];
-
-const DOWNTIME_DATA = [
-  { month: 'JAN', value: 58 },
-  { month: 'FEB', value: 66 },
-  { month: 'MAR', value: 62 },
-  { month: 'APR', value: 70 },
-  { month: 'MAY', value: 56 },
-  { month: 'JUN', value: 52 },
-  { month: 'JUL', value: 49 },
-  { month: 'AUG', value: 54 },
-  { month: 'SEP', value: 61 },
-  { month: 'OCT', value: 57 },
-  { month: 'NOV', value: 68 },
-  { month: 'DEC', value: 63 },
-];
-
-const FLEET_COMPOSITION_DATA = [
-  { type: 'Light Duty', active: 38, maintenance: 8, offline: 3 },
-  { type: 'Medium Duty', active: 35, maintenance: 10, offline: 4 },
-  { type: 'Heavy Duty', active: 31, maintenance: 9, offline: 5 },
-  { type: 'Electric', active: 16, maintenance: 6, offline: 2 },
-  { type: 'Other', active: 14, maintenance: 4, offline: 2 },
-];
-
-const VEHICLE_STATS = [
-  ['Total Vehicles', '615', 'Fleet registered'],
-  ['Roadworthy Vehicles', '539', '87.6% healthy'],
-  ['Vehicles Off Road', '37', '6.0% VOR'],
-  ['Vehicles Other', '39', '6.3% mixed'],
-];
-
-const VEHICLE_DONUT_DATA = [
-  { name: 'Roadworthy', value: 539, color: '#3E5F82' },
-  { name: 'Off Road', value: 37, color: '#EB7A45' },
-  { name: 'Other', value: 39, color: '#C9D3DB' },
-];
-
-const CHECKS_KPI_DATA = [
-  {
-    label: 'Completed',
-    value: '482',
-    color: '#10b981',
-    bg: '#e9f9ef',
-    icon: CheckCircle2,
-  },
-  {
-    label: 'At Risk / Alerts',
-    value: '43',
-    color: '#ef4444',
-    bg: '#fdecec',
-    icon: AlertCircle,
-  },
-  {
-    label: 'Upcoming / Checks',
-    value: '86',
-    color: '#3b82f6',
-    bg: '#eaf1ff',
+    label: 'Vehicles in Use',
+    value: '311',
+    group: 'Operations',
     icon: Activity,
+    variant: 'blue',
   },
   {
-    label: 'Avg Metrics',
-    value: '84.6',
-    color: '#8b5cf6',
-    bg: '#f2ecff',
-    icon: Calendar,
+    label: 'Idle Vehicles',
+    value: '157',
+    group: 'Operations',
+    icon: Clock,
+    variant: 'blue',
   },
-];
-
-const SECONDARY_METRICS_DATA = [
-  { label: 'Compliance', value: '95.3%' },
-  { label: 'Service', value: '1,204' },
-  { label: 'Inspection', value: '86' },
-  { label: 'Safety Check', value: '312' },
-];
-
-const CHECKS_CHART_DATA = [
-  { name: 'Completed', value: 482, color: '#10b981' },
-  { name: 'Ongoing', value: 86, color: '#3b82f6' },
-  { name: 'Pending', value: 133, color: '#f59e0b' },
-  { name: 'Alerts', value: 43, color: '#ef4444' },
+  {
+    label: 'Under Maintenance',
+    value: '39',
+    group: 'Risk',
+    icon: Tool,
+    variant: 'orange',
+  },
+  {
+    label: 'Avg Utilization',
+    value: '72%',
+    group: 'Performance',
+    icon: Gauge,
+    variant: 'green',
+  },
+  {
+    label: 'Avg Distance / Day',
+    value: '184 km',
+    group: 'Efficiency',
+    icon: Fuel,
+    variant: 'secondaryBlue',
+  },
+  {
+    label: 'Avg Operating Hours',
+    value: '8.6 h',
+    group: 'Efficiency',
+    icon: Clock,
+    variant: 'secondaryBlue',
+  },
 ];
 
 const VOR_DATA = [
-  { vehicle: 'Transit', available: 94, offRoad: 10 },
-  { vehicle: 'Hilux', available: 88, offRoad: 7 },
-  { vehicle: 'Leaf', available: 74, offRoad: 14 },
-  { vehicle: 'Sprinter', available: 69, offRoad: 8 },
-  { vehicle: 'Actros', available: 52, offRoad: 6 },
+  { label: 'Engine', category: 12, manufacturer: 9 },
+  { label: 'Tyre', category: 7, manufacturer: 5 },
+  { label: 'Electrical', category: 9, manufacturer: 8 },
+  { label: 'Body', category: 5, manufacturer: 6 },
+  { label: 'Brake', category: 11, manufacturer: 7 },
 ];
 
-const INSPECTION_BUCKETS = [
+const ANALYTICS_TREND = [
+  { m: 'Jan', efficiency: 74, utilization: 68 },
+  { m: 'Feb', efficiency: 76, utilization: 71 },
+  { m: 'Mar', efficiency: 72, utilization: 69 },
+  { m: 'Apr', efficiency: 78, utilization: 73 },
+  { m: 'May', efficiency: 80, utilization: 75 },
+  { m: 'Jun', efficiency: 75, utilization: 72 },
+  { m: 'Jul', efficiency: 79, utilization: 74 },
+  { m: 'Aug', efficiency: 82, utilization: 77 },
+  { m: 'Sep', efficiency: 78, utilization: 73 },
+  { m: 'Oct', efficiency: 84, utilization: 79 },
+  { m: 'Nov', efficiency: 81, utilization: 76 },
+  { m: 'Dec', efficiency: 86, utilization: 81 },
+];
+
+const HISTORICAL_SAFETY_DATA = [
+  { m: 'Jan', low: 35, med: 25, high: 15, trend: 55 },
+  { m: 'Feb', low: 40, med: 28, high: 18, trend: 62 },
+  { m: 'Mar', low: 38, med: 30, high: 20, trend: 58 },
+  { m: 'Apr', low: 45, med: 25, high: 22, trend: 65 },
+  { m: 'May', low: 42, med: 22, high: 15, trend: 60 },
+  { m: 'Jun', low: 48, med: 32, high: 25, trend: 70 },
+  { m: 'Jul', low: 35, med: 28, high: 18, trend: 52 },
+  { m: 'Aug', low: 40, med: 35, high: 20, trend: 64 },
+  { m: 'Sep', low: 38, med: 25, high: 15, trend: 56 },
+  { m: 'Oct', low: 45, med: 38, high: 28, trend: 75 },
+  { m: 'Nov', low: 42, med: 22, high: 18, trend: 58 },
+  { m: 'Dec', low: 40, med: 28, high: 22, trend: 62 },
+];
+
+const PERFORMANCE_EFFICIENCY_DATA = [
+  { m: 'Jan', fuel: 20, eff: 40 },
+  { m: 'Feb', fuel: 65, eff: 35 },
+  { m: 'Mar', fuel: 45, eff: 50 },
+  { m: 'Apr', fuel: 70, eff: 65 },
+  { m: 'May', fuel: 68, eff: 80 },
+  { m: 'Jun', fuel: 62, eff: 55 },
+  { m: 'Jul', fuel: 72, eff: 85 },
+  { m: 'Aug', fuel: 68, eff: 90 },
+  { m: 'Sep', fuel: 70, eff: 88 },
+  { m: 'Oct', fuel: 95, eff: 75 },
+  { m: 'Nov', fuel: 92, eff: 85 },
+  { m: 'Dec', fuel: 75, eff: 110 },
+];
+
+const VIOLATIONS_DATA = [
+  { m: 'Jan', tr105: 45, vm002: 25, vh122: 15 },
+  { m: 'Feb', tr105: 58, vm002: 30, vh122: 20 },
+  { m: 'Mar', tr105: 52, vm002: 22, vh122: 18 },
+  { m: 'Apr', tr105: 60, vm002: 35, vh122: 25 },
+  { m: 'May', tr105: 62, vm002: 28, vh122: 22 },
+  { m: 'Jun', tr105: 55, vm002: 25, vh122: 18 },
+  { m: 'Jul', tr105: 68, vm002: 38, vh122: 20 },
+  { m: 'Aug', tr105: 65, vm002: 32, vh122: 25 },
+  { m: 'Sep', tr105: 63, vm002: 30, vh122: 22 },
+  { m: 'Oct', tr105: 72, vm002: 35, vh122: 28 },
+  { m: 'Nov', tr105: 65, vm002: 28, vh122: 24 },
+  { m: 'Dec', tr105: 68, vm002: 32, vh122: 26 },
+];
+
+const DRIVERS = [
+  { name: 'Jocel Rett', score: 100, rating: 4.8, perf: 92, trend: 'up' },
+  { name: 'Dave Witaen', score: 180, rating: 4.7, perf: 87, trend: 'up' },
+  { name: 'Misa Smith', score: 160, rating: 4.5, perf: 82, trend: 'up' },
+  { name: 'Frlano Haun', score: 130, rating: 4.2, perf: 76, trend: 'down' },
+];
+
+const TRIPS = [
   {
-    title: 'Overdue',
-    accent: 'text-[#B91C1C] bg-[#FEF2F2]',
-    stats: [
-      ['ADR', 8],
-      ['Annual', 6],
-      ['PMI', 9],
-      ['Service', 11],
-    ],
+    id: 'TR-105',
+    route: 'North Depot - CBD',
+    dur: '02:37',
+    status: 'Completed',
+    type: 'Delivery',
   },
   {
-    title: 'Next 7 days',
-    accent: 'text-[#B45309] bg-[#FFFBEB]',
-    stats: [
-      ['ADR', 12],
-      ['Annual', 7],
-      ['PMI', 10],
-      ['Service', 9],
-    ],
+    id: 'VH-089',
+    route: 'West Hub - Airport',
+    dur: '01:57',
+    status: 'In Progress',
+    type: 'Passenger',
   },
   {
-    title: '8-14 days',
-    accent: 'text-[#15803D] bg-[#F0FDF4]',
-    stats: [
-      ['ADR', 14],
-      ['Annual', 9],
-      ['PMI', 12],
-      ['Service', 8],
-    ],
-  },
-  {
-    title: '15-30 days',
-    accent: 'text-[#15803D] bg-[#F0FDF4]',
-    stats: [
-      ['ADR', 18],
-      ['Annual', 11],
-      ['PMI', 15],
-      ['Service', 12],
-    ],
+    id: 'VH-088',
+    route: 'South Yard - Port',
+    dur: '03:10',
+    status: 'Completed',
+    type: 'Logistics',
   },
 ];
 
-const EXPIRE_BUCKETS = [
+const ACTIVITY = [
   {
-    title: 'Overdue',
-    accent: 'text-[#B91C1C] bg-[#FEF2F2]',
-    stats: [
-      ['MOT', 4],
-      ['Insurance', 5],
-      ['Permit', 3],
-      ['Road Tax', 7],
-    ],
+    title: 'Defect reported',
+    desc: 'VH-201 brake pressure warning',
+    time: '09:28',
   },
   {
-    title: 'Next 7 days',
-    accent: 'text-[#B45309] bg-[#FFFBEB]',
-    stats: [
-      ['MOT', 9],
-      ['Insurance', 8],
-      ['Permit', 6],
-      ['Road Tax', 10],
-    ],
+    title: 'Inspection completed',
+    desc: '34 vehicles passed morning check',
+    time: '08:46',
   },
   {
-    title: '8-14 days',
-    accent: 'text-[#15803D] bg-[#F0FDF4]',
-    stats: [
-      ['MOT', 11],
-      ['Insurance', 7],
-      ['Permit', 8],
-      ['Road Tax', 9],
-    ],
+    title: 'Work order created',
+    desc: 'WO-492 tyre replacement batch',
+    time: '07:52',
   },
   {
-    title: '15-30 days',
-    accent: 'text-[#15803D] bg-[#F0FDF4]',
-    stats: [
-      ['MOT', 13],
-      ['Insurance', 10],
-      ['Permit', 9],
-      ['Road Tax', 11],
-    ],
+    title: 'Vehicle recovered',
+    desc: 'VH-111 moved from VOR to active',
+    time: '07:20',
   },
 ];
 
 function Card({
-  title,
-  right,
   children,
   className,
+  variant,
+  important,
 }: {
-  title?: string;
-  right?: ReactNode;
   children: ReactNode;
   className?: string;
+  variant?: keyof typeof SEMANTIC_COLORS;
+  important?: boolean;
 }) {
+  const styles = variant ? SEMANTIC_COLORS[variant] : null;
   return (
-    <section
+    <div
       className={cn(
-        DASHBOARD_TOKENS.cardSurface,
-        DASHBOARD_TOKENS.cardPadding,
+        TOKENS.cardBg,
+        TOKENS.cardRadius,
+        important ? TOKENS.strongShadow : TOKENS.cardShadow,
+        TOKENS.cardBorder,
+        styles?.border,
         className,
       )}
     >
-      {(title || right) && (
-        <header className="mb-3 flex items-center justify-between gap-2.5">
-          {title ? (
-            <h3 className="text-[14px] font-semibold tracking-tight text-slate-700">
-              {title}
-            </h3>
-          ) : (
-            <span />
-          )}
-          {right}
-        </header>
-      )}
       {children}
-    </section>
+    </div>
   );
 }
 
-const ShellCard = Card;
-
-function SectionContainer({
+function SectionWrapper({
   children,
   className,
 }: {
   children: ReactNode;
   className?: string;
-}) {
-  return (
-    <section className={cn(DASHBOARD_TOKENS.sectionSurface, className)}>
-      {children}
-    </section>
-  );
-}
-
-const SectionWrapper = SectionContainer;
-
-function SectionHeader({
-  title,
-  right,
-  className,
-}: {
-  title: string;
-  right?: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn('mb-0.5 flex items-center justify-between', className)}>
-      <h3 className="text-[15px] font-semibold tracking-tight text-[#274867]">
-        {title}
-      </h3>
-      {right}
-    </div>
-  );
-}
-
-function PillTabs({
-  tabs,
-  active,
-  onChange,
-}: {
-  tabs: TabOption[];
-  active: string;
-  onChange: (id: string) => void;
-}) {
-  return (
-    <div className="inline-flex items-center gap-1 rounded-[11px] border border-slate-200 bg-white p-1">
-      {tabs.map((tab) => (
-        <button
-          key={tab.id}
-          type="button"
-          onClick={() => onChange(tab.id)}
-          className={cn(
-            'rounded-[8px] px-3 py-1.5 text-xs font-medium text-[#4f647a] transition-all',
-            active === tab.id &&
-              'bg-[#2f5f90] text-white shadow-[0_6px_14px_-12px_rgba(25,54,87,0.28)]',
-          )}
-        >
-          {tab.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-const Tabs = PillTabs;
-
-function MiniSelect({ label }: { label: string }) {
-  return (
-    <button
-      type="button"
-      className="inline-flex h-8 items-center gap-1.5 rounded-[9px] border border-[#d7e3ef] bg-white px-2.5 text-xs text-[#365068] shadow-[0_8px_18px_-16px_rgba(15,23,42,0.24)]"
-    >
-      {label}
-      <ChevronDown className="h-3.5 w-3.5" />
-    </button>
-  );
-}
-
-const Filters = MiniSelect;
-
-function IconButton({ children }: { children: ReactNode }) {
-  return (
-    <button
-      type="button"
-      className="flex h-8 w-8 items-center justify-center rounded-[9px] border border-[#d7e3ef] bg-white text-[#41566b] shadow-[0_8px_18px_-16px_rgba(15,23,42,0.24)]"
-    >
-      {children}
-    </button>
-  );
-}
-
-function FilterSelect({ label }: { label: string }) {
-  return <Filters label={label} />;
-}
-
-function TabGroup(props: {
-  tabs: TabOption[];
-  active: string;
-  onChange: (id: string) => void;
-}) {
-  return <Tabs {...props} />;
-}
-
-function StatusBadge({
-  tone,
-  children,
-}: {
-  tone: StatusTone;
-  children: ReactNode;
-}) {
-  const tones: Record<StatusTone, string> = {
-    success: 'bg-[#F0FDF4] text-[#15803D]',
-    warning: 'bg-[#FFFBEB] text-[#B45309]',
-    danger: 'bg-[#FEF2F2] text-[#B91C1C]',
-    info: 'bg-cyan-50 text-cyan-700',
-    neutral: 'bg-[#edf2f7] text-[#2F4B69]',
-  };
-  return (
-    <span
-      className={cn(
-        'inline-flex w-fit rounded-full px-2 py-0.5 text-[11px] font-medium',
-        tones[tone],
-      )}
-    >
-      {children}
-    </span>
-  );
-}
-
-function KpiCard({
-  label,
-  value,
-  sub,
-  progress,
-  topBorder,
-  tone,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  progress: number;
-  topBorder: string;
-  tone: KpiTone;
-}) {
-  const toneStyles: Record<
-    KpiTone,
-    { icon: ReactNode; iconWrap: string; progress: string; subAccent?: string }
-  > = {
-    fleet: {
-      icon: <ShieldCheck className="h-3.5 w-3.5 text-[#2F5D8A]" />,
-      iconWrap: 'bg-[#EEF5FF]',
-      progress: 'bg-[#22C55E]',
-      subAccent: 'text-[#15803D]',
-    },
-    fuel: {
-      icon: <Leaf className="h-3.5 w-3.5 text-[#DE7440]" />,
-      iconWrap: 'bg-[#FFF4ED]',
-      progress: 'bg-[#F59E0B]',
-    },
-    distance: {
-      icon: <Gauge className="h-3.5 w-3.5 text-[#0891B2]" />,
-      iconWrap: 'bg-[#ECFEFF]',
-      progress: 'bg-[#06B6D4]',
-    },
-    active: {
-      icon: <Truck className="h-3.5 w-3.5 text-[#2F5D8A]" />,
-      iconWrap: 'bg-[#EEF5FF]',
-      progress: 'bg-[#2F5D8A]',
-    },
-    safety: {
-      icon: <AlertTriangle className="h-3.5 w-3.5 text-[#DC2626]" />,
-      iconWrap: 'bg-[#FEF2F2]',
-      progress: 'bg-[#EF4444]',
-      subAccent: 'text-[#B45309]',
-    },
-  };
-  const toneStyle = toneStyles[tone];
-
-  return (
-    <ShellCard
-      className={cn(
-        'flex h-[118px] flex-col border-t-[5px] bg-white p-3',
-        DASHBOARD_TOKENS.cardShadow,
-        topBorder,
-      )}
-    >
-      <div className="flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.03em] text-[#355779]">
-          {label}
-        </p>
-        <span
-          className={cn(
-            'inline-flex h-6 w-6 items-center justify-center rounded-full',
-            toneStyle.iconWrap,
-          )}
-        >
-          {toneStyle.icon}
-        </span>
-      </div>
-      <p className="mt-1 text-[24px] leading-none font-bold tracking-tight text-[#18324c]">
-        {value}
-      </p>
-      <p
-        className={cn('mt-0.5 text-[11px] text-[#4f6f8e]', toneStyle.subAccent)}
-      >
-        {sub}
-      </p>
-      <div className="mt-auto h-1.5 overflow-hidden rounded-full bg-[#e5edf6]">
-        <div
-          className={cn('h-full rounded-full', toneStyle.progress)}
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-    </ShellCard>
-  );
-}
-
-function MiniStatCard({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub: string;
 }) {
   return (
     <div
       className={cn(
-        DASHBOARD_TOKENS.cardRadius,
-        DASHBOARD_TOKENS.cardBorder,
-        'bg-white p-2',
+        TOKENS.sectionBg,
+        // Use a strict grid: no wrapper padding; spacing comes from row/column gaps.
+        'rounded-[8px] p-0 flex flex-col gap-3',
+        className,
       )}
     >
-      <p className="text-[10px] text-[#5e7690]">{label}</p>
-      <p className="mt-0.5 text-[19px] leading-none font-semibold text-[#1f3954]">
-        {value}
-      </p>
-      <p className="text-[10px] text-[#6f859a]">{sub}</p>
+      {children}
     </div>
   );
 }
 
-function ChartCard({
+function SectionTitle({
   title,
-  className,
-  children,
-  right,
-}: {
-  title: string;
-  className?: string;
-  children: ReactNode;
-  right?: ReactNode;
-}) {
-  return (
-    <ShellCard
-      title={title}
-      right={right}
-      className={cn('border-t-[3px] border-t-[#295b89] p-3', className)}
-    >
-      {children}
-    </ShellCard>
-  );
-}
-
-function TableCard({
-  title,
-  right,
-  children,
+  variant = 'blue',
   className,
 }: {
   title: string;
-  right?: ReactNode;
-  children: ReactNode;
+  variant?: keyof typeof SEMANTIC_COLORS;
   className?: string;
 }) {
+  const color = SEMANTIC_COLORS[variant].main;
   return (
-    <ShellCard title={title} right={right} className={cn('p-3', className)}>
-      {children}
-    </ShellCard>
-  );
-}
-
-function InsightRow({
-  label,
-  value,
-  percent,
-}: {
-  label: string;
-  value: string;
-  percent: number;
-}) {
-  const severityTone =
-    percent >= 65 ? 'critical' : percent >= 40 ? 'warning' : 'normal';
-  const barClass =
-    severityTone === 'critical'
-      ? 'bg-[#EF4444]'
-      : severityTone === 'warning'
-        ? 'bg-[#F59E0B]'
-        : 'bg-[#2F5D8A]';
-
-  return (
-    <div className="space-y-0.5 border-b border-[rgba(42,72,104,0.1)] pb-1">
-      <div className="flex items-center justify-between text-[12px]">
-        <span className="text-[#5f7690]">{label}</span>
-        <span className="font-medium text-[#1f3954]">{value}</span>
-      </div>
-      <div className="h-[3px] overflow-hidden rounded-full bg-[#e6eef7]">
-        <div
-          className={cn('h-[3px] rounded-full', barClass)}
-          style={{ width: `${percent}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function ScheduleItem({
-  task,
-  due,
-  count,
-}: {
-  task: string;
-  due: string;
-  count: string;
-}) {
-  return (
-    <div
-      className="flex items-center justify-between rounded-[9px] bg-white px-2 py-1 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)] transition-colors hover:bg-[#f1f7fd]"
-      style={{ borderLeft: '3px solid #DE7440' }}
-    >
-      <div>
-        <span className="block text-[13px] text-[#35506a]">{task}</span>
-        <span className="block text-[10px] text-[#647f97]">Due in {due}</span>
-      </div>
-      <span className="text-sm font-medium text-[#2F4B69]">{count}</span>
-    </div>
-  );
-}
-
-function ComplianceMiniCard({
-  title,
-  accent,
-  stats,
-}: {
-  title: string;
-  accent: string;
-  stats: (string | number)[][];
-}) {
-  return (
-    <ShellCard className="p-2">
+    <div className="mb-3 flex items-center gap-2">
       <div
+        className="h-3.5 w-[3px] rounded-full opacity-100"
+        style={{ backgroundColor: color }}
+        aria-hidden
+      />
+      <h3 className={cn('typo-section-title', className)}>{title}</h3>
+    </div>
+  );
+}
+
+type DashboardFilterValue = 'All' | string;
+
+function DashboardLabeledFilterSelect({
+  label,
+  value,
+  onValueChange,
+  options,
+}: {
+  label: string;
+  value: DashboardFilterValue;
+  onValueChange: (next: string) => void;
+  options: Array<{ value: DashboardFilterValue; label: string }>;
+}) {
+  return (
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger
+        size="sm"
         className={cn(
-          'mb-1 inline-flex rounded-full px-1.5 py-0.5 text-[10px] font-medium',
-          accent,
+          'h-8 px-2.5 rounded-[6px] bg-white flex items-center justify-between gap-2 cursor-pointer',
+          'hover:bg-[#fbfdff] transition-all shadow-[0_1px_2px_rgba(37,61,89,0.05)]',
+          'border border-[#d6e3f2]/70 data-[state=open]:bg-[#e3edf8]',
+          '[&svg]:transition-transform data-[state=open]:[&svg]:rotate-180',
         )}
       >
-        {title}
-      </div>
-      <div className="grid grid-cols-2 gap-x-1.5 gap-y-0.5">
-        {stats.map(([label, value]) => (
-          <div
-            key={String(label)}
-            className="flex items-center justify-between text-[11px]"
-          >
-            <span className="text-[#5f7690]">{label}</span>
-            <span className="font-medium text-[#1f3954]">{value}</span>
-          </div>
+        <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+          {label}
+        </span>
+        <SelectValue
+          // Hide the selected value text inside the trigger; keep the element
+          // in the layout so spacing/height remain unchanged.
+          className="text-[10px] font-semibold invisible"
+          placeholder="All"
+        />
+      </SelectTrigger>
+      <SelectContent className="rounded-md">
+        {options.map((opt) => (
+          <SelectItem key={opt.value} value={opt.value}>
+            {opt.label}
+          </SelectItem>
         ))}
-      </div>
-    </ShellCard>
-  );
-}
-
-function ChartTooltipCard({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-md border border-[#d7e3ef] bg-white px-2 py-1.5 text-xs shadow-[0_8px_18px_-16px_rgba(15,23,42,0.24)]">
-      <p className="font-medium text-[#2F4B69]">{label}</p>
-      {payload.map((entry: any) => (
-        <p key={entry.name} className="text-[#5b6f84]">
-          {entry.name}: {entry.value}
-        </p>
-      ))}
-    </div>
+      </SelectContent>
+    </Select>
   );
 }
 
 export default function DashboardPage() {
-  const [topTab, setTopTab] = useState('overview');
-  const [analyticsTab, setAnalyticsTab] = useState('fleet-analytics');
+  const today = new Date().toLocaleString(undefined, {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const fleetMarkers = [
+    { left: '19%', top: '64%', status: 'active' },
+    { left: '32%', top: '48%', status: 'idle' },
+    { left: '46%', top: '58%', status: 'active' },
+    { left: '58%', top: '43%', status: 'alert' },
+    { left: '72%', top: '55%', status: 'active' },
+    { left: '66%', top: '70%', status: 'idle' },
+  ] as const;
+  const markerStyles = {
+    active: {
+      dot: 'bg-[#2F4B69]',
+      halo: 'bg-[#2F4B69]/30',
+      ring: 'border-[#2F4B69]/40',
+    },
+    idle: {
+      dot: 'bg-[#EB7A45]',
+      halo: 'bg-[#EB7A45]/30',
+      ring: 'border-[#EB7A45]/40',
+    },
+    alert: {
+      dot: 'bg-[#DC2626]',
+      halo: 'bg-[#DC2626]/30',
+      ring: 'border-[#DC2626]/40',
+    },
+  } as const;
+
+  const [vehicleFilter, setVehicleFilter] =
+    useState<DashboardFilterValue>('All');
+  const [regionFilter, setRegionFilter] = useState<DashboardFilterValue>('All');
+  const [categoryFilter, setCategoryFilter] =
+    useState<DashboardFilterValue>('All');
+  const [subCategoryFilter, setSubCategoryFilter] =
+    useState<DashboardFilterValue>('All');
 
   return (
-    <PageSurface padding={PAGE_SURFACE_FOOTER_PADDING} fill sectionGap="none">
-      <PageSurface.Body
-        className={cn(
-          'min-h-0 flex-1 overflow-hidden',
-          DASHBOARD_TOKENS.pageBg,
-        )}
-      >
-        <DashboardShell className="px-3 py-3 lg:px-4 lg:py-4">
-          <div
-            className={cn(
-              'mx-auto flex w-full max-w-[1380px] min-w-0 flex-col pb-1',
-              DASHBOARD_TOKENS.sectionGap,
-            )}
-          >
-            <header className="flex items-center justify-between rounded-[10px] bg-white px-4 py-3 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-              <div className="flex items-center gap-3">
-                <IconButton>
-                  <Menu className="h-3.5 w-3.5" />
-                </IconButton>
-                <h1 className="text-[21px] font-semibold tracking-tight text-[#2F4B69]">
-                  Overview
-                </h1>
-              </div>
-              <div className="flex items-center gap-2">
-                <IconButton>
-                  <Bell className="h-3.5 w-3.5" />
-                </IconButton>
-                <IconButton>
-                  <Settings className="h-3.5 w-3.5" />
-                </IconButton>
-                <button
-                  type="button"
-                  className="inline-flex h-8 items-center gap-2 rounded-[9px] border border-[#d7e3ef] bg-white px-2.5 shadow-[0_8px_18px_-16px_rgba(15,23,42,0.24)]"
-                >
-                  <span className="h-6 w-6 rounded-full bg-gradient-to-br from-[#d9e3ed] to-[#c9d3db]" />
-                  <span className="text-xs font-medium text-[#365068]">
-                    Roland Anderson
-                  </span>
-                </button>
-                <MiniSelect label="All Regions" />
-              </div>
-            </header>
-
-            <div className="flex items-center gap-1.5">
-              <FilterSelect label="All Regions" />
-              <FilterSelect label="Category" />
-              <FilterSelect label="Sub Category" />
+    <div
+      className={cn(
+        TOKENS.pageBg,
+        // Root container should not force viewport stretching.
+        // Padding is for natural breathing room inside layout-19's scrollable <main>.
+        'main-container pt-5 px-5 pb-6',
+      )}
+    >
+      <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-3">
+        <header className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 className="typo-page-title">Executive Analyst Dashboard</h1>
+            <div className="flex items-center gap-2 mt-0.5">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="typo-body">Intelligence Command Core • {today}</p>
             </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { label: 'Primary Action', type: 'primary' },
+              { label: 'Secondary Act', type: 'secondary' },
+              { label: 'Tools', type: 'secondary' },
+            ].map((btn) => (
+              <button
+                key={btn.label}
+                className={cn(
+                  'px-3 py-1.5 rounded-[6px] text-[10px] font-black uppercase tracking-wider transition-all duration-300 shadow-sm',
+                  btn.type === 'primary'
+                    ? 'bg-[linear-gradient(135deg,#EB7A45,#f08f62)] text-white shadow-[0_8px_20px_-6px_rgba(235,122,69,0.45)] hover:shadow-[0_12px_24px_-8px_rgba(235,122,69,0.55)] hover:scale-[1.03] active:scale-[0.97] border border-[#EB7A45]/30'
+                    : 'bg-[#EEF5FB] text-[#2F4B69] border border-[#d6e3f2] hover:bg-[#e3edf8] hover:shadow-md',
+                )}
+              >
+                {btn.label}
+              </button>
+            ))}
+          </div>
+        </header>
 
-            <div>
-              <TabGroup tabs={TOP_TABS} active={topTab} onChange={setTopTab} />
+        <SectionWrapper>
+          <div className="rounded-[8px] bg-[#EEF5FB] p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+              <DashboardLabeledFilterSelect
+                label="Vehicle Filter"
+                value={vehicleFilter}
+                onValueChange={(v) =>
+                  setVehicleFilter(v as DashboardFilterValue)
+                }
+                options={[
+                  { value: 'All', label: 'All' },
+                  { value: 'VH-001', label: 'VH-001' },
+                  { value: 'VH-014', label: 'VH-014' },
+                ]}
+              />
+              <DashboardLabeledFilterSelect
+                label="Region Filter"
+                value={regionFilter}
+                onValueChange={(v) =>
+                  setRegionFilter(v as DashboardFilterValue)
+                }
+                options={[
+                  { value: 'All', label: 'All' },
+                  { value: 'North', label: 'North' },
+                  { value: 'South', label: 'South' },
+                ]}
+              />
+              <DashboardLabeledFilterSelect
+                label="Category Filter"
+                value={categoryFilter}
+                onValueChange={(v) =>
+                  setCategoryFilter(v as DashboardFilterValue)
+                }
+                options={[
+                  { value: 'All', label: 'All' },
+                  { value: 'Delivery', label: 'Delivery' },
+                  { value: 'Logistics', label: 'Logistics' },
+                ]}
+              />
+              <DashboardLabeledFilterSelect
+                label="Sub-category Filter"
+                value={subCategoryFilter}
+                onValueChange={(v) =>
+                  setSubCategoryFilter(v as DashboardFilterValue)
+                }
+                options={[
+                  { value: 'All', label: 'All' },
+                  { value: 'Route A', label: 'Route A' },
+                  { value: 'Route B', label: 'Route B' },
+                ]}
+              />
             </div>
-
-            <SectionWrapper>
-              <section className="grid min-w-0 grid-cols-5 gap-2.5">
-                {KPI_CARDS.map((kpi) => (
-                  <KpiCard key={kpi.label} {...kpi} />
-                ))}
-              </section>
-            </SectionWrapper>
-
-            <SectionWrapper>
-              <section className="grid min-w-0 grid-cols-12 items-stretch gap-2.5">
-                <ShellCard
-                  title="Vehicle Statistics"
-                  className="col-span-7 h-full p-2.5"
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-3">
+            {KPI_DATA.map((kpi) => {
+              const variant = kpi.variant as keyof typeof SEMANTIC_COLORS;
+              const colors = SEMANTIC_COLORS[variant];
+              const Icon = kpi.icon;
+              return (
+                <div
+                  key={kpi.label}
+                  className={cn(
+                    'bg-white',
+                    TOKENS.cardRadius,
+                    TOKENS.cardShadow,
+                    'p-2 flex flex-col justify-between group transition-all duration-300 hover:translate-y-[-1px] relative overflow-hidden min-h-[64px] border border-transparent',
+                  )}
                 >
-                  <div className="grid grid-cols-[1.5fr_.9fr] gap-2">
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {VEHICLE_STATS.map(([label, value, sub]) => (
-                        <MiniStatCard
-                          key={label}
-                          label={label}
-                          value={value}
-                          sub={sub}
+                  <div
+                    className="absolute top-0 left-0 right-0 h-[3px]"
+                    style={{ backgroundColor: colors.main }}
+                  />
+                  <div className="flex flex-col justify-between h-full">
+                    <p className="typo-kpi-label leading-tight">{kpi.label}</p>
+                    <div className="flex items-center justify-between mt-1">
+                      <p className="typo-kpi">{kpi.value}</p>
+                      <div
+                        className={cn(
+                          'w-6 h-6 rounded-md flex items-center justify-center transition-all group-hover:scale-105 shadow-[0_1px_3px_rgba(0,0,0,0.06)]',
+                          colors.iconBg,
+                        )}
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5"
+                          style={{ color: colors.main }}
                         />
-                      ))}
-                    </div>
-                    <div className="rounded-[10px] bg-white p-1.5 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                      <p className="mb-1 text-[10px] text-[#607b94]">
-                        Fleet distribution
-                      </p>
-                      <div className="h-[132px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <PieChart>
-                            <Pie
-                              data={VEHICLE_DONUT_DATA}
-                              dataKey="value"
-                              innerRadius={32}
-                              outerRadius={50}
-                              paddingAngle={2}
-                            >
-                              {VEHICLE_DONUT_DATA.map((entry) => (
-                                <Cell key={entry.name} fill={entry.color} />
-                              ))}
-                            </Pie>
-                            <Tooltip content={<ChartTooltipCard />} />
-                          </PieChart>
-                        </ResponsiveContainer>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-1 flex items-center gap-1.5">
+                </div>
+              );
+            })}
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-10">
+            <Card
+              variant="blue"
+              important
+              className="lg:col-span-7 p-2.5 h-full"
+            >
+              <SectionTitle title="Live Fleet Monitor" variant="blue" />
+              <div className="relative h-[172px] overflow-hidden rounded-[8px] bg-[#EDF1F4]">
+                <div className="absolute inset-0 bg-[radial-gradient(#d3dbe3_1px,transparent_1px)] bg-[size:15px_15px] opacity-25" />
+                <svg
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  className="absolute inset-0 h-full w-full"
+                >
+                  <rect x="0" y="0" width="100" height="100" fill="#EEF2F5" />
+                  <g opacity="0.9" fill="#E2E7EC">
+                    <rect x="4" y="8" width="12" height="9" rx="1.2" />
+                    <rect x="18" y="8" width="10" height="9" rx="1.2" />
+                    <rect x="30" y="8" width="12" height="9" rx="1.2" />
+                    <rect x="46" y="8" width="14" height="9" rx="1.2" />
+                    <rect x="63" y="8" width="11" height="9" rx="1.2" />
+                    <rect x="76" y="8" width="16" height="9" rx="1.2" />
+                    <rect x="7" y="23" width="11" height="10" rx="1.2" />
+                    <rect x="21" y="23" width="14" height="10" rx="1.2" />
+                    <rect x="39" y="23" width="10" height="10" rx="1.2" />
+                    <rect x="52" y="23" width="15" height="10" rx="1.2" />
+                    <rect x="71" y="23" width="10" height="10" rx="1.2" />
+                    <rect x="84" y="23" width="9" height="10" rx="1.2" />
+                    <rect x="5" y="39" width="15" height="11" rx="1.2" />
+                    <rect x="24" y="39" width="12" height="11" rx="1.2" />
+                    <rect x="40" y="39" width="12" height="11" rx="1.2" />
+                    <rect x="56" y="39" width="11" height="11" rx="1.2" />
+                    <rect x="71" y="39" width="17" height="11" rx="1.2" />
+                    <rect x="9" y="57" width="13" height="10" rx="1.2" />
+                    <rect x="26" y="57" width="9" height="10" rx="1.2" />
+                    <rect x="38" y="57" width="14" height="10" rx="1.2" />
+                    <rect x="56" y="57" width="15" height="10" rx="1.2" />
+                    <rect x="74" y="57" width="17" height="10" rx="1.2" />
+                    <rect x="7" y="73" width="11" height="11" rx="1.2" />
+                    <rect x="21" y="73" width="13" height="11" rx="1.2" />
+                    <rect x="37" y="73" width="10" height="11" rx="1.2" />
+                    <rect x="51" y="73" width="16" height="11" rx="1.2" />
+                    <rect x="71" y="73" width="20" height="11" rx="1.2" />
+                  </g>
+                  <g
+                    stroke="#F8FAFC"
+                    strokeWidth="3.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    opacity="0.95"
+                    fill="none"
+                  >
+                    <path d="M0 18 H100" />
+                    <path d="M0 35 H100" />
+                    <path d="M0 53 H100" />
+                    <path d="M0 70 H100" />
+                    <path d="M0 88 H100" />
+                    <path d="M16 0 V100" />
+                    <path d="M34 0 V100" />
+                    <path d="M52 0 V100" />
+                    <path d="M69 0 V100" />
+                    <path d="M86 0 V100" />
+                    <path d="M-4 82 L42 14 L104 2" />
+                    <path d="M-3 5 L52 64 L104 99" />
+                  </g>
+                  <g
+                    stroke="#CFD8E2"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    opacity="0.8"
+                    fill="none"
+                  >
+                    <path d="M0 26 H100" />
+                    <path d="M0 44 H100" />
+                    <path d="M0 62 H100" />
+                    <path d="M0 79 H100" />
+                    <path d="M25 0 V100" />
+                    <path d="M43 0 V100" />
+                    <path d="M61 0 V100" />
+                    <path d="M78 0 V100" />
+                  </g>
+                </svg>
+
+                <div className="absolute right-3 top-3 z-10 flex items-center gap-2 rounded-full bg-white px-2 py-1 shadow-sm">
+                  <MapPinned className="h-3 w-3 text-[#2F4B69]" />
+                  <span className="text-[9px] font-black text-[#50667c] uppercase tracking-widest">
+                    Active View
+                  </span>
+                </div>
+
+                {fleetMarkers.map((marker) => {
+                  const styles = markerStyles[marker.status];
+                  return (
+                    <div
+                      key={`${marker.left}-${marker.top}`}
+                      className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2"
+                      style={{ left: marker.left, top: marker.top }}
+                    >
+                      <div
+                        className={cn(
+                          'absolute -inset-1 rounded-full animate-pulse',
+                          styles.halo,
+                        )}
+                      />
+                      <div
+                        className={cn(
+                          'relative h-4 w-4 rounded-full border-[2px] border-white shadow-[0_4px_10px_rgba(15,23,42,0.2)]',
+                          styles.dot,
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            'absolute -inset-1 rounded-full border',
+                            styles.ring,
+                          )}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-4 gap-2 mt-1.5">
+                {[
+                  ['Active Vehicles', '468'],
+                  ['Moving Vehicles', '302'],
+                  ['Idle Vehicles', '166'],
+                  ['Avg Speed', '48 km/h'],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="p-2 rounded-[8px] bg-[#F9FBFD] shadow-[0_1px_2px_rgba(37,61,89,0.06)] flex flex-col justify-center min-h-[48px]"
+                  >
+                    <p className="text-[9px] text-[#8195aa] font-black uppercase tracking-widest">
+                      {label}
+                    </p>
+                    <p className="text-[13px] font-black text-[#243648] mt-0.5">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-1.5 flex items-center gap-2">
+                {[
+                  ['Active', 'bg-blue-500'],
+                  ['Idle', 'bg-orange-500'],
+                  ['Alert', 'bg-rose-500'],
+                ].map(([label, cls]) => (
+                  <div key={label} className="flex items-center gap-2">
                     <span
-                      className="h-6 w-6 rounded-full"
-                      style={{
-                        background:
-                          'conic-gradient(#22c55e 87.6%, #e2e8f0 87.6%)',
-                      }}
+                      className={cn(
+                        'h-2.5 w-2.5 rounded-full border border-white shadow-sm',
+                        cls,
+                      )}
                     />
-                    <span className="text-[11px] text-[#607b94]">
-                      Roadworthy ratio 87.6%
+                    <span className="text-[9px] font-bold text-[#5d7288] uppercase tracking-wider">
+                      {label}
                     </span>
                   </div>
-                </ShellCard>
+                ))}
+              </div>
+            </Card>
 
-                <ShellCard
-                  title="Today's Checks Summary"
-                  className="col-span-5 h-full rounded-[18px] border border-slate-200/60 bg-[#f8fafc] p-4 shadow-[0_12px_24px_-18px_rgba(15,23,42,0.25)]"
-                >
-                  <div className="mb-3.5 grid grid-cols-4 gap-3.5">
-                    {CHECKS_KPI_DATA.map((kpi) => (
-                      <div
-                        key={kpi.label}
-                        className="relative flex flex-col gap-1 rounded-[14px] p-3.5 shadow-sm"
-                        style={{ backgroundColor: kpi.bg }}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="h-2 w-2 rounded-full"
-                            style={{ backgroundColor: kpi.color }}
-                          />
-                          <kpi.icon
-                            className="h-3.5 w-3.5"
-                            style={{ color: kpi.color }}
-                          />
-                          <span className="text-[11px] font-medium text-slate-500">
-                            {kpi.label}
-                          </span>
-                        </div>
-                        <span className="mt-1 text-[30px] leading-none font-bold text-slate-900">
-                          {kpi.value}
+            <div className="flex flex-col gap-3 lg:col-span-3">
+              <Card variant="secondaryBlue" className="p-2.5 flex-1 shadow-sm">
+                <SectionTitle
+                  title="Health & Compliance"
+                  variant="secondaryBlue"
+                />
+                <div className="space-y-1.5">
+                  {[
+                    ['Roadworthy', '84%', 'text-[#EB7A45]', 'bg-[#EB7A45]'],
+                    ['Off Road', '9%', 'text-[#2F4B69]', 'bg-[#2F4B69]'],
+                    [
+                      'Under Inspection',
+                      '7%',
+                      'text-[#3E5F82]',
+                      'bg-[#3E5F82]',
+                    ],
+                  ].map(([label, val, color, bg]) => (
+                    <div key={label} className="group">
+                      <div className="flex items-center justify-between text-[10px] py-1 px-1">
+                        <span className="font-bold text-[#4f6478]">
+                          {label}
                         </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mb-4 grid grid-cols-4 gap-3.5 border-t border-slate-200/90 pt-3.5">
-                    {SECONDARY_METRICS_DATA.map((m) => (
-                      <div
-                        key={m.label}
-                        className="flex flex-col items-center justify-center text-center"
-                      >
-                        <p className="text-[11px] text-slate-500">{m.label}</p>
-                        <p className="mt-0.5 text-[17px] font-semibold text-slate-800 tabular-nums">
-                          {m.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="grid grid-cols-2 items-center gap-4 rounded-[14px] border border-slate-200/70 bg-white/70 p-3.5">
-                    <div className="relative mx-auto h-[180px] w-[180px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={CHECKS_CHART_DATA}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={58}
-                            outerRadius={84}
-                            paddingAngle={2}
-                            dataKey="value"
-                            stroke="none"
-                          >
-                            {CHECKS_CHART_DATA.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip content={<ChartTooltipCard />} />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <span className="text-[30px] leading-none font-extrabold text-slate-900">
-                          744
-                        </span>
-                        <span className="mt-1 text-[10px] font-semibold tracking-[0.14em] text-slate-400 uppercase">
-                          Total
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3 pr-1">
-                      {CHECKS_CHART_DATA.map((item) => (
-                        <div
-                          key={item.name}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="h-2.5 w-2.5 rounded-full"
-                              style={{ backgroundColor: item.color }}
-                            />
-                            <span className="text-[13px] font-medium text-slate-600">
-                              {item.name}
-                            </span>
-                          </div>
-                          <span className="text-[14px] font-semibold text-slate-900 tabular-nums">
-                            {item.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </ShellCard>
-              </section>
-            </SectionWrapper>
-
-            <SectionWrapper>
-              <section className="grid min-w-0 grid-cols-1 items-stretch gap-2.5 xl:grid-cols-[minmax(0,7fr)_minmax(0,3fr)]">
-                <TableCard
-                  title="Live Fleet Monitor"
-                  right={<FilterSelect label="Last 30 Days" />}
-                  className="h-full bg-[#f8fbff] shadow-[0_16px_34px_-20px_rgba(31,72,116,0.34)]"
-                >
-                  <div className="mb-1.5 flex items-center gap-1">
-                    {[
-                      ['Active Vehicles', 'bg-[#3E5F82]'],
-                      ['Maintenance', 'bg-[#F59E0B]'],
-                      ['Alert', 'bg-[#EF4444]'],
-                    ].map(([label, color]) => (
-                      <span
-                        key={label}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-medium text-[#35506a]"
-                      >
                         <span
-                          className={cn('h-1.5 w-1.5 rounded-full', color)}
+                          className={cn('font-black tracking-tight', color)}
+                        >
+                          {val}
+                        </span>
+                      </div>
+                      <div className="h-1 w-full bg-[#dce8f4] rounded-full overflow-hidden mx-1">
+                        <div
+                          className={cn('h-full rounded-full', bg)}
+                          style={{ width: val }}
                         />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              <Card variant="green" className="flex-1 p-2.5 shadow-sm">
+                <SectionTitle title="Efficiency Summary" variant="green" />
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[
+                    ['Checked %', '88%', '#EB7A45'],
+                    ['Not Checked %', '12%', '#2F4B69'],
+                    ['Safe %', '91%', '#22C55E'],
+                    ['Unsafe %', '9%', '#DC2626'],
+                  ].map(([label, val, barClr]) => (
+                    <div
+                      key={label}
+                      className="p-1.5 rounded-lg bg-white shadow-sm group transition-colors"
+                    >
+                      <p className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest">
+                        {label}
+                      </p>
+                      <p className="text-[12px] font-black text-[#243648] flex items-center justify-between mt-0.5">
+                        {val}
+                        <span
+                          className={cn(
+                            'h-1 w-7 rounded-full bg-[#dce8f4] overflow-hidden',
+                          )}
+                        >
+                          <span
+                            className="h-full block rounded-full"
+                            style={{ width: val, backgroundColor: barClr }}
+                          />
+                        </span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+            <Card variant="orange" className="lg:col-span-12 p-2.5">
+              <SectionTitle
+                title="Historical Safety & Risk Analysis"
+                variant="orange"
+              />
+              <div className="h-[196px] mt-0 bg-white rounded-[8px] p-1.5 border border-transparent">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart
+                    data={HISTORICAL_SAFETY_DATA}
+                    margin={{ top: 10, right: 0, left: -25, bottom: 0 }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="#E2E8F0"
+                      strokeDasharray="3 3"
+                      opacity={0.4}
+                    />
+                    <XAxis
+                      dataKey="m"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }}
+                    />
+                    <Tooltip
+                      cursor={{ fill: '#f1f5f9' }}
+                      contentStyle={{
+                        border: 'none',
+                        borderRadius: 12,
+                        boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+                        background: '#ffffff',
+                      }}
+                    />
+                    <Bar
+                      dataKey="low"
+                      name="Low Risk"
+                      stackId="a"
+                      fill="#FED7AA"
+                      barSize={32}
+                    />
+                    <Bar
+                      dataKey="med"
+                      name="Medium Risk"
+                      stackId="a"
+                      fill="#EB7A45"
+                      barSize={32}
+                    />
+                    <Bar
+                      dataKey="high"
+                      name="High Risk"
+                      stackId="a"
+                      fill="#DC2626"
+                      barSize={32}
+                      radius={[4, 4, 0, 0]}
+                    />
+                    <Line
+                      type="monotone"
+                      name="Trend"
+                      dataKey="trend"
+                      stroke="#2F4B69"
+                      strokeWidth={2}
+                      dot={{ r: 4, fill: '#2F4B69' }}
+                    />
+                    <Legend
+                      verticalAlign="top"
+                      align="right"
+                      iconType="circle"
+                      wrapperStyle={{
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        paddingBottom: '10px',
+                      }}
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-12 items-stretch">
+            <Card
+              variant="orange"
+              className="lg:col-span-4 p-2.5 h-full flex flex-col min-h-0"
+            >
+              <SectionTitle
+                title="Maintenance & Alerts"
+                variant="orange"
+                className="text-base"
+              />
+              <div className="grid grid-cols-3 gap-1.5 mb-1.5">
+                {[
+                  ['Scheduled', '23', 'bg-[#EEF5FB]'],
+                  ['Overdue', '8', 'bg-[#FEECEC]'],
+                  ['Workshop', '17', 'bg-[#FFF4ED]'],
+                ].map(([label, val, bg]) => (
+                  <div
+                    key={label}
+                    className={cn('p-1.5 rounded-[8px] bg-white shadow-sm', bg)}
+                  >
+                    <p className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest text-center">
+                      {label}
+                    </p>
+                    <p className="text-[13px] font-black text-[#1E293B] text-center mt-0">
+                      {val}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-auto space-y-1.5">
+                {[
+                  ['High priority', '12', 'text-[#DC2626]', '#DC2626'],
+                  ['Medium priority', '24', 'text-[#EB7A45]', '#EB7A45'],
+                  ['Low priority', '41', 'text-[#3E5F82]', '#3E5F82'],
+                ].map(([label, val, color, barClr]) => (
+                  <div key={label} className="space-y-1.5 px-0.5">
+                    <div className="flex items-center justify-between text-[10px]">
+                      <span className="font-medium text-slate-600 uppercase tracking-widest text-[9px]">
                         {label}
                       </span>
-                    ))}
-                  </div>
-
-                  <div className="relative h-[220px] overflow-hidden rounded-[11px] bg-[#edf5fc] shadow-[0_14px_30px_-20px_rgba(31,72,116,0.3)]">
-                    <svg
-                      viewBox="0 0 1000 360"
-                      className="absolute inset-0 h-full w-full"
-                      preserveAspectRatio="none"
-                    >
-                      <rect
-                        x="0"
-                        y="0"
-                        width="1000"
-                        height="360"
-                        fill="#f8fafc"
-                      />
-                      <path
-                        d="M-50 120 C150 160, 250 80, 420 120 C550 148, 760 88, 1040 130"
-                        stroke="#d5dee8"
-                        strokeWidth="16"
-                        fill="none"
-                        opacity="0.45"
-                      />
-                      <path
-                        d="M-80 210 C140 190, 320 230, 540 210 C720 195, 890 250, 1060 210"
-                        stroke="#dde5ee"
-                        strokeWidth="12"
-                        fill="none"
-                        opacity="0.45"
-                      />
-                    </svg>
-                    {[
-                      { x: '20%', y: '34%', count: 23, tone: 'bg-[#3E5F82]' },
-                      { x: '46%', y: '52%', count: 7, tone: 'bg-[#2F4B69]' },
-                      {
-                        x: '73%',
-                        y: '43%',
-                        count: 52,
-                        tone: 'bg-[#DE7440]/90',
-                      },
-                      { x: '62%', y: '26%', count: 6, tone: 'bg-[#EB7A45]' },
-                    ].map((point, idx) => (
-                      <span
-                        key={idx}
-                        className={cn(
-                          'absolute flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold text-white',
-                          point.tone,
-                        )}
-                        style={{ left: point.x, top: point.y }}
-                      >
-                        {point.count}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-1.5 overflow-hidden rounded-[10px] bg-white shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                    <div className="grid grid-cols-[1.3fr_.8fr_1fr_1fr_auto] border-b border-[#dce9f6] bg-[#f3f8fe] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#274867]">
-                      <span>Vehicle</span>
-                      <span>Status</span>
-                      <span>Last Active</span>
-                      <span>Location</span>
-                      <span className="text-right">Action</span>
+                      <span className={cn('font-black', color)}>{val}</span>
                     </div>
-                    {LIVE_ROWS.map((row, idx) => (
+                    <div className="h-1 w-full bg-[#dce8f4] rounded-full overflow-hidden">
                       <div
-                        key={row.vehicle}
-                        className={cn(
-                          'grid grid-cols-[1.3fr_.8fr_1fr_1fr_auto] items-center gap-1.5 border-t border-[#e8eff6] px-2 py-1.5 transition-colors hover:bg-[#eef6ff]',
-                          idx % 2 === 1 && 'bg-[#f8fbff]',
-                        )}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="h-5 w-5 rounded-full bg-gradient-to-br from-[#d9e7f4] to-[#c8d9ea]" />
-                          <div>
-                            <span className="block text-[13px] font-medium text-[#1f3954]">
-                              {row.vehicle}
-                            </span>
-                            <span className="block text-[10px] text-[#607b94]">
-                              {row.driver}
-                            </span>
-                          </div>
-                        </div>
-                        <StatusBadge
-                          tone={
-                            row.status === 'Active'
-                              ? 'success'
-                              : row.status === 'Idle'
-                                ? 'warning'
-                                : 'danger'
-                          }
-                        >
-                          {row.status}
-                        </StatusBadge>
-                        <span className="text-[11px] text-[#4f6a83]">
-                          {row.lastActive}
-                        </span>
-                        <span className="text-[11px] text-[#4f6a83]">
-                          {row.location}
-                        </span>
-                        <button
-                          type="button"
-                          className="ml-auto inline-flex items-center rounded-[8px] border border-[#c9d3db] px-2 py-0.5 text-[11px] text-[#41566b]"
-                        >
-                          Action
-                          <ChevronDown className="ml-1 h-3 w-3" />
-                        </button>
-                      </div>
-                    ))}
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${(parseInt(val) / 50) * 100}%`,
+                          backgroundColor: barClr,
+                        }}
+                      />
+                    </div>
                   </div>
-                </TableCard>
-
-                <div className="flex min-w-0 h-full flex-col gap-2">
-                  <ChartCard title="Health & Maintenance" className="flex-1">
-                    <div className="mb-1.5 inline-flex items-center gap-1 rounded-[9px] bg-white p-0.5 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                      <button
-                        type="button"
-                        className="rounded-[7px] bg-[#edf5fc] px-2 py-1 text-[11px] font-medium text-[#244564]"
-                      >
-                        Vehicle Health & Compliance
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-[7px] px-2 py-1 text-[11px] font-medium text-[#5b7490]"
-                      >
-                        Maintenance & Alerts
-                      </button>
-                    </div>
-                    <div className="space-y-1.5">
-                      {[
-                        ['Overdue', '68%', 68],
-                        ['Vehicles with critical issues', '8% / 62', 8],
-                        ['Vehicles with dents/issues', '8% / 42', 8],
-                        ['Overdue alerts', '5', 42],
-                        ['Open service tasks', '7', 58],
-                        ['Total defects last 30 days', '132', 76],
-                      ].map(([label, value, percent]) => (
-                        <InsightRow
-                          key={String(label)}
-                          label={String(label)}
-                          value={String(value)}
-                          percent={Number(percent)}
-                        />
-                      ))}
-                    </div>
-                  </ChartCard>
-
-                  <ShellCard
-                    title="Upcoming Schedule"
-                    right={<FilterSelect label="Resolve by" />}
-                    className="flex-1 border-t-[3px] border-t-[#de7440] p-2.5"
+                ))}
+              </div>
+            </Card>
+            <Card
+              variant="secondaryBlue"
+              className="lg:col-span-4 p-2.5 h-full flex flex-col min-h-0"
+            >
+              <SectionTitle
+                title="Upcoming Inspections"
+                variant="secondaryBlue"
+                className="text-base"
+              />
+              <div className="mt-auto flex flex-col gap-2">
+                {[
+                  '08:30 VH-141 pre-trip check',
+                  '10:15 VH-207 brake review',
+                  '13:00 VH-080 annual fitness',
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-slate-200 rounded-md hover:bg-slate-100 transition-colors border-l-2 border-blue-400"
                   >
-                    <div className="space-y-1">
-                      {[
-                        ['Inspection', '1 day', '40'],
-                        ['Engine Service', '2 days', '132'],
-                        ['Safety Service', '3 days', '87'],
-                        ['Emission Check', '5 days', '18'],
-                      ].map(([task, due, count]) => (
-                        <ScheduleItem
-                          key={task}
-                          task={task}
-                          due={due}
-                          count={count}
-                        />
-                      ))}
-                    </div>
-                  </ShellCard>
-                </div>
-              </section>
-            </SectionWrapper>
-
-            <SectionWrapper>
-              <section className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <TabGroup
-                    tabs={ANALYTICS_TABS}
-                    active={analyticsTab}
-                    onChange={setAnalyticsTab}
-                  />
-                  <div className="flex items-center gap-2">
-                    <FilterSelect label="Events" />
-                    <button
-                      type="button"
-                      className="inline-flex h-8 items-center gap-1.5 rounded-[9px] border border-slate-200/80 bg-white px-2.5 text-xs text-slate-600"
-                    >
-                      <SlidersHorizontal className="h-3.5 w-3.5" />
-                      Filter
-                    </button>
+                    {item}
                   </div>
-                </div>
-                <div className="grid grid-cols-2 items-stretch gap-2.5">
-                  <ChartCard title="Vehicle Downtime Trend" className="h-full">
-                    <div className="h-32 rounded-[10px] bg-white p-2 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <ComposedChart
-                          data={DOWNTIME_DATA}
-                          margin={{ top: 4, left: -20, right: 6, bottom: -2 }}
-                        >
-                          <defs>
-                            <linearGradient
-                              id="downtimeLineFill"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="0%"
-                                stopColor="#2f5f90"
-                                stopOpacity={0.3}
-                              />
-                              <stop
-                                offset="100%"
-                                stopColor="#2f5f90"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="downtimeLineSecondaryFill"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="0%"
-                                stopColor="#F59E0B"
-                                stopOpacity={0.2}
-                              />
-                              <stop
-                                offset="100%"
-                                stopColor="#F59E0B"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                          </defs>
-                          <CartesianGrid
-                            stroke="#d3dde8"
-                            strokeDasharray="2 4"
-                            strokeOpacity={1}
-                            vertical={false}
-                          />
-                          <XAxis
-                            dataKey="month"
-                            tick={{ fontSize: 10, fill: '#6a7f93' }}
-                            tickLine={false}
-                            axisLine={false}
-                          />
-                          <YAxis hide />
-                          <Tooltip content={<ChartTooltipCard />} />
-                          <Area
-                            type="monotone"
-                            dataKey="value"
-                            fill="url(#downtimeLineFill)"
-                            stroke="none"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="value"
-                            fill="url(#downtimeLineSecondaryFill)"
-                            stroke="none"
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="value"
-                            stroke="#2f5f90"
-                            strokeWidth={2.5}
-                            dot={{ r: 2.3, fill: '#3E5F82' }}
-                            activeDot={{ r: 3.5, fill: '#2F4B69' }}
-                          />
-                        </ComposedChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </ChartCard>
-                  <ChartCard
-                    title="Fleet Composition by Vehicle Type"
-                    className="h-full"
+                ))}
+              </div>
+            </Card>
+            <Card
+              variant="blue"
+              className="lg:col-span-4 p-2.5 h-full flex flex-col min-h-0"
+            >
+              <SectionTitle
+                title="Upcoming Expiries"
+                variant="blue"
+                className="text-base"
+              />
+              <div className="mt-auto flex flex-col gap-2">
+                {[
+                  'VH-058 insurance in 4 days',
+                  'VH-221 permit in 6 days',
+                  'VH-099 emission cert in 9 days',
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-slate-200 rounded-md hover:bg-slate-100 transition-colors border-l-2 border-blue-400"
                   >
-                    <p className="mb-1 text-[11px] text-slate-500">
-                      Total output by vehicle category
-                    </p>
-                    <div className="h-32 rounded-[10px] bg-white p-2 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <ComposedChart
-                          layout="vertical"
-                          data={FLEET_COMPOSITION_DATA}
-                          margin={{ top: 1, right: 8, left: 10, bottom: 1 }}
-                        >
-                          <XAxis type="number" hide />
-                          <YAxis
-                            type="category"
-                            dataKey="type"
-                            tick={{ fontSize: 10, fill: '#64748b' }}
-                            tickLine={false}
-                            axisLine={false}
-                            width={68}
-                          />
-                          <Tooltip content={<ChartTooltipCard />} />
-                          <Bar
-                            dataKey="active"
-                            stackId="a"
-                            fill="#2f5f90"
-                            radius={[3, 0, 0, 3]}
-                            barSize={9}
-                          />
-                          <Bar
-                            dataKey="maintenance"
-                            stackId="a"
-                            fill="#F59E0B"
-                            barSize={9}
-                          />
-                          <Bar
-                            dataKey="offline"
-                            stackId="a"
-                            fill="#06B6D4"
-                            radius={[0, 3, 3, 0]}
-                            barSize={9}
-                          />
-                        </ComposedChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </ChartCard>
-                </div>
-              </section>
-            </SectionWrapper>
-
-            <SectionWrapper>
-              <TableCard
-                title="Vehicles Off Road"
-                right={
-                  <div className="flex items-center gap-2">
-                    <FilterSelect label="Region" />
-                    <FilterSelect label="Vehicle" />
+                    {item}
                   </div>
-                }
+                ))}
+              </div>
+            </Card>
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <div className="flex flex-col gap-3">
+            <Card variant="green" className="p-2.5">
+              <SectionTitle
+                title="Fleet Performance & Efficiency Trends"
+                variant="green"
+              />
+              <div className="mt-0 h-[196px] rounded-[8px] border border-transparent bg-white p-1.5">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={PERFORMANCE_EFFICIENCY_DATA}
+                    margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="#d8e4ef"
+                      strokeDasharray="3 3"
+                    />
+                    <XAxis
+                      dataKey="m"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                    />
+                    <YAxis
+                      yAxisId="left"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                    />
+                    <YAxis
+                      yAxisId="right"
+                      orientation="right"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        border: 'none',
+                        borderRadius: 12,
+                        boxShadow: '0 12px 24px rgba(0,0,0,0.05)',
+                        background: '#fff',
+                      }}
+                    />
+                    <Area
+                      yAxisId="left"
+                      name="Fuel Efficiency"
+                      type="monotone"
+                      dataKey="fuel"
+                      stroke="#EB7A45"
+                      strokeWidth={2.2}
+                      fill="transparent"
+                      dot={{ r: 3, fill: '#EB7A45' }}
+                    />
+                    <Area
+                      yAxisId="right"
+                      name="System Performance"
+                      type="monotone"
+                      dataKey="eff"
+                      stroke="#2F4B69"
+                      strokeWidth={2.2}
+                      fill="transparent"
+                      dot={{ r: 3, fill: '#2F4B69' }}
+                    />
+                    <Legend
+                      verticalAlign="top"
+                      align="right"
+                      iconType="circle"
+                      wrapperStyle={{
+                        fontSize: '9px',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        paddingBottom: '10px',
+                        letterSpacing: '0.05em',
+                      }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+
+            <Card variant="orange" className="p-2.5">
+              <SectionTitle
+                title="Regulatory Violations & Geofence Breaches"
+                variant="orange"
+              />
+              <div className="mt-0 h-[196px] rounded-[8px] border border-transparent bg-white p-1.5">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={VIOLATIONS_DATA}
+                    margin={{ top: 10, right: 0, left: -25, bottom: 0 }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      stroke="#d8e4ef"
+                      strokeDasharray="3 3"
+                    />
+                    <XAxis
+                      dataKey="m"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        border: 'none',
+                        borderRadius: 12,
+                        boxShadow: '0 8px 16px rgba(0,0,0,0.05)',
+                        background: '#fff',
+                      }}
+                    />
+                    <Bar
+                      dataKey="tr105"
+                      name="Primary"
+                      fill="#EB7A45"
+                      barSize={10}
+                      radius={[2, 2, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="vm002"
+                      name="Comparison"
+                      fill="#2F4B69"
+                      barSize={10}
+                      radius={[2, 2, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="vh122"
+                      name="Anomaly"
+                      fill="#DC2626"
+                      barSize={10}
+                      radius={[2, 2, 0, 0]}
+                    />
+                    <Legend
+                      verticalAlign="top"
+                      align="right"
+                      iconType="circle"
+                      wrapperStyle={{
+                        fontSize: '9px',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase',
+                        paddingBottom: '10px',
+                        letterSpacing: '0.05em',
+                      }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </div>
+        </SectionWrapper>
+
+        <SectionWrapper>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+            <div className="flex flex-col gap-3 lg:col-span-8">
+              <Card
+                variant="green"
+                className="p-0 overflow-hidden flex flex-col flex-1"
               >
-                <div className="h-[168px] rounded-[10px] bg-white p-2.5 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={VOR_DATA}
-                      margin={{ top: 2, right: 8, left: -18, bottom: -2 }}
-                    >
-                      <CartesianGrid
-                        stroke="#e0e8f3"
-                        strokeDasharray="2 4"
-                        strokeOpacity={0.75}
-                        vertical={false}
-                      />
-                      <XAxis
-                        dataKey="vehicle"
-                        tick={{ fontSize: 10, fill: '#6a7f93' }}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis hide />
-                      <Tooltip content={<ChartTooltipCard />} />
-                      <Bar
-                        dataKey="available"
-                        fill="#2f5f90"
-                        radius={[4, 4, 0, 0]}
-                        barSize={12}
-                      />
-                      <Bar
-                        dataKey="offRoad"
-                        fill="#F59E0B"
-                        radius={[4, 4, 0, 0]}
-                        barSize={12}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                <div className="p-2 bg-white">
+                  <SectionTitle
+                    title="High Performing Drivers"
+                    variant="green"
+                  />
                 </div>
-              </TableCard>
-            </SectionWrapper>
+                <div className="flex-1 min-h-0 overflow-x-auto p-2">
+                  <table className="w-full text-left drivers-table">
+                    <thead>
+                      <tr>
+                        {[
+                          'Driver',
+                          'Score',
+                          'Rating',
+                          'Performance',
+                          'Trend',
+                        ].map((h) => (
+                          <th
+                            key={h}
+                            className={cn(
+                              'pb-1.5 typo-table-header px-2',
+                              h === 'Trend' && 'text-center',
+                            )}
+                          >
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {DRIVERS.map((d) => (
+                        <tr
+                          key={d.name}
+                          className="group transition-all duration-300 hover:bg-emerald-50"
+                        >
+                          <td className="py-1 flex items-center gap-2 px-2">
+                            <div
+                              className={cn(
+                                'w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-medium text-[#22C55E] border border-[#22C55E]/20 shadow-sm transition-transform bg-white',
+                              )}
+                            >
+                              {d.name
+                                .split(' ')
+                                .map((n) => n[0])
+                                .join('')}
+                            </div>
+                            <span className="text-[11px] font-medium text-[#334155]">
+                              {d.name}
+                            </span>
+                          </td>
+                          <td className="py-1 text-[11px] font-medium text-[#334155] px-2">
+                            {d.score}
+                          </td>
+                          <td className="py-1 px-2">
+                            <div className="flex items-center gap-1 font-medium text-[#EB7A45] text-[9px] bg-[#FFF4ED] w-fit px-2 py-0.5 rounded-full border border-[#EB7A45]/20">
+                              {d.rating}{' '}
+                              <Star className="w-2.5 h-2.5 fill-current" />
+                            </div>
+                          </td>
+                          <td className="py-1 px-2">
+                            <div className="flex items-center gap-2 w-20">
+                              <div className="flex-1 h-1 bg-[#dce8f4] rounded-full overflow-hidden">
+                                <div
+                                  className="h-full rounded-full"
+                                  style={{
+                                    width: `${d.perf}%`,
+                                    backgroundColor:
+                                      d.perf > 85 ? '#22C55E' : '#EB7A45',
+                                  }}
+                                />
+                              </div>
+                              <span className="text-[9px] font-medium text-[#334155]">
+                                {d.perf}%
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-1 px-2 text-center">
+                            <div className="trend-cell">
+                              {d.trend === 'up' ? (
+                                <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500" />
+                              ) : (
+                                <ArrowDownRight className="w-3.5 h-3.5 text-rose-500" />
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
 
-            <SectionWrapper>
-              <section className="space-y-1">
-                <SectionHeader title="Upcoming Inspections Summary" />
-                <div className="grid grid-cols-4 gap-1.5">
-                  {INSPECTION_BUCKETS.map((bucket) => (
-                    <ComplianceMiniCard
-                      key={bucket.title}
-                      title={bucket.title}
-                      accent={bucket.accent}
-                      stats={bucket.stats}
-                    />
+              <Card
+                variant="blue"
+                className="p-0 overflow-hidden flex flex-col flex-1"
+              >
+                <div className="p-2 bg-white">
+                  <SectionTitle title="Recent Trips" variant="blue" />
+                </div>
+                <div className="flex-1 min-h-0 overflow-x-auto p-2">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr>
+                        {['Trip', 'Route', 'Duration', 'Status', 'Type'].map(
+                          (h) => (
+                            <th
+                              key={h}
+                              className="pb-1.5 typo-table-header px-2"
+                            >
+                              {h}
+                            </th>
+                          ),
+                        )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {TRIPS.map((t) => (
+                        <tr
+                          key={t.id}
+                          className="group hover:bg-[#2F4B69]/05 transition-all duration-300"
+                        >
+                          <td className="py-1.5 px-2">
+                            <div className="flex items-center gap-2 font-medium text-[#334155] text-[11px]">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#2F4B69]" />
+                              {t.id}
+                            </div>
+                          </td>
+                          <td className="py-1.5 text-[11px] font-medium text-[#334155] px-2">
+                            {t.route}
+                          </td>
+                          <td className="py-1.5 text-[11px] font-medium text-[#334155] px-2">
+                            {t.dur}
+                          </td>
+                          <td className="py-1.5 px-2">
+                            <span
+                              className={cn(
+                                'px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider border',
+                                t.status === 'Completed'
+                                  ? 'bg-[#EAF9F0] text-[#22C55E] border-[#22C55E]/20'
+                                  : 'bg-[#FFF4ED] text-[#EB7A45] border-[#EB7A45]/20',
+                              )}
+                            >
+                              {t.status}
+                            </span>
+                          </td>
+                          <td className="py-1.5 px-2">
+                            <span className="px-2 py-0.5 rounded-full bg-[#EEF5FB] text-[#3E5F82] text-[9px] font-medium uppercase tracking-widest">
+                              {t.type}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            </div>
+
+            <div className="flex flex-col gap-3 lg:col-span-4">
+              <Card variant="blue" className="p-2 flex-1">
+                <SectionTitle
+                  title="Recent Activity"
+                  variant="blue"
+                  className="text-base"
+                />
+                <div className="space-y-1 relative">
+                  {ACTIVITY.map((item) => (
+                    <div key={item.title} className="flex gap-2 relative z-10">
+                      <div className="w-2 h-2 rounded-full border-2 border-white shadow-md mt-0.5 shrink-0 bg-blue-500" />
+                      <div>
+                        <h4 className="text-[13px] font-medium text-slate-800 leading-tight">
+                          {item.title}
+                        </h4>
+                        <p className="text-[13px] text-slate-700 font-medium mt-0.5 leading-tight">
+                          {item.desc}
+                        </p>
+                        <span className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-0.5 block">
+                          {item.time}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="absolute bottom-2 left-[4.5px] top-[10px] w-px bg-blue-100" />
+                </div>
+              </Card>
+
+              <Card variant="secondaryBlue" className="p-2 flex-1">
+                <SectionTitle title="Workshop Status" variant="secondaryBlue" />
+                <div className="space-y-1">
+                  {[
+                    { l: 'Bay occupancy', p: 78, c: '#22C55E' },
+                    { l: 'Turnaround', p: 64, c: '#EB7A45' },
+                    { l: 'Technician availability', p: 83, c: '#2F4B69' },
+                  ].map((item) => (
+                    <div key={item.l} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest">
+                          {item.l}
+                        </span>
+                        <span className="text-[10px] font-black text-[#243648]">
+                          {item.p}%
+                        </span>
+                      </div>
+                      <div className="h-1 bg-[#dce8f4] rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${item.p}%`,
+                            backgroundColor: item.c,
+                          }}
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
-              </section>
-            </SectionWrapper>
+              </Card>
 
-            <SectionWrapper>
-              <section className="space-y-1">
-                <SectionHeader title="Upcoming Expires" />
-                <div className="grid grid-cols-4 gap-1.5">
-                  {EXPIRE_BUCKETS.map((bucket) => (
-                    <ComplianceMiniCard
-                      key={bucket.title}
-                      title={bucket.title}
-                      accent={bucket.accent}
-                      stats={bucket.stats}
-                    />
-                  ))}
-                </div>
-              </section>
-            </SectionWrapper>
-
-            <SectionWrapper>
-              <TableCard title="Upcoming Inspections">
-                <div className="overflow-hidden rounded-[10px] bg-white shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                  <div className="grid grid-cols-[1.1fr_.8fr_.9fr_.75fr_.9fr_1fr] border-b border-[#dce9f6] bg-[#f3f8fe] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#274867]">
-                    <span>Vehicle</span>
-                    <span>Type</span>
-                    <span>Due Date</span>
-                    <span>Status</span>
-                    <span>Assignee</span>
-                    <span>Notes</span>
-                  </div>
-                  {INSPECTION_ROWS.map((row, idx) => (
+              <Card variant="orange" className="p-2 flex-1">
+                <SectionTitle title="Work Orders" variant="orange" />
+                <div className="grid grid-cols-3 gap-1 text-center mt-0">
+                  {[
+                    {
+                      label: 'Open',
+                      val: '18',
+                      clr: 'text-rose-500',
+                      bg: 'bg-rose-50',
+                      border: 'border-rose-100',
+                    },
+                    {
+                      label: 'Ongoing',
+                      val: '27',
+                      clr: 'text-orange-500',
+                      bg: 'bg-orange-50',
+                      border: 'border-orange-100',
+                    },
+                    {
+                      label: 'Done',
+                      val: '45',
+                      clr: 'text-emerald-500',
+                      bg: 'bg-emerald-50',
+                      border: 'border-emerald-100',
+                    },
+                  ].map(({ label, val, clr, bg, border }) => (
                     <div
-                      key={row[0]}
+                      key={label}
                       className={cn(
-                        'grid grid-cols-[1.1fr_.8fr_.9fr_.75fr_.9fr_1fr] items-center border-t border-[#e8eff6] px-2 py-1.5 transition-colors hover:bg-[#eef6ff]',
-                        idx % 2 === 1 && 'bg-[#f8fbff]',
+                        'p-1 rounded-lg shadow-sm border',
+                        bg,
+                        border,
                       )}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="h-5 w-5 rounded-full bg-gradient-to-br from-[#d9e3ed] to-[#c9d3db]" />
-                        <span className="text-[13px] font-medium text-[#1f3954]">
-                          {row[0]}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#4f6a83]">
-                        {row[1]}
-                      </span>
-                      <span className="text-[11px] text-[#4f6a83]">
-                        {row[2]}
-                      </span>
-                      <StatusBadge
-                        tone={
-                          row[3] === 'Overdue'
-                            ? 'danger'
-                            : row[3] === 'Due Soon'
-                              ? 'warning'
-                              : 'info'
-                        }
-                      >
-                        {row[3]}
-                      </StatusBadge>
-                      <span className="text-[11px] text-[#4f6a83]">
-                        {row[4]}
-                      </span>
-                      <span className="text-[11px] text-[#4f6a83]">
-                        {row[5]}
-                      </span>
+                      <p className="text-[8px] font-black text-[#7f93a7] uppercase tracking-widest">
+                        {label}
+                      </p>
+                      <p className={cn('text-[14px] font-black mt-[1px]', clr)}>
+                        {val}
+                      </p>
                     </div>
                   ))}
                 </div>
-              </TableCard>
-
-              <section className="grid grid-cols-2 items-stretch gap-2.5">
-                <TableCard title="Top Drivers">
-                  <div className="overflow-hidden rounded-[10px] bg-white shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]">
-                    <div className="grid grid-cols-5 border-b border-[#dce9f6] bg-[#f3f8fe] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#274867]">
-                      <span>ID</span>
-                      <span>Type</span>
-                      <span>Ref</span>
-                      <span>Status</span>
-                      <span>Action</span>
-                    </div>
-                    {DRIVER_METRIC_ROWS.map((row, idx) => (
-                      <div
-                        key={row[0]}
-                        className={cn(
-                          'grid grid-cols-5 items-center border-t border-[#e8eff6] px-2 py-1.5 transition-colors hover:bg-[#eef6ff]',
-                          idx % 2 === 1 && 'bg-[#f8fbff]',
-                        )}
-                      >
-                        <span className="text-[13px] font-medium text-[#2a4762]">
-                          {row[0]}
-                        </span>
-                        <span className="text-[11px] text-[#4f6a83]">
-                          {row[2]}
-                        </span>
-                        <span className="text-[11px] text-[#4f6a83]">
-                          {row[1]}
-                        </span>
-                        <StatusBadge tone={idx < 3 ? 'warning' : 'neutral'}>
-                          {row[3]}
-                        </StatusBadge>
-                        <span className="text-[11px] text-[#4f6a83]">
-                          {row[4]}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </TableCard>
-                <TableCard
-                  title="Top Drivers"
-                  right={<Ellipsis className="h-4 w-4 text-[#8aa2b8]" />}
-                >
-                  <div className="space-y-1">
-                    {[
-                      ['Adam Smith', '8,322 mi', '97%', '4'],
-                      ['Emma Brown', '7,002 mi', '97%', '4'],
-                      ['Joha Davis', '5,525 mi', '97%', '4'],
-                      ['Sarah Wilson', '4,325 mi', '97%', '4'],
-                    ].map(([name, distance, safety, count]) => (
-                      <div
-                        key={name}
-                        className="flex items-center justify-between rounded-[9px] bg-white px-2 py-1 shadow-[0_10px_24px_-20px_rgba(15,23,42,0.28)]"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="h-6 w-6 rounded-full bg-gradient-to-br from-[#d9e3ed] to-[#c9d3db]" />
-                          <span className="text-[13px] font-medium text-[#2a4762]">
-                            {name}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[10px] text-[#607b94]">
-                            {distance}
-                          </p>
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="text-[11px] font-semibold text-[#2a4762]">
-                              {safety}
-                            </span>
-                            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-100 px-1.5 text-[10px] font-semibold text-blue-700">
-                              {count}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </TableCard>
-              </section>
-            </SectionWrapper>
+              </Card>
+            </div>
           </div>
-        </DashboardShell>
-      </PageSurface.Body>
-      <PageSurface.Footer className="hidden" />
-    </PageSurface>
+        </SectionWrapper>
+      </div>
+    </div>
   );
 }

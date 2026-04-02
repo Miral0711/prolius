@@ -26,7 +26,7 @@ export function SectionCard({
   return (
     <Card
       className={cn(
-        'flex flex-col min-h-0 bg-white border border-gray-200 rounded-xl shadow-sm',
+        'flex flex-col min-h-0 bg-white border border-gray-200 rounded-lg shadow-sm',
         className,
       )}
     >

@@ -6,7 +6,7 @@ import { typography } from '@/lib/typography';
 
 export function TopDriversCard() {
   return (
-    <DashboardCard className="!p-0 !rounded-xl overflow-hidden">
+    <DashboardCard className="!p-0 !rounded-lg overflow-hidden">
       <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
         <div className="flex items-center gap-2">
           <Trophy className="h-3.5 w-3.5 text-amber-500" />

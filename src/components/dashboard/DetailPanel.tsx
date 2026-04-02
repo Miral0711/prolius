@@ -21,7 +21,7 @@ export function DetailPanel({
   return (
     <Card
       className={cn(
-        'flex flex-col overflow-hidden bg-white border border-gray-200 rounded-xl shadow-sm',
+        'flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm',
         className,
       )}
     >

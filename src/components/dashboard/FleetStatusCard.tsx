@@ -132,7 +132,7 @@ export function FleetStatusCard({
       ))}
       <Link
         to={action.to}
-        className="col-span-2 flex flex-col items-center justify-center rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50/30 sm:col-span-1"
+        className="col-span-2 flex flex-col items-center justify-center rounded-lg border border-slate-200/80 bg-white p-4 shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50/30 sm:col-span-1"
       >
         <ActionIcon className="mb-2 h-8 w-8 text-blue-500" />
         <span className="text-sm font-medium text-slate-700">{action.title}</span>

@@ -41,13 +41,13 @@ export function SidebarFlyout({
   if (!visible) return null;
 
   const pillClass =
-    'inline-flex items-center rounded-sm px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-white/18 hover:text-slate-900 whitespace-nowrap';
+    'inline-flex items-center rounded-md px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 whitespace-nowrap';
 
-  const pillActiveClass = 'bg-white/22 text-slate-900';
+  const pillActiveClass = 'bg-slate-100 text-slate-900';
 
   return (
     <div
-      className="fixed z-50 rounded-md border border-white/25 bg-white/35 p-3 shadow-[0_10px_30px_rgba(15,23,42,0.10)] backdrop-blur-xl"
+      className="fixed z-50 rounded-md border border-slate-200 bg-white p-3 shadow-[0_10px_30px_rgba(15,23,42,0.10)]"
       style={{ top: Math.max(8, top), left }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={() => {

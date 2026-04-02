@@ -9,7 +9,7 @@ export function HeaderToolbar() {
     <div className="flex shrink-0 items-center gap-3">
       <button
         type="button"
-        className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 shadow-sm hover:bg-slate-50"
+        className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600 shadow-sm hover:bg-slate-50"
       >
         <span>Saudi Riyal (SAR)</span>
       </button>

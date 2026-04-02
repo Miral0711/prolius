@@ -134,7 +134,7 @@ export function CompactLeaderboard({
   return (
     <div
       className={cn(
-        'flex h-[400px] flex-col overflow-hidden rounded-md border border-slate-200/60 bg-white shadow-sm',
+        'flex h-[400px] flex-col overflow-hidden rounded-lg border border-slate-200/60 bg-white shadow-sm',
         className,
       )}
     >

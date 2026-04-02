@@ -25,8 +25,7 @@ export function Header({ title, statusLabel, extraActions, className }: HeaderPr
   return (
     <header 
       className={cn(
-        "fixed z-[50] flex items-center bg-white/80 backdrop-blur-xl transition-all duration-300",
-        "border-b border-white/40 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.03),0_1px_2px_rgba(0,0,0,0.02)]",
+        'fixed z-[50] flex items-center border-b border-slate-200 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300',
         "h-[var(--header-height)] top-0 end-0",
         isFullPage 
           ? "start-0 lg:start-[var(--sidebar-width)]" 
@@ -42,7 +41,7 @@ export function Header({ title, statusLabel, extraActions, className }: HeaderPr
           </h1>
           
           {statusLabel && (
-            <div className="hidden items-center gap-1.5 rounded-full border border-emerald-100/30 bg-emerald-50/80 px-2 py-px text-2xs font-semibold uppercase tracking-tighter text-emerald-600 sm:flex">
+            <div className="hidden items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2 py-px text-2xs font-semibold uppercase tracking-tighter text-emerald-600 sm:flex">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               {statusLabel}
             </div>

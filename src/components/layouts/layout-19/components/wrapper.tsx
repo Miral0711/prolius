@@ -4,9 +4,9 @@ import { Header } from '@/components/header/Header';
 import { useLayout } from './context';
 import { Sidebar } from './sidebar';
 
-/** Gradient background that makes glassmorphism cards pop */
-const pageBackground = 'h-full min-h-0 w-full min-w-0 relative';
-const gradient = 'bg-gradient-to-br from-[#eef2ff] via-[#f0f4fb] to-[#e8f0fe]';
+/** Flat page shell background (no gradient / glass) */
+const pageBackground =
+  'relative h-full min-h-0 w-full min-w-0 bg-[#EEF5FB]';
 
 export function Wrapper() {
   const { isMobile } = useLayout();
@@ -21,7 +21,6 @@ export function Wrapper() {
     pathname === '/bus-video-monitoring/history-dvr' ||
     pathname === '/fleet-management/bus' ||
     pathname.startsWith('/job-dispatching') ||
-    pathname === '/dashboard/overview' ||
     pathname === '/manager-cockpit' ||
     pathname.startsWith('/bus-alert-monitoring');
 
@@ -30,7 +29,7 @@ export function Wrapper() {
     pathname === '/dashboard/overview' ? 'Live Fleet Monitor' : undefined;
 
   return (
-    <div className={cn(pageBackground, gradient, 'flex flex-col')}>
+    <div className={cn(pageBackground, 'flex flex-col')}>
       <Header statusLabel={statusLabel} />
 
       <div

@@ -63,18 +63,18 @@ export function OperationalMapCard() {
 
   if (!mounted) {
     return (
-      <div className="flex min-h-[200px] h-[240px] max-h-[320px] w-full items-center justify-center overflow-hidden rounded-xl border border-white/40 bg-white/55 backdrop-blur-xl text-slate-500 text-sm">
+      <div className="flex min-h-[200px] h-[240px] max-h-[320px] w-full items-center justify-center overflow-hidden rounded-lg border border-white/40 bg-white/55 backdrop-blur-xl text-slate-500 text-sm">
         Loading map…
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-[200px] h-[240px] max-h-[320px] w-full overflow-hidden rounded-xl border border-white/40 bg-white/55 backdrop-blur-xl">
+    <div className="relative min-h-[200px] h-[240px] max-h-[320px] w-full overflow-hidden rounded-lg border border-white/40 bg-white/55 backdrop-blur-xl">
       <MapContainer
         center={[25.2048, 55.2708]}
         zoom={12}
-        className="h-full w-full rounded-xl"
+        className="h-full w-full rounded-lg"
         zoomControl={true}
         attributionControl={false}
       >
@@ -95,7 +95,7 @@ export function OperationalMapCard() {
           </Marker>
         ))}
       </MapContainer>
-      <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 rounded-xl border border-white/40 bg-white/70 px-2 py-1.5 backdrop-blur-sm">
+      <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-2 rounded-lg border border-white/40 bg-white/70 px-2 py-1.5 backdrop-blur-sm">
         <span className="flex items-center gap-1.5 text-2sm text-slate-600">
           <span className="h-2 w-2 rounded-full bg-emerald-500" /> Available
         </span>
