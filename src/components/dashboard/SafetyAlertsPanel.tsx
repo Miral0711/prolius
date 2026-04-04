@@ -1,8 +1,9 @@
-import { Cell, Pie, PieChart } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
+import { typography } from '@/lib/typography';
 import { AnalyticsCard } from './AnalyticsCard';
+import { PieChartWidget, type PieChartSlice } from './PieChartWidget';
 
-const SAFETY_ALERT_DATA = [
+const SAFETY_ALERT_DATA: PieChartSlice[] = [
   { name: 'Overspeed', value: 8, color: '#f59e0b' },
   { name: 'Idle', value: 4, color: '#64748b' },
   { name: 'Accident', value: 2, color: '#ef4444' },
@@ -20,38 +21,7 @@ export function SafetyAlertsPanel() {
   return (
     <AnalyticsCard title="Safety Alerts">
       <div className="grid grid-cols-1 gap-1.5 lg:grid-cols-2">
-        <div className="flex items-center gap-2">
-          <div className="h-16 w-16 shrink-0">
-            <ChartContainer config={{}} className="h-full w-full">
-              <PieChart>
-                <Pie
-                  data={SAFETY_ALERT_DATA}
-                  dataKey="value"
-                  innerRadius={8}
-                  outerRadius={22}
-                  paddingAngle={2}
-                >
-                  {SAFETY_ALERT_DATA.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ChartContainer>
-          </div>
-          <div className="min-w-0 flex-1 space-y-1.5">
-            {SAFETY_ALERT_DATA.map((item) => (
-              <div
-                key={item.name}
-                className="flex items-center justify-between gap-2"
-              >
-                <span className="text-xs text-slate-600">{item.name}</span>
-                <span className="text-xs font-medium text-slate-700">
-                  {item.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <PieChartWidget data={SAFETY_ALERT_DATA} size={64} />
         <div className="flex flex-col gap-1">
           <div className="flex justify-between text-xs">
             <span className="text-slate-500">This Week</span>
@@ -64,20 +34,18 @@ export function SafetyAlertsPanel() {
         </div>
       </div>
       <div className="mt-1.5 border-t border-slate-100 pt-1.5">
-        <p className="mb-1 text-xs font-medium uppercase tracking-[0.02rem] text-slate-500">
-          Recent Safety Events
-        </p>
+        <p className={cn(typography.denseCaps, 'text-slate-500 mb-1')}>Recent Safety Events</p>
         <div className="space-y-1">
           {RECENT_EVENTS.map((e) => (
             <div
               key={e.id}
-              className="flex items-center justify-between rounded-md bg-slate-50 px-2 py-0.5 text-2sm"
+              className="flex items-center justify-between rounded-md bg-slate-50 px-2 py-0.5"
             >
               <div>
-                <p className="font-medium text-slate-700">{e.event}</p>
-                <p className="text-slate-500">{e.vehicle}</p>
+                <p className={cn(typography.tableCell, 'font-medium text-slate-700')}>{e.event}</p>
+                <p className={cn(typography.meta, 'text-slate-500')}>{e.vehicle}</p>
               </div>
-              <span className="text-slate-500">{e.time}</span>
+              <span className={cn(typography.meta, 'text-slate-500')}>{e.time}</span>
             </div>
           ))}
         </div>
@@ -85,5 +53,3 @@ export function SafetyAlertsPanel() {
     </AnalyticsCard>
   );
 }
-
-

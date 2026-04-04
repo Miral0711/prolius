@@ -379,9 +379,9 @@ function DashboardLabeledFilterSelect({
           '[&svg]:transition-transform data-[state=open]:[&svg]:rotate-180',
         )}
       >
-        <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+        {/* <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
           {label}
-        </span>
+        </span> */}
         <SelectValue
           // Hide the selected value text inside the trigger; keep the element
           // in the layout so spacing/height remain unchanged.
@@ -485,54 +485,74 @@ export default function DashboardPage() {
         <SectionWrapper>
           <div className="rounded-[8px] bg-[#EEF5FB] p-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-              <DashboardLabeledFilterSelect
-                label="Vehicle Filter"
-                value={vehicleFilter}
-                onValueChange={(v) =>
-                  setVehicleFilter(v as DashboardFilterValue)
-                }
-                options={[
-                  { value: 'All', label: 'All' },
-                  { value: 'VH-001', label: 'VH-001' },
-                  { value: 'VH-014', label: 'VH-014' },
-                ]}
-              />
-              <DashboardLabeledFilterSelect
-                label="Region Filter"
-                value={regionFilter}
-                onValueChange={(v) =>
-                  setRegionFilter(v as DashboardFilterValue)
-                }
-                options={[
-                  { value: 'All', label: 'All' },
-                  { value: 'North', label: 'North' },
-                  { value: 'South', label: 'South' },
-                ]}
-              />
-              <DashboardLabeledFilterSelect
-                label="Category Filter"
-                value={categoryFilter}
-                onValueChange={(v) =>
-                  setCategoryFilter(v as DashboardFilterValue)
-                }
-                options={[
-                  { value: 'All', label: 'All' },
-                  { value: 'Delivery', label: 'Delivery' },
-                  { value: 'Logistics', label: 'Logistics' },
-                ]}
-              />
-              <DashboardLabeledFilterSelect
-                label="Sub-category Filter"
-                value={subCategoryFilter}
-                onValueChange={(v) =>
-                  setSubCategoryFilter(v as DashboardFilterValue)
-                }
-                options={[
-                  { value: 'All', label: 'All' },
-                  { value: 'Route A', label: 'Route A' },
-                  { value: 'Route B', label: 'Route B' },
-                ]}
-              />
+              <div>
+                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                  Vehicle Filter
+                </span>
+                <DashboardLabeledFilterSelect
+                  label="Vehicle Filter"
+                  value={vehicleFilter}
+                  onValueChange={(v) =>
+                    setVehicleFilter(v as DashboardFilterValue)
+                  }
+                  options={[
+                    { value: 'All', label: 'All' },
+                    { value: 'VH-001', label: 'VH-001' },
+                    { value: 'VH-014', label: 'VH-014' },
+                  ]}
+                />
+              </div>
+              <div>
+                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                  Region Filter
+                </span>
+                <DashboardLabeledFilterSelect
+                  label="Region Filter"
+                  value={regionFilter}
+                  onValueChange={(v) =>
+                    setRegionFilter(v as DashboardFilterValue)
+                  }
+                  options={[
+                    { value: 'All', label: 'All' },
+                    { value: 'North', label: 'North' },
+                    { value: 'South', label: 'South' },
+                  ]}
+                />
+              </div>
+              <div>
+                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                  Category Filter
+                </span>
+                <DashboardLabeledFilterSelect
+                  label="Category Filter"
+                  value={categoryFilter}
+                  onValueChange={(v) =>
+                    setCategoryFilter(v as DashboardFilterValue)
+                  }
+                  options={[
+                    { value: 'All', label: 'All' },
+                    { value: 'Delivery', label: 'Delivery' },
+                    { value: 'Logistics', label: 'Logistics' },
+                  ]}
+                />
+              </div>
+              <div>
+                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                  Sub-category Filter
+                </span>
+                <DashboardLabeledFilterSelect
+                  label="Sub-category Filter"
+                  value={subCategoryFilter}
+                  onValueChange={(v) =>
+                    setSubCategoryFilter(v as DashboardFilterValue)
+                  }
+                  options={[
+                    { value: 'All', label: 'All' },
+                    { value: 'Route A', label: 'Route A' },
+                    { value: 'Route B', label: 'Route B' },
+                  ]}
+                />
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-10 gap-3">

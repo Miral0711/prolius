@@ -1,41 +1,22 @@
 import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
+import { MetricGrid, type MetricItem } from './MetricGrid';
+
+const TRIP_STATS: MetricItem[] = [
+  { label: 'Total Trips Today', value: '156' },
+  { label: 'Completed', value: '142' },
+  { label: 'In Progress', value: '19' },
+  { label: 'On Trips Rate', value: '96.2%', valueColor: 'text-emerald-600' },
+  { label: 'Total Revenue', value: '243 km' },
+  { label: 'Efficiency', value: '3.2 km/L' },
+];
 
 export function TripStatisticsCard() {
   return (
     <DashboardCard>
-      <h3 className={cn(typography.cardTitle, 'mb-1')}>
-        Trip Statistics
-      </h3>
-      <div className="grid grid-cols-2 gap-1">
-        <div>
-          <p className="text-xs font-medium text-slate-500">Total Trips Today</p>
-          <p className="text-[14px] font-semibold text-slate-800">156</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">Completed</p>
-          <p className="text-[14px] font-semibold text-slate-800">142</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">In Progress</p>
-          <p className="text-[14px] font-semibold text-slate-800">19</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">On Trips Rate</p>
-          <p className="text-[14px] font-semibold text-emerald-600">96.2%</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">Total Revenue</p>
-          <p className="text-[14px] font-semibold text-slate-800">243 km</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">Efficiency</p>
-          <p className="text-[14px] font-semibold text-slate-800">3.2 km/L</p>
-        </div>
-      </div>
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>Trip Statistics</h3>
+      <MetricGrid items={TRIP_STATS} cols={2} />
     </DashboardCard>
   );
 }
-
-

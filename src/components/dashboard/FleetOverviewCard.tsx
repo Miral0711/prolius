@@ -1,13 +1,10 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import type { ChartConfig } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
+import { MetricGrid, type MetricItem } from './MetricGrid';
 
 const trendData = [
   { day: 'Mon', value: 420 },
@@ -23,36 +20,25 @@ const chartConfig: ChartConfig = {
   value: { label: 'Active', color: '#3b82f6' },
 };
 
+const FLEET_METRICS: MetricItem[] = [
+  { label: 'Total Vehicles', value: '450' },
+  { label: 'Active', value: '425' },
+  { label: 'Total Drivers', value: '126' },
+];
+
 export function FleetOverviewCard() {
   return (
     <DashboardCard>
-      <h3 className={cn(typography.cardTitle, 'mb-1')}>
-        Fleet Overview
-      </h3>
-      <div className="grid grid-cols-2 gap-1">
-        <div>
-          <p className="text-xs font-medium text-slate-500">Total Vehicles</p>
-          <p className="text-[14px] font-semibold text-slate-800">450</p>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">Active</p>
-          <p className="text-[14px] font-semibold text-slate-800">425</p>
-        </div>
-        <div className="col-span-2">
-          <p className="text-xs font-medium text-slate-500">Utilization Rate</p>
-          <div className="mt-0.5 flex items-center gap-1">
-            <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200">
-              <div
-                className="h-full rounded-full bg-emerald-500"
-                style={{ width: '95.3%' }}
-              />
-            </div>
-            <span className="text-[14px] font-semibold text-emerald-600">95.3%</span>
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>Fleet Overview</h3>
+      <MetricGrid items={FLEET_METRICS} cols={2} />
+      {/* Utilization bar — full-width, rendered separately */}
+      <div className="mt-1">
+        <p className={cn(typography.label, 'text-slate-500')}>Utilization Rate</p>
+        <div className="mt-0.5 flex items-center gap-1">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200">
+            <div className="h-full rounded-full bg-emerald-500" style={{ width: '95.3%' }} />
           </div>
-        </div>
-        <div>
-          <p className="text-xs font-medium text-slate-500">Total Drivers</p>
-          <p className="text-[14px] font-semibold text-slate-800">126</p>
+          <span className="text-[14px] font-semibold text-emerald-600">95.3%</span>
         </div>
       </div>
       <div className="mt-1 h-8">
@@ -76,5 +62,3 @@ export function FleetOverviewCard() {
     </DashboardCard>
   );
 }
-
-

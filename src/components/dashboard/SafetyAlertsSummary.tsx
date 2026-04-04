@@ -1,10 +1,9 @@
-import { Cell, Pie, PieChart } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
 import { cn } from '@/lib/utils';
 import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
+import { PieChartWidget, type PieChartSlice } from './PieChartWidget';
 
-const SAFETY_ALERT_DATA = [
+const SAFETY_ALERT_DATA: PieChartSlice[] = [
   { name: 'Overspeed', value: 8, color: '#f59e0b' },
   { name: 'Idle', value: 4, color: '#64748b' },
   { name: 'Accident', value: 2, color: '#ef4444' },
@@ -14,43 +13,8 @@ const SAFETY_ALERT_DATA = [
 export function SafetyAlertsSummary() {
   return (
     <DashboardCard className="flex min-h-0 flex-col overflow-hidden">
-      <h3 className={cn(typography.cardTitle, 'mb-1.5 shrink-0')}>
-        Safety Alerts Summary
-      </h3>
-      <div className="flex items-center gap-2">
-        <div className="h-12 w-12 shrink-0">
-          <ChartContainer config={{}} className="h-full w-full">
-            <PieChart>
-              <Pie
-                data={SAFETY_ALERT_DATA}
-                dataKey="value"
-                innerRadius={10}
-                outerRadius={22}
-                paddingAngle={2}
-              >
-                {SAFETY_ALERT_DATA.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ChartContainer>
-        </div>
-        <div className="min-w-0 flex-1 space-y-1">
-          {SAFETY_ALERT_DATA.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center justify-between gap-2"
-            >
-              <span className="text-xs font-medium text-slate-600">{item.name}</span>
-              <span className="text-xs font-normal text-slate-700">
-                {item.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <h3 className={cn(typography.cardTitle, 'mb-1.5 shrink-0')}>Safety Alerts Summary</h3>
+      <PieChartWidget data={SAFETY_ALERT_DATA} size={48} />
     </DashboardCard>
   );
 }
-
-

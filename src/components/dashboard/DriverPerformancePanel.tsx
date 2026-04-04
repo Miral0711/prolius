@@ -1,15 +1,12 @@
 import { TOP_DRIVERS } from '@/pages/dashboard/mockData';
-import { Cell, Pie, PieChart } from 'recharts';
-import { ChartContainer } from '@/components/ui/chart';
 import { AnalyticsCard } from './AnalyticsCard';
 import { DataTableCard } from './DataTableCard';
+import { PieChartWidget, type PieChartSlice } from './PieChartWidget';
+import { SimpleTable, type SimpleTableColumn } from './SimpleTable';
+import { MetricGrid, type MetricItem } from './MetricGrid';
 import type { LeaderboardItem } from './CompactLeaderboard';
 
-export interface DriverAvailabilityItem {
-  name: string;
-  value: number;
-  color: string;
-}
+export interface DriverAvailabilityItem extends PieChartSlice {}
 
 export interface DriverMetricItem {
   label: string;
@@ -22,16 +19,25 @@ const DEFAULT_AVAILABILITY_DATA: DriverAvailabilityItem[] = [
   { name: 'Offline', value: 29, color: '#64748b' },
 ];
 
-const DEFAULT_SUMMARY_METRICS: DriverMetricItem[] = [
+const DEFAULT_SUMMARY_METRICS: MetricItem[] = [
   { label: 'Total Drivers', value: '126' },
   { label: 'Avg Duty Hours', value: '8.2 hr' },
   { label: 'Avg Shift', value: '6.5 hr' },
 ];
 
+const DRIVER_COLUMNS: SimpleTableColumn<LeaderboardItem>[] = [
+  { key: 'rank', header: '#', cellClassName: 'text-slate-600', render: (d) => d.rank },
+  { key: 'name', header: 'Driver', cellClassName: 'font-medium text-slate-800', render: (d) => d.name },
+  { key: 'trips', header: 'Trips', align: 'right', cellClassName: 'text-slate-700', render: (d) => d.trips },
+  { key: 'revenue', header: 'Revenue', align: 'right', cellClassName: 'font-medium text-emerald-600', render: (d) => d.revenue },
+  { key: 'avgDuration', header: 'Avg Duration', align: 'right', cellClassName: 'text-slate-600', render: (d) => d.avgDuration },
+  { key: 'distance', header: 'Distance', align: 'right', cellClassName: 'text-slate-600', render: (d) => d.distance },
+];
+
 export interface DriverPerformancePanelProps {
   availabilityData?: DriverAvailabilityItem[];
   topDrivers?: LeaderboardItem[];
-  summaryMetrics?: DriverMetricItem[];
+  summaryMetrics?: MetricItem[];
   availabilityTitle?: string;
   topDriversTitle?: string;
   className?: string;
@@ -48,101 +54,20 @@ export function DriverPerformancePanel({
   return (
     <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${className ?? ''}`}>
       <AnalyticsCard title={availabilityTitle}>
-        <div className="flex items-center gap-2">
-          <div className="h-16 w-16 shrink-0">
-            <ChartContainer config={{}} className="h-full w-full">
-              <PieChart>
-                <Pie
-                  data={availabilityData}
-                  dataKey="value"
-                  innerRadius={16}
-                  outerRadius={36}
-                  paddingAngle={2}
-                >
-                  {availabilityData.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ChartContainer>
-          </div>
-          <div className="min-w-0 flex-1 space-y-1.5">
-            {availabilityData.map((item) => (
-              <div
-                key={item.name}
-                className="flex items-center justify-between gap-2"
-              >
-                <span className="text-xs text-slate-600">{item.name}</span>
-                <span className="text-xs font-medium text-slate-700">
-                  {item.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-1.5 flex flex-wrap gap-2 border-t border-slate-100 pt-1.5 text-2sm">
-          {summaryMetrics.map((metric) => (
-            <div key={metric.label}>
-              <p className="text-slate-500">{metric.label}</p>
-              <p className="font-semibold text-slate-800">{metric.value}</p>
-            </div>
-          ))}
+        <PieChartWidget data={availabilityData} size={64} />
+        <div className="mt-1.5 border-t border-slate-100 pt-1.5">
+          <MetricGrid items={summaryMetrics} cols={3} />
         </div>
       </AnalyticsCard>
 
       <DataTableCard title={topDriversTitle}>
-        <table className="w-full min-w-[500px] text-sm">
-          <thead>
-            <tr className="border-b border-slate-200">
-              <th className="pb-1.5 text-left text-2sm font-medium text-slate-500">
-                #
-              </th>
-              <th className="pb-2 text-left text-xs font-medium text-slate-500">
-                Driver
-              </th>
-              <th className="pb-2 text-right text-xs font-medium text-slate-500">
-                Trips
-              </th>
-              <th className="pb-2 text-right text-xs font-medium text-slate-500">
-                Revenue
-              </th>
-              <th className="pb-2 text-right text-xs font-medium text-slate-500">
-                Avg Duration
-              </th>
-              <th className="pb-2 text-right text-xs font-medium text-slate-500">
-                Distance
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {topDrivers.map((d) => (
-              <tr
-                key={d.rank}
-                className="border-b border-slate-100 last:border-0"
-              >
-                <td className="py-1.5 text-slate-600">{d.rank}</td>
-                <td className="py-1.5 text-xs font-medium text-slate-800">
-                  {d.name}
-                </td>
-                <td className="py-1.5 text-right text-xs text-slate-700">
-                  {d.trips}
-                </td>
-                <td className="py-1.5 text-right text-xs font-medium text-emerald-600">
-                  {d.revenue}
-                </td>
-                <td className="py-1.5 text-right text-xs text-slate-600">
-                  {d.avgDuration}
-                </td>
-                <td className="py-1.5 text-right text-xs text-slate-600">
-                  {d.distance}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <SimpleTable
+          data={topDrivers}
+          columns={DRIVER_COLUMNS}
+          rowKey={(d) => d.rank}
+          minWidth={500}
+        />
       </DataTableCard>
     </div>
   );
 }
-
-
