@@ -25,7 +25,7 @@ export function Header({ title, statusLabel, extraActions, className }: HeaderPr
   return (
     <header 
       className={cn(
-        'fixed z-[50] flex items-center border-b border-slate-200 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300',
+        'fixed z-[50] flex items-center border-b border-[#d4e0ea] bg-white shadow-[0_4px_20px_-4px_rgba(61,107,142,0.08)] transition-all duration-300',
         "h-[var(--header-height)] top-0 end-0",
         isFullPage 
           ? "start-0 lg:start-[var(--sidebar-width)]" 

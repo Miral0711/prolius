@@ -56,7 +56,7 @@ const ArchiveControls = ({
             />
           </div>
         </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-200">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2e5f8a] text-white shadow-lg shadow-[#d0e2f0]">
           <History className="h-4 w-4" />
         </div>
       </div>

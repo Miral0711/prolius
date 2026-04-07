@@ -63,7 +63,7 @@ export const DVRFiltersToolbar: React.FC<DVRFiltersToolbarProps> = ({
               className={cn(
                 'rounded-lg px-2.5 h-full text-2xs font-semibold tracking-tight transition-all',
                 selectedSpeed === s 
-                  ? 'bg-blue-600 text-white shadow-sm' 
+                  ? 'bg-[#2e5f8a] text-white shadow-sm' 
                   : 'text-slate-500 hover:bg-white hover:text-slate-700'
               )}
             >

@@ -32,7 +32,7 @@ function MapStatOverlayCell({
   return (
     <div className="flex min-h-0 min-w-0 flex-col items-center justify-center gap-1 px-2 py-2">
       <div className="flex items-center justify-center gap-1">
-        <Icon className="h-3 w-3 shrink-0 text-blue-600" aria-hidden />
+        <Icon className="h-3 w-3 shrink-0 text-[#2e5f8a]" aria-hidden />
         <span className={cn(dvrTypography.fieldLabel, 'truncate')}>
           {label}
         </span>
@@ -214,13 +214,13 @@ export const GpsTrackCard = () => {
   return (
     <div
       className={cn(
-        'flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-300 hover:border-blue-200/30 hover:shadow-md',
+        'flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-300 hover:border-[#d0e2f0]/30 hover:shadow-md',
       )}
     >
       {/* Header — compact, vertically centered row */}
       <div className="flex shrink-0 items-center justify-between gap-2 px-3 pb-1.5 pt-2">
         <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-blue-100/60 bg-blue-50/80 text-blue-600">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#dcedf8]/60 bg-[#e8f0f8]/80 text-[#2e5f8a]">
             <MapPin className="h-3.5 w-3.5" aria-hidden />
           </div>
           <div className="min-w-0 flex flex-col gap-0 leading-none">
@@ -233,14 +233,14 @@ export const GpsTrackCard = () => {
           </div>
         </div>
         <div
-          className="flex shrink-0 items-center gap-1.5 rounded-full border border-blue-200/40 bg-blue-50/90 px-2 py-0.5 backdrop-blur-sm"
+          className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#d0e2f0]/40 bg-[#e8f0f8]/90 px-2 py-0.5 backdrop-blur-sm"
           title="Live position updating"
         >
           <span
-            className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-blue-500 shadow-[0_0_0_2px_rgba(59,130,246,0.22)]"
+            className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-[#2e5f8a] shadow-[0_0_0_2px_rgba(59,130,246,0.22)]"
             aria-hidden
           />
-          <span className={cn(dvrTypography.control, 'text-blue-700')}>
+          <span className={cn(dvrTypography.control, 'text-[#2e5f8a]')}>
             Active track
           </span>
         </div>
@@ -332,7 +332,7 @@ export const GpsTrackCard = () => {
           <div className="flex flex-col gap-1 rounded-xl border border-white/60 bg-white/80 p-1 shadow-lg backdrop-blur-xl">
             <button
               type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-100 bg-white text-slate-700 shadow-sm transition-all hover:bg-blue-50 hover:text-blue-600"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-100 bg-white text-slate-700 shadow-sm transition-all hover:bg-[#e8f0f8] hover:text-[#2e5f8a]"
               onClick={() => {
                 const z = leafletMap?.getZoom?.() ?? 0;
                 leafletMap?.setZoom?.(Math.min(19, z + 1));
@@ -343,7 +343,7 @@ export const GpsTrackCard = () => {
             </button>
             <button
               type="button"
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-100 bg-white text-slate-700 shadow-sm transition-all hover:bg-blue-50 hover:text-blue-600"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-100 bg-white text-slate-700 shadow-sm transition-all hover:bg-[#e8f0f8] hover:text-[#2e5f8a]"
               onClick={() => {
                 const z = leafletMap?.getZoom?.() ?? 0;
                 leafletMap?.setZoom?.(Math.max(3, z - 1));
@@ -385,7 +385,7 @@ export const GpsTrackCard = () => {
 
       {/* Coordinates — flat metadata row */}
       <div className="flex h-9 shrink-0 items-center justify-center gap-2 border-t border-slate-200/50 bg-slate-50/50 px-3">
-        <MapPin className="h-3 w-3 shrink-0 text-blue-600" aria-hidden />
+        <MapPin className="h-3 w-3 shrink-0 text-[#2e5f8a]" aria-hidden />
         <span className={cn(dvrTypography.fieldLabel, 'shrink-0')}>
           Coordinates
         </span>
@@ -474,10 +474,10 @@ export function DvrRightPanel({ className }: DvrRightPanelProps) {
           <div className="flex flex-col gap-1.5 pt-0.5">
             <TelemetryMetricRow
               icon={Activity}
-              iconBg="bg-blue-50 text-blue-600"
+              iconBg="bg-[#e8f0f8] text-[#2e5f8a]"
               label="Engine load"
               pct={45}
-              fillClass="bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,0.35)]"
+              fillClass="bg-[#2e5f8a] shadow-[0_0_6px_rgba(59,130,246,0.35)]"
             />
             <TelemetryMetricRow
               icon={Droplets}
@@ -488,10 +488,10 @@ export function DvrRightPanel({ className }: DvrRightPanelProps) {
             />
             <TelemetryMetricRow
               icon={Compass}
-              iconBg="bg-blue-50 text-blue-600"
+              iconBg="bg-[#e8f0f8] text-[#2e5f8a]"
               label="Route progress"
               pct={62}
-              fillClass="bg-blue-600 shadow-[0_0_6px_rgba(37,99,235,0.35)]"
+              fillClass="bg-[#2e5f8a] shadow-[0_0_6px_rgba(37,99,235,0.35)]"
             />
           </div>
         </div>

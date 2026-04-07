@@ -78,7 +78,7 @@ function Pill({ children, color = 'slate' }: { children: React.ReactNode; color?
     rose:    'bg-rose-100 text-rose-700',
     amber:   'bg-amber-100 text-amber-700',
     indigo:  'bg-indigo-100 text-indigo-700',
-    blue:    'bg-blue-100 text-blue-700',
+    blue:    'bg-blue-100 text-[#2e5f8a]',
     slate:   'bg-slate-100 text-slate-600',
     violet:  'bg-violet-100 text-violet-700',
   };
@@ -95,7 +95,7 @@ function Pill({ children, color = 'slate' }: { children: React.ReactNode; color?
 
 const KPI_BAR = [
   { label: 'Critical Alerts',   value: '3',      delta: '+1',     up: false, icon: AlertTriangle, c: 'text-rose-600',    bg: 'bg-rose-50'    },
-  { label: 'Active Vehicles',   value: '147',    delta: '+12',    up: true,  icon: Car,           c: 'text-blue-600',    bg: 'bg-blue-50'    },
+  { label: 'Active Vehicles',   value: '147',    delta: '+12',    up: true,  icon: Car,           c: 'text-[#2e5f8a]',    bg: 'bg-[#e8f0f8]'    },
   { label: "Today's Revenue",   value: 'SAR 0',  delta: '—',      up: null,  icon: DollarSign,    c: 'text-emerald-600', bg: 'bg-emerald-50' },
   { label: 'Active Drivers',    value: '524',    delta: '+5',     up: true,  icon: Users,         c: 'text-violet-600',  bg: 'bg-violet-50'  },
   { label: 'Job Completion',    value: '95.5%',  delta: '+1.8%',  up: true,  icon: CheckCircle,   c: 'text-emerald-600', bg: 'bg-emerald-50' },
@@ -113,9 +113,9 @@ const ALERT_ROWS = [
 ];
 
 const FLEET_ROW1 = [
-  { label: 'On Trip',   value: '147', delta: '+0', c: 'text-blue-600',    bg: 'bg-blue-50'    },
+  { label: 'On Trip',   value: '147', delta: '+0', c: 'text-[#2e5f8a]',    bg: 'bg-[#e8f0f8]'    },
   { label: 'Available', value: '0',   delta: '+0', c: 'text-emerald-600', bg: 'bg-emerald-50' },
-  { label: 'Offline',   value: '427', delta: '+3', c: 'text-slate-600',   bg: 'bg-slate-50'   },
+  { label: 'Offline',   value: '427', delta: '+3', c: 'text-slate-600',   bg: 'bg-[#f4f8fb]'   },
   { label: 'Low Fuel',  value: '0',   delta: '+2', c: 'text-amber-600',   bg: 'bg-amber-50'   },
 ];
 
@@ -125,20 +125,20 @@ const QUICK_ACTIONS = [
   { label: 'Map',      path: '/bus-tracking',         icon: Map,        c: 'text-indigo-600', bg: 'bg-indigo-50'  },
   { label: 'Alerts',   path: '/bus-alert-monitoring', icon: Bell,       c: 'text-rose-600',   bg: 'bg-rose-50'    },
   { label: 'Reports',  path: '/reports',              icon: FileText,   c: 'text-amber-600',  bg: 'bg-amber-50'   },
-  { label: 'Drivers',  path: '/bus-driver-list',      icon: Users,      c: 'text-blue-600',   bg: 'bg-blue-50'    },
-  { label: 'Fleet',    path: '/manager-cockpit',      icon: Car,        c: 'text-slate-600',  bg: 'bg-slate-50'   },
+  { label: 'Drivers',  path: '/bus-driver-list',      icon: Users,      c: 'text-[#2e5f8a]',   bg: 'bg-[#e8f0f8]'    },
+  { label: 'Fleet',    path: '/manager-cockpit',      icon: Car,        c: 'text-slate-600',  bg: 'bg-[#f4f8fb]'   },
   { label: 'Revenue',  path: '/reports',              icon: DollarSign, c: 'text-emerald-600',bg: 'bg-emerald-50' },
 ];
 
 const DISPATCH_ACTIONS = [
-  { label: 'Assign Driver',     icon: Users,    c: 'text-blue-600',  bg: 'bg-blue-50'  },
+  { label: 'Assign Driver',     icon: Users,    c: 'text-[#2e5f8a]',  bg: 'bg-[#e8f0f8]'  },
   { label: 'Start Trip',        icon: Route,    c: 'text-emerald-600',bg:'bg-emerald-50'},
   { label: 'Create Alert',      icon: Bell,     c: 'text-rose-600',  bg: 'bg-rose-50'  },
   { label: 'Schedule Maint.',   icon: Wrench,   c: 'text-amber-600', bg: 'bg-amber-50' },
 ];
 
 const DRIVER_STATS = [
-  { label: 'Drivers On Shift',    value: '356', icon: LogIn,       c: 'text-blue-600',    bg: 'bg-blue-50'    },
+  { label: 'Drivers On Shift',    value: '356', icon: LogIn,       c: 'text-[#2e5f8a]',    bg: 'bg-[#e8f0f8]'    },
   { label: 'Drivers Idle',        value: '168', icon: Clock,       c: 'text-amber-600',   bg: 'bg-amber-50'   },
   { label: 'Near HOS Limit',      value: '12',  icon: AlertCircle, c: 'text-rose-600',    bg: 'bg-rose-50'    },
   { label: 'Driver Utilization',  value: '68%', icon: TrendingUp,  c: 'text-emerald-600', bg: 'bg-emerald-50' },
@@ -149,7 +149,7 @@ const DRIVER_STATS = [
 const HEALTH_STATS = [
   { label: 'API Response',      value: '24 ms', pct: 96, icon: Zap,       c: 'text-emerald-600', bg: 'bg-emerald-50', bar: 'bg-emerald-500' },
   { label: 'Dispatch Latency',  value: '2.4s',  pct: 80, icon: Timer,     c: 'text-amber-600',   bg: 'bg-amber-50',   bar: 'bg-amber-400'   },
-  { label: 'Route Compliance',  value: '98%',   pct: 98, icon: Route,     c: 'text-blue-600',    bg: 'bg-blue-50',    bar: 'bg-blue-500'    },
+  { label: 'Route Compliance',  value: '98%',   pct: 98, icon: Route,     c: 'text-[#2e5f8a]',    bg: 'bg-[#e8f0f8]',    bar: 'bg-[#2e5f8a]'    },
   { label: 'Fleet Health Score',value: '92/100',pct: 92, icon: Activity,  c: 'text-violet-600',  bg: 'bg-violet-50',  bar: 'bg-violet-500'  },
 ];
 
@@ -164,11 +164,11 @@ const RISK_ROWS = [
   { label: 'Speed Violations',    value: 14, trend: 'up',   c: 'text-amber-600',  bg: 'bg-amber-50'  },
   { label: 'Harsh Braking',       value: 9,  trend: 'up',   c: 'text-rose-600',   bg: 'bg-rose-50'   },
   { label: 'Geofence Breaches',   value: 6,  trend: 'down', c: 'text-violet-600', bg: 'bg-violet-50' },
-  { label: 'Maintenance Overdue', value: 3,  trend: 'same', c: 'text-slate-600',  bg: 'bg-slate-50'  },
+  { label: 'Maintenance Overdue', value: 3,  trend: 'same', c: 'text-slate-600',  bg: 'bg-[#f4f8fb]'  },
 ];
 
 const SYSTEM_STATUS = [
-  { label: 'Primary Server',    status: 'online',   latency: '12 ms', icon: Server,   c: 'text-blue-600',    bg: 'bg-blue-50'    },
+  { label: 'Primary Server',    status: 'online',   latency: '12 ms', icon: Server,   c: 'text-[#2e5f8a]',    bg: 'bg-[#e8f0f8]'    },
   { label: 'API Gateway',       status: 'online',   latency: '24 ms', icon: Activity, c: 'text-emerald-600', bg: 'bg-emerald-50' },
   { label: 'Database',          status: 'online',   latency: '8 ms',  icon: Database, c: 'text-violet-600',  bg: 'bg-violet-50'  },
   { label: 'Telemetry Sync',    status: 'degraded', latency: '340 ms',icon: Zap,      c: 'text-amber-600',   bg: 'bg-amber-50'   },
@@ -272,13 +272,13 @@ export function ManagerCockpitPage() {
             <div className="flex justify-between items-baseline mb-1.5">
               <span className="text-2xs font-semibold uppercase tracking-[0.08rem] text-slate-400">allocation_index</span>
               <div className="flex items-center gap-2">
-                <span className="text-2sm font-semibold text-blue-600">34.4%</span>
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span className="text-2sm font-semibold text-[#2e5f8a]">34.4%</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#2e5f8a] animate-pulse" />
               </div>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-md bg-slate-100/60 p-0.5 border border-slate-200/40">
               <div className="flex h-full rounded-sm overflow-hidden">
-                <div className="h-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.4)]" style={{ width: '34.4%' }} />
+                <div className="h-full bg-[#2e5f8a] shadow-[0_0_8px_rgba(59,130,246,0.4)]" style={{ width: '34.4%' }} />
                 <div className="h-full bg-emerald-400 opacity-60 ml-0.5" style={{ width: '12%' }} />
               </div>
             </div>
@@ -328,7 +328,7 @@ export function ManagerCockpitPage() {
                 { label: 'Profit Margin',   value: '—%',      variant: 'blue' as StatusVariant    },
                 { label: 'Pending Pymts',   value: '4 jobs',  variant: 'rose' as StatusVariant    },
               ].map(m => (
-                <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-3 py-2 border border-slate-200/40">
+                <div key={m.label} className="flex items-center justify-between rounded-sm bg-[#f4f8fb]/80 px-3 py-2 border border-slate-200/40">
                   <span className="text-2xs font-semibold uppercase tracking-tight text-slate-500">{m.label}</span>
                   <StatusBadge label={m.value} variant={m.variant} className="border-none shadow-none font-semibold" />
                 </div>
@@ -399,7 +399,7 @@ export function ManagerCockpitPage() {
 
         {/* Driver Resource Logistics */}
         <Card className="p-3">
-          <CardHead icon={<Users className="h-3.5 w-3.5 text-blue-500" />} title="Driver Resource Logistics" />
+          <CardHead icon={<Users className="h-3.5 w-3.5 text-[#2e5f8a]" />} title="Driver Resource Logistics" />
           <div className="grid grid-cols-3 gap-1.5">
             {DRIVER_STATS.map((s) => {
               const Icon = s.icon;
@@ -428,7 +428,7 @@ export function ManagerCockpitPage() {
             {HEALTH_STATS.map((h) => {
               const Icon = h.icon;
               return (
-                <div key={h.label} className="flex items-center gap-2.5 rounded-sm bg-slate-50/80 px-2.5 py-1.5">
+                <div key={h.label} className="flex items-center gap-2.5 rounded-sm bg-[#f4f8fb]/80 px-2.5 py-1.5">
                   <div className={cn('flex h-6 w-6 shrink-0 items-center justify-center rounded-sm', h.bg)}>
                     <Icon className={cn('h-3 w-3', h.c)} />
                   </div>
@@ -475,7 +475,7 @@ export function ManagerCockpitPage() {
           </CardHead>
           <div className="flex flex-col gap-1">
             {RISK_ROWS.map((r) => (
-              <div key={r.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
+              <div key={r.label} className="flex items-center justify-between rounded-sm bg-[#f4f8fb]/80 px-2.5 py-1.5">
                 <div className="flex items-center gap-2 min-w-0">
                   <div className={cn('h-2 w-2 rounded-full shrink-0', r.trend === 'up' ? 'bg-rose-500' : r.trend === 'down' ? 'bg-emerald-500' : 'bg-slate-300')} />
                   <span className="truncate text-xs font-medium text-slate-600">{r.label}</span>
@@ -503,7 +503,7 @@ export function ManagerCockpitPage() {
               return (
                 <div key={s.label} className={cn(
                   'flex items-center justify-between rounded-sm px-2.5 py-1.5',
-                  online ? 'bg-slate-50/80' : 'bg-amber-50/60',
+                  online ? 'bg-[#f4f8fb]/80' : 'bg-amber-50/60',
                 )}>
                   <div className="flex items-center gap-2 min-w-0">
                     <div className={cn('flex h-5 w-5 shrink-0 items-center justify-center rounded-sm', s.bg)}>
@@ -546,7 +546,7 @@ export function ManagerCockpitPage() {
           </div>
           <div className="flex flex-col gap-0.5">
             {ANOMALY_META.map((m) => (
-              <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
+              <div key={m.label} className="flex items-center justify-between rounded-sm bg-[#f4f8fb]/80 px-2.5 py-1.5">
                 <span className="text-xs font-medium text-slate-500">{m.label}</span>
                 <span className="text-xs font-semibold text-slate-700">{m.value}</span>
               </div>
@@ -556,27 +556,27 @@ export function ManagerCockpitPage() {
 
         {/* Flow Sync */}
         <Card className="p-3">
-          <CardHead icon={<Route className="h-3.5 w-3.5 text-blue-500" />} title="Flow Sync">
+          <CardHead icon={<Route className="h-3.5 w-3.5 text-[#2e5f8a]" />} title="Flow Sync">
             <div className="flex gap-1">
               <span className="h-2 w-2 rounded-full bg-rose-400" />
               <span className="h-2 w-2 rounded-full bg-amber-400" />
               <span className="h-2 w-2 rounded-full bg-slate-200" />
             </div>
           </CardHead>
-          <div className="mb-2 flex items-center justify-between rounded-lg bg-blue-50 border border-blue-100 px-2.5 py-2">
+          <div className="mb-2 flex items-center justify-between rounded-lg bg-[#e8f0f8] border border-[#dcedf8] px-2.5 py-2">
             <div className="flex items-center gap-2">
               <div className="flex gap-1">
                 {['-0.3s', '-0.15s', '0s'].map(d => (
                   <span key={d} className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: d }} />
                 ))}
               </div>
-              <span className="text-2xs font-semibold uppercase text-blue-700">AWAITING SYNC</span>
+              <span className="text-2xs font-semibold uppercase text-[#2e5f8a]">AWAITING SYNC</span>
             </div>
             <span className="text-2xs text-slate-400">34m ago</span>
           </div>
           <div className="flex flex-col gap-0.5">
             {FLOW_META.map((m) => (
-              <div key={m.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
+              <div key={m.label} className="flex items-center justify-between rounded-sm bg-[#f4f8fb]/80 px-2.5 py-1.5">
                 <span className="text-xs font-medium text-slate-500">{m.label}</span>
                 <span className="text-xs font-semibold text-slate-700">{m.value}</span>
               </div>
@@ -595,7 +595,7 @@ export function ManagerCockpitPage() {
           </CardHead>
           <div className="flex flex-col gap-1">
             {INTEL_ROWS.map((r) => (
-              <div key={r.label} className="flex items-center justify-between rounded-sm bg-slate-50/80 px-2.5 py-1.5">
+              <div key={r.label} className="flex items-center justify-between rounded-sm bg-[#f4f8fb]/80 px-2.5 py-1.5">
                 <div className="flex items-center gap-1.5 min-w-0">
                   {r.trend === 'up'   ? <ArrowUp className="h-2.5 w-2.5 shrink-0 text-rose-400" />
                                       : <ArrowDown className="h-2.5 w-2.5 shrink-0 text-emerald-400" />}

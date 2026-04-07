@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { fleetSurface } from './tokens';
 
 const stickyHeadDefault =
-  'sticky top-0 z-20 border-b border-slate-200/70 bg-slate-50 shadow-[0_1px_0_0_rgb(226_232_240)]';
+  'sticky top-0 z-20 border-b border-[#d4e0ea] bg-white shadow-[0_1px_0_0_rgb(212_224_234)]';
 
 const stickyHeadNavy = cn(
   'sticky top-0 z-20 backdrop-blur-sm',
@@ -19,7 +19,7 @@ export function DataTable({ className, children, ...props }: DataTableProps) {
   return (
     <div
       className={cn(
-        'flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border border-slate-200/90 bg-white shadow-sm',
+        'flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border border-[#d4e0ea] bg-white shadow-sm',
         className,
       )}
       {...props}
@@ -37,7 +37,7 @@ export function DataTableToolbar({ className, children, ...props }: DataTableToo
   return (
     <div
       className={cn(
-        'flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/95',
+        'flex shrink-0 items-center justify-between border-b border-[#d4e0ea] bg-white',
         fleetSurface.toolbar,
         className,
       )}
@@ -95,7 +95,7 @@ export function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   return (
     <tr
       className={cn(
-        'transition-colors duration-150 even:bg-slate-50/40 hover:bg-blue-50/45',
+        'transition-colors duration-150 even:bg-[#f4f8fb]/60 hover:bg-[#eef4f8]/70',
         className,
       )}
       {...props}
@@ -112,12 +112,12 @@ export interface TableExpandRowProps extends React.HTMLAttributes<HTMLTableRowEl
 export function TableExpandRow({ colSpan, children, className, ...props }: TableExpandRowProps) {
   return (
     <tr
-      className={cn('border-b border-slate-200/70 bg-slate-50/40 last:border-b-0', className)}
+      className={cn('border-b border-[#d4e0ea] bg-[#f4f8fb]/40 last:border-b-0', className)}
       {...props}
     >
       <td
         colSpan={colSpan}
-        className="max-w-none overflow-visible border-b border-slate-200/70 p-0 align-top"
+        className="max-w-none overflow-visible border-b border-[#d4e0ea] p-0 align-top"
       >
         {children}
       </td>
@@ -172,7 +172,7 @@ export function TableHeaderCell({
         variant === 'navy' &&
           'text-xs font-semibold uppercase tracking-[0.02rem] text-white/95',
         variant === 'default' &&
-          'text-xs font-bold uppercase tracking-[0.06em] text-slate-600',
+          'text-xs font-bold uppercase tracking-[0.06em] text-[#3d6b8e]',
         align === 'center' && 'text-center',
         align === 'right' && 'text-right',
         align === 'left' && 'text-left',
@@ -191,7 +191,7 @@ export function DataTableFooter({ className, children, ...props }: DataTableFoot
   return (
     <div
       className={cn(
-        'flex shrink-0 items-center justify-between border-t border-slate-200/70 bg-slate-50/60',
+        'flex shrink-0 items-center justify-between border-t border-[#d4e0ea] bg-white',
         fleetSurface.paginationBar,
         className,
       )}

@@ -35,7 +35,7 @@ function PanelHeader({ title, icon: Icon, extra }: { title: string; icon?: any; 
           )}
         >
           {Icon ? (
-            <span className="inline-flex translate-y-0.5 text-blue-500" aria-hidden>
+            <span className="inline-flex translate-y-0.5 text-[#2e5f8a]" aria-hidden>
               <Icon className="size-3.5" />
             </span>
           ) : null}
@@ -77,7 +77,7 @@ function GridRow({ label, value, status, theme = 'light', icon: Icon }: {
       theme === 'light' ? "bg-white border-slate-100/60" : "bg-slate-50/50 border-transparent"
     )}>
       <div className="flex items-center gap-1">
-        {Icon && <Icon className="h-2 w-2 text-slate-400 group-hover:text-blue-500 transition-colors" />}
+        {Icon && <Icon className="h-2 w-2 text-slate-400 group-hover:text-[#2e5f8a] transition-colors" />}
         <span className={cn(typography.caption, 'truncate font-normal leading-tight text-slate-500 tracking-tight')}>
           {label}
         </span>
@@ -137,8 +137,8 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
                 <div className={cn(typography.body, 'flex items-center gap-1 rounded bg-slate-800 px-1.5 py-0.5 font-medium leading-none text-white')}>
                   {vehicle.plate}
                 </div>
-                <div className={cn(typography.meta, 'flex items-center gap-1 rounded bg-blue-50 px-1.5 py-0.5 font-normal leading-none text-blue-600')}>
-                  R-101 <span className="mx-0.5 text-blue-300">•</span> Trip Active
+                <div className={cn(typography.meta, 'flex items-center gap-1 rounded bg-[#e8f0f8] px-1.5 py-0.5 font-normal leading-none text-[#2e5f8a]')}>
+                  R-101 <span className="mx-0.5 text-[#8ab8d8]">•</span> Trip Active
                 </div>
               </div>
             </div>
@@ -164,7 +164,7 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
                 <TooltipTrigger asChild>
                   <button className={cn(
                     "flex flex-col items-center justify-center gap-1 h-11 rounded-xl border transition-all active:scale-95 shadow-sm group",
-                    btn.variant === 'blue' && "bg-blue-600 border-blue-500 text-white hover:bg-blue-700",
+                    btn.variant === 'blue' && "bg-[#2e5f8a] border-[#2e5f8a] text-white hover:bg-[#1e4a6e]",
                     btn.variant === 'slate' && "bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800",
                     btn.variant === 'emerald' && "bg-white border-emerald-100 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700",
                     btn.variant === 'rose' && "bg-white border-rose-100 text-rose-500 hover:bg-rose-50 hover:text-rose-600",

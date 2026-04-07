@@ -26,7 +26,7 @@ export function MonitoringToolbar({
     cn(
       'inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.03rem] transition-all',
       active
-        ? 'bg-blue-600 text-white shadow-md'
+        ? 'bg-[#2e5f8a] text-white shadow-md'
         : 'text-slate-500 hover:bg-white hover:text-slate-800'
     );
 
@@ -62,7 +62,7 @@ export function MonitoringToolbar({
             ].map((action, i) => (
               <Tooltip key={i}>
                 <TooltipTrigger asChild>
-                   <button className="h-7 w-7 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm">
+                   <button className="h-7 w-7 flex items-center justify-center rounded-lg bg-white border border-slate-200 text-slate-500 hover:bg-[#e8f0f8] hover:text-[#2e5f8a] transition-colors shadow-sm">
                      <action.icon className="h-3.5 w-3.5" />
                    </button>
                 </TooltipTrigger>
@@ -72,7 +72,7 @@ export function MonitoringToolbar({
           </TooltipProvider>
         </div>
         
-        <button className="h-7 px-3 bg-blue-50 text-blue-600 rounded-lg text-2xs font-semibold uppercase border border-blue-200 hover:bg-blue-100 transition-colors">
+        <button className="h-7 px-3 bg-[#e8f0f8] text-[#2e5f8a] rounded-lg text-2xs font-semibold uppercase border border-[#d0e2f0] hover:bg-blue-100 transition-colors">
           LIVE_RECORDS (124)
         </button>
       </div>

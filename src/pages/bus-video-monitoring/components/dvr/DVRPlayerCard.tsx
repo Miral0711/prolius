@@ -106,7 +106,7 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
             <button className="h-9 w-9 rounded-xl bg-white/5 hover:bg-white/10 text-white/40 hover:text-white border border-white/10 transition-all flex items-center justify-center backdrop-blur-md">
               <Download className="h-4 w-4" />
             </button>
-            <button className="h-9 w-9 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-900/40 transition-all flex items-center justify-center border border-blue-400/20 active:scale-95">
+            <button className="h-9 w-9 rounded-xl bg-[#2e5f8a] text-white shadow-lg shadow-blue-900/40 transition-all flex items-center justify-center border border-blue-400/20 active:scale-95">
               <Maximize className="h-4 w-4" />
             </button>
           </div>
@@ -117,7 +117,7 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
             <button
               onClick={onTogglePlay}
-              className="h-20 w-20 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-[0_0_50px_rgba(37,99,235,0.4)] transition-all hover:scale-110 active:scale-95 group/play border border-white/10"
+              className="h-20 w-20 flex items-center justify-center rounded-full bg-[#2e5f8a] text-white shadow-[0_0_50px_rgba(37,99,235,0.4)] transition-all hover:scale-110 active:scale-95 group/play border border-white/10"
             >
               <Play className="h-8 w-8 ml-1 fill-current" />
             </button>
@@ -145,7 +145,7 @@ export const DVRPlayerCard: React.FC<DVRPlayerCardProps> = ({
 
             <div className="flex-1 h-1.5 bg-white/10 rounded-full relative overflow-hidden group/progress cursor-pointer">
               <div
-                className="absolute inset-y-0 left-0 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                className="absolute inset-y-0 left-0 bg-[#2e5f8a] shadow-[0_0_10px_rgba(59,130,246,0.8)]"
                 style={{ width: '45%' }}
               />
             </div>

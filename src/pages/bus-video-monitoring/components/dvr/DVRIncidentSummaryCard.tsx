@@ -29,7 +29,7 @@ export const DVRIncidentSummaryCard: React.FC<DVRIncidentSummaryCardProps> = ({ 
           const colors = {
             rose: 'bg-rose-50 text-rose-500 border-rose-100/50',
             amber: 'bg-amber-50 text-amber-500 border-amber-100/50',
-            blue: 'bg-blue-50 text-blue-500 border-blue-100/50',
+            blue: 'bg-[#e8f0f8] text-[#2e5f8a] border-[#dcedf8]/50',
             violet: 'bg-violet-50 text-violet-500 border-violet-100/50',
           };
           

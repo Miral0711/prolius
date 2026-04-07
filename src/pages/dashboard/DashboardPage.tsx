@@ -30,6 +30,10 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import {
+  dashboardTableHeaderCellClass,
+  dashboardTableHeaderRowClass,
+} from '@/components/dashboard/GridTable';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -38,26 +42,26 @@ import {
 } from '@/components/ui/select';
 
 const TOKENS = {
-  pageBg: 'bg-[#EEF5FB]',
+  pageBg: 'bg-[#f0f4f8]',
   sectionBg: 'bg-transparent',
   cardBg: 'bg-white',
   cardRadius: 'rounded-[8px]',
-  cardShadow: 'shadow-[0_1px_8px_rgba(0,0,0,0.04)]',
-  strongShadow: 'shadow-[0_2px_10px_rgba(0,0,0,0.06)]',
-  cardBorder: 'border border-transparent',
-  titleColor: 'text-[#243648]',
-  valueColor: 'text-[#1E293B]',
-  labelColor: 'text-[#5d7288]',
-  subLabelColor: 'text-[#7f93a7]',
+  cardShadow: 'shadow-[0_1px_8px_rgba(61,107,142,0.07)]',
+  strongShadow: 'shadow-[0_2px_12px_rgba(61,107,142,0.10)]',
+  cardBorder: 'border border-[#e8eef4]',
+  titleColor: 'text-[#1e3448]',
+  valueColor: 'text-[#1e3448]',
+  labelColor: 'text-[#4f6478]',
+  subLabelColor: 'text-[#6b8299]',
 };
 
 const SEMANTIC_COLORS = {
   blue: {
-    main: '#2F4B69',
-    soft: 'bg-[#EEF5FB]',
-    border: 'border-[#2F4B69]/18',
-    accent: 'text-[#2F4B69]',
-    iconBg: 'bg-[#E5EFF9]',
+    main: '#3d6b8e',
+    soft: 'bg-[#eef4f8]',
+    border: 'border-[#3d6b8e]/15',
+    accent: 'text-[#3d6b8e]',
+    iconBg: 'bg-[#dce8f0]',
   },
   green: {
     main: '#22C55E',
@@ -67,18 +71,18 @@ const SEMANTIC_COLORS = {
     iconBg: 'bg-[#22C55E]/10',
   },
   orange: {
-    main: '#EB7A45',
-    soft: 'bg-[#FFF4ED]',
-    border: 'border-[#EB7A45]/20',
-    accent: 'text-[#EB7A45]',
-    iconBg: 'bg-[#FFF4ED]',
+    main: '#e8622a',
+    soft: 'bg-[#fdeee6]',
+    border: 'border-[#e8622a]/18',
+    accent: 'text-[#e8622a]',
+    iconBg: 'bg-[#fdeee6]',
   },
   secondaryBlue: {
-    main: '#3E5F82',
-    soft: 'bg-[#EEF5FB]',
-    border: 'border-[#3E5F82]/18',
-    accent: 'text-[#3E5F82]',
-    iconBg: 'bg-[#dce9f6]',
+    main: '#5a8aad',
+    soft: 'bg-[#eef4f8]',
+    border: 'border-[#5a8aad]/15',
+    accent: 'text-[#5a8aad]',
+    iconBg: 'bg-[#dce8f0]',
   },
   red: {
     main: '#DC2626',
@@ -374,12 +378,12 @@ function DashboardLabeledFilterSelect({
         size="sm"
         className={cn(
           'h-8 px-2.5 rounded-[6px] bg-white flex items-center justify-between gap-2 cursor-pointer',
-          'hover:bg-[#fbfdff] transition-all shadow-[0_1px_2px_rgba(37,61,89,0.05)]',
-          'border border-[#d6e3f2]/70 data-[state=open]:bg-[#e3edf8]',
+          'hover:bg-[#f4f8fb] transition-all shadow-[0_1px_2px_rgba(37,61,89,0.05)]',
+          'border border-[#d4e0ea]/80 data-[state=open]:bg-[#dce8f0]',
           '[&svg]:transition-transform data-[state=open]:[&svg]:rotate-180',
         )}
       >
-        {/* <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+        {/* <span className="text-[10px] font-semibold text-[#4f6478] uppercase tracking-wide">
           {label}
         </span> */}
         <SelectValue
@@ -419,14 +423,14 @@ export default function DashboardPage() {
   ] as const;
   const markerStyles = {
     active: {
-      dot: 'bg-[#2F4B69]',
-      halo: 'bg-[#2F4B69]/30',
-      ring: 'border-[#2F4B69]/40',
+      dot: 'bg-[#3d6b8e]',
+      halo: 'bg-[#3d6b8e]/30',
+      ring: 'border-[#3d6b8e]/40',
     },
     idle: {
-      dot: 'bg-[#EB7A45]',
-      halo: 'bg-[#EB7A45]/30',
-      ring: 'border-[#EB7A45]/40',
+      dot: 'bg-[#e8622a]',
+      halo: 'bg-[#e8622a]/30',
+      ring: 'border-[#e8622a]/40',
     },
     alert: {
       dot: 'bg-[#DC2626]',
@@ -472,8 +476,8 @@ export default function DashboardPage() {
                 className={cn(
                   'px-3 py-1.5 rounded-[6px] text-[10px] font-black uppercase tracking-wider transition-all duration-300 shadow-sm',
                   btn.type === 'primary'
-                    ? 'bg-[linear-gradient(135deg,#EB7A45,#f08f62)] text-white shadow-[0_8px_20px_-6px_rgba(235,122,69,0.45)] hover:shadow-[0_12px_24px_-8px_rgba(235,122,69,0.55)] hover:scale-[1.03] active:scale-[0.97] border border-[#EB7A45]/30'
-                    : 'bg-[#EEF5FB] text-[#2F4B69] border border-[#d6e3f2] hover:bg-[#e3edf8] hover:shadow-md',
+                    ? 'bg-[linear-gradient(135deg,#e8622a,#f07a4a)] text-white shadow-[0_8px_20px_-6px_rgba(232,98,42,0.40)] hover:shadow-[0_12px_24px_-8px_rgba(232,98,42,0.50)] hover:scale-[1.03] active:scale-[0.97] border border-[#e8622a]/30'
+                    : 'bg-[#eef4f8] text-[#3d6b8e] border border-[#d4e0ea] hover:bg-[#dce8f0] hover:shadow-md',
                 )}
               >
                 {btn.label}
@@ -483,10 +487,10 @@ export default function DashboardPage() {
         </header>
 
         <SectionWrapper>
-          <div className="rounded-[8px] bg-[#EEF5FB] p-2">
+          <div className="rounded-[8px] bg-[#eef4f8] p-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               <div>
-                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                <span className="text-[10px] font-semibold text-[#4f6478] uppercase tracking-wide">
                   Vehicle Filter
                 </span>
                 <DashboardLabeledFilterSelect
@@ -503,7 +507,7 @@ export default function DashboardPage() {
                 />
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                <span className="text-[10px] font-semibold text-[#4f6478] uppercase tracking-wide">
                   Region Filter
                 </span>
                 <DashboardLabeledFilterSelect
@@ -520,7 +524,7 @@ export default function DashboardPage() {
                 />
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                <span className="text-[10px] font-semibold text-[#4f6478] uppercase tracking-wide">
                   Category Filter
                 </span>
                 <DashboardLabeledFilterSelect
@@ -537,7 +541,7 @@ export default function DashboardPage() {
                 />
               </div>
               <div>
-                <span className="text-[10px] font-semibold text-[#50667c] uppercase tracking-wide">
+                <span className="text-[10px] font-semibold text-[#4f6478] uppercase tracking-wide">
                   Sub-category Filter
                 </span>
                 <DashboardLabeledFilterSelect
@@ -605,15 +609,15 @@ export default function DashboardPage() {
               className="lg:col-span-7 p-2.5 h-full"
             >
               <SectionTitle title="Live Fleet Monitor" variant="blue" />
-              <div className="relative h-[172px] overflow-hidden rounded-[8px] bg-[#EDF1F4]">
-                <div className="absolute inset-0 bg-[radial-gradient(#d3dbe3_1px,transparent_1px)] bg-[size:15px_15px] opacity-25" />
+              <div className="relative h-[172px] overflow-hidden rounded-[8px] bg-[#e8eef4]">
+                <div className="absolute inset-0 bg-[radial-gradient(#c8d5e2_1px,transparent_1px)] bg-[size:15px_15px] opacity-25" />
                 <svg
                   viewBox="0 0 100 100"
                   preserveAspectRatio="none"
                   className="absolute inset-0 h-full w-full"
                 >
-                  <rect x="0" y="0" width="100" height="100" fill="#EEF2F5" />
-                  <g opacity="0.9" fill="#E2E7EC">
+                  <rect x="0" y="0" width="100" height="100" fill="#eef4f8" />
+                  <g opacity="0.9" fill="#d8e4ed">
                     <rect x="4" y="8" width="12" height="9" rx="1.2" />
                     <rect x="18" y="8" width="10" height="9" rx="1.2" />
                     <rect x="30" y="8" width="12" height="9" rx="1.2" />
@@ -643,7 +647,7 @@ export default function DashboardPage() {
                     <rect x="71" y="73" width="20" height="11" rx="1.2" />
                   </g>
                   <g
-                    stroke="#F8FAFC"
+                    stroke="#f0f4f8"
                     strokeWidth="3.1"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -664,7 +668,7 @@ export default function DashboardPage() {
                     <path d="M-3 5 L52 64 L104 99" />
                   </g>
                   <g
-                    stroke="#CFD8E2"
+                    stroke="#c8d5e2"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     opacity="0.8"
@@ -682,8 +686,8 @@ export default function DashboardPage() {
                 </svg>
 
                 <div className="absolute right-3 top-3 z-10 flex items-center gap-2 rounded-full bg-white px-2 py-1 shadow-sm">
-                  <MapPinned className="h-3 w-3 text-[#2F4B69]" />
-                  <span className="text-[9px] font-black text-[#50667c] uppercase tracking-widest">
+                  <MapPinned className="h-3 w-3 text-[#3d6b8e]" />
+                  <span className="text-[9px] font-black text-[#4f6478] uppercase tracking-widest">
                     Active View
                   </span>
                 </div>
@@ -728,12 +732,12 @@ export default function DashboardPage() {
                 ].map(([label, value]) => (
                   <div
                     key={label}
-                    className="p-2 rounded-[8px] bg-[#F9FBFD] shadow-[0_1px_2px_rgba(37,61,89,0.06)] flex flex-col justify-center min-h-[48px]"
+                    className="p-2 rounded-[8px] bg-[#f4f8fb] shadow-[0_1px_2px_rgba(37,61,89,0.06)] flex flex-col justify-center min-h-[48px]"
                   >
-                    <p className="text-[9px] text-[#8195aa] font-black uppercase tracking-widest">
+                    <p className="text-[9px] text-[#6b8299] font-black uppercase tracking-widest">
                       {label}
                     </p>
-                    <p className="text-[13px] font-black text-[#243648] mt-0.5">
+                    <p className="text-[13px] font-black text-[#1e3448] mt-0.5">
                       {value}
                     </p>
                   </div>
@@ -741,8 +745,8 @@ export default function DashboardPage() {
               </div>
               <div className="mt-1.5 flex items-center gap-2">
                 {[
-                  ['Active', 'bg-blue-500'],
-                  ['Idle', 'bg-orange-500'],
+                  ['Active', 'bg-[#3d6b8e]'],
+                  ['Idle', 'bg-[#e8622a]'],
                   ['Alert', 'bg-rose-500'],
                 ].map(([label, cls]) => (
                   <div key={label} className="flex items-center gap-2">
@@ -768,13 +772,13 @@ export default function DashboardPage() {
                 />
                 <div className="space-y-1.5">
                   {[
-                    ['Roadworthy', '84%', 'text-[#EB7A45]', 'bg-[#EB7A45]'],
-                    ['Off Road', '9%', 'text-[#2F4B69]', 'bg-[#2F4B69]'],
+                    ['Roadworthy', '84%', 'text-[#e8622a]', 'bg-[#e8622a]'],
+                    ['Off Road', '9%', 'text-[#3d6b8e]', 'bg-[#3d6b8e]'],
                     [
                       'Under Inspection',
                       '7%',
-                      'text-[#3E5F82]',
-                      'bg-[#3E5F82]',
+                      'text-[#5a8aad]',
+                      'bg-[#5a8aad]',
                     ],
                   ].map(([label, val, color, bg]) => (
                     <div key={label} className="group">
@@ -788,7 +792,7 @@ export default function DashboardPage() {
                           {val}
                         </span>
                       </div>
-                      <div className="h-1 w-full bg-[#dce8f4] rounded-full overflow-hidden mx-1">
+                      <div className="h-1 w-full bg-[#dce8f0] rounded-full overflow-hidden mx-1">
                         <div
                           className={cn('h-full rounded-full', bg)}
                           style={{ width: val }}
@@ -802,8 +806,8 @@ export default function DashboardPage() {
                 <SectionTitle title="Efficiency Summary" variant="green" />
                 <div className="grid grid-cols-2 gap-1.5">
                   {[
-                    ['Checked %', '88%', '#EB7A45'],
-                    ['Not Checked %', '12%', '#2F4B69'],
+                    ['Checked %', '88%', '#e8622a'],
+                    ['Not Checked %', '12%', '#3d6b8e'],
                     ['Safe %', '91%', '#22C55E'],
                     ['Unsafe %', '9%', '#DC2626'],
                   ].map(([label, val, barClr]) => (
@@ -811,14 +815,14 @@ export default function DashboardPage() {
                       key={label}
                       className="p-1.5 rounded-lg bg-white shadow-sm group transition-colors"
                     >
-                      <p className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest">
+                      <p className="text-[9px] font-black text-[#6b8299] uppercase tracking-widest">
                         {label}
                       </p>
-                      <p className="text-[12px] font-black text-[#243648] flex items-center justify-between mt-0.5">
+                      <p className="text-[12px] font-black text-[#1e3448] flex items-center justify-between mt-0.5">
                         {val}
                         <span
                           className={cn(
-                            'h-1 w-7 rounded-full bg-[#dce8f4] overflow-hidden',
+                            'h-1 w-7 rounded-full bg-[#dce8f0] overflow-hidden',
                           )}
                         >
                           <span
@@ -850,7 +854,7 @@ export default function DashboardPage() {
                   >
                     <CartesianGrid
                       vertical={false}
-                      stroke="#E2E8F0"
+                      stroke="#d4e0ea"
                       strokeDasharray="3 3"
                       opacity={0.4}
                     />
@@ -866,7 +870,7 @@ export default function DashboardPage() {
                       tick={{ fontSize: 10, fontWeight: 700, fill: '#64748b' }}
                     />
                     <Tooltip
-                      cursor={{ fill: '#f1f5f9' }}
+                      cursor={{ fill: '#eef4f8' }}
                       contentStyle={{
                         border: 'none',
                         borderRadius: 12,
@@ -885,7 +889,7 @@ export default function DashboardPage() {
                       dataKey="med"
                       name="Medium Risk"
                       stackId="a"
-                      fill="#EB7A45"
+                      fill="#e8622a"
                       barSize={32}
                     />
                     <Bar
@@ -900,9 +904,9 @@ export default function DashboardPage() {
                       type="monotone"
                       name="Trend"
                       dataKey="trend"
-                      stroke="#2F4B69"
+                      stroke="#3d6b8e"
                       strokeWidth={2}
-                      dot={{ r: 4, fill: '#2F4B69' }}
+                      dot={{ r: 4, fill: '#3d6b8e' }}
                     />
                     <Legend
                       verticalAlign="top"
@@ -935,18 +939,18 @@ export default function DashboardPage() {
               />
               <div className="grid grid-cols-3 gap-1.5 mb-1.5">
                 {[
-                  ['Scheduled', '23', 'bg-[#EEF5FB]'],
+                  ['Scheduled', '23', 'bg-[#eef4f8]'],
                   ['Overdue', '8', 'bg-[#FEECEC]'],
-                  ['Workshop', '17', 'bg-[#FFF4ED]'],
+                  ['Workshop', '17', 'bg-[#fdeee6]'],
                 ].map(([label, val, bg]) => (
                   <div
                     key={label}
                     className={cn('p-1.5 rounded-[8px] bg-white shadow-sm', bg)}
                   >
-                    <p className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest text-center">
+                    <p className="text-[9px] font-black text-[#6b8299] uppercase tracking-widest text-center">
                       {label}
                     </p>
-                    <p className="text-[13px] font-black text-[#1E293B] text-center mt-0">
+                    <p className="text-[13px] font-black text-[#1e3448] text-center mt-0">
                       {val}
                     </p>
                   </div>
@@ -955,8 +959,8 @@ export default function DashboardPage() {
               <div className="mt-auto space-y-1.5">
                 {[
                   ['High priority', '12', 'text-[#DC2626]', '#DC2626'],
-                  ['Medium priority', '24', 'text-[#EB7A45]', '#EB7A45'],
-                  ['Low priority', '41', 'text-[#3E5F82]', '#3E5F82'],
+                  ['Medium priority', '24', 'text-[#e8622a]', '#e8622a'],
+                  ['Low priority', '41', 'text-[#5a8aad]', '#5a8aad'],
                 ].map(([label, val, color, barClr]) => (
                   <div key={label} className="space-y-1.5 px-0.5">
                     <div className="flex items-center justify-between text-[10px]">
@@ -965,7 +969,7 @@ export default function DashboardPage() {
                       </span>
                       <span className={cn('font-black', color)}>{val}</span>
                     </div>
-                    <div className="h-1 w-full bg-[#dce8f4] rounded-full overflow-hidden">
+                    <div className="h-1 w-full bg-[#dce8f0] rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full"
                         style={{
@@ -995,7 +999,7 @@ export default function DashboardPage() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-slate-200 rounded-md hover:bg-slate-100 transition-colors border-l-2 border-blue-400"
+                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-[#d4e0ea] rounded-md hover:bg-[#eef4f8] transition-colors border-l-2 border-[#3d6b8e]"
                   >
                     {item}
                   </div>
@@ -1019,7 +1023,7 @@ export default function DashboardPage() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-slate-200 rounded-md hover:bg-slate-100 transition-colors border-l-2 border-blue-400"
+                    className="px-3 py-2 text-sm font-medium text-slate-700 bg-[#f4f8fb] border border-[#d4e0ea] rounded-md hover:bg-[#eef4f8] transition-colors border-l-2 border-[#3d6b8e]"
                   >
                     {item}
                   </div>
@@ -1044,7 +1048,7 @@ export default function DashboardPage() {
                   >
                     <CartesianGrid
                       vertical={false}
-                      stroke="#d8e4ef"
+                      stroke="#d4e0ea"
                       strokeDasharray="3 3"
                     />
                     <XAxis
@@ -1079,20 +1083,20 @@ export default function DashboardPage() {
                       name="Fuel Efficiency"
                       type="monotone"
                       dataKey="fuel"
-                      stroke="#EB7A45"
+                      stroke="#e8622a"
                       strokeWidth={2.2}
                       fill="transparent"
-                      dot={{ r: 3, fill: '#EB7A45' }}
+                      dot={{ r: 3, fill: '#e8622a' }}
                     />
                     <Area
                       yAxisId="right"
                       name="System Performance"
                       type="monotone"
                       dataKey="eff"
-                      stroke="#2F4B69"
+                      stroke="#3d6b8e"
                       strokeWidth={2.2}
                       fill="transparent"
-                      dot={{ r: 3, fill: '#2F4B69' }}
+                      dot={{ r: 3, fill: '#3d6b8e' }}
                     />
                     <Legend
                       verticalAlign="top"
@@ -1124,7 +1128,7 @@ export default function DashboardPage() {
                   >
                     <CartesianGrid
                       vertical={false}
-                      stroke="#d8e4ef"
+                      stroke="#d4e0ea"
                       strokeDasharray="3 3"
                     />
                     <XAxis
@@ -1149,14 +1153,14 @@ export default function DashboardPage() {
                     <Bar
                       dataKey="tr105"
                       name="Primary"
-                      fill="#EB7A45"
+                      fill="#e8622a"
                       barSize={10}
                       radius={[2, 2, 0, 0]}
                     />
                     <Bar
                       dataKey="vm002"
                       name="Comparison"
-                      fill="#2F4B69"
+                      fill="#3d6b8e"
                       barSize={10}
                       radius={[2, 2, 0, 0]}
                     />
@@ -1202,7 +1206,7 @@ export default function DashboardPage() {
                 <div className="flex-1 min-h-0 overflow-x-auto p-2">
                   <table className="w-full text-left drivers-table">
                     <thead>
-                      <tr>
+                      <tr className={dashboardTableHeaderRowClass}>
                         {[
                           'Driver',
                           'Score',
@@ -1213,7 +1217,8 @@ export default function DashboardPage() {
                           <th
                             key={h}
                             className={cn(
-                              'pb-1.5 typo-table-header px-2',
+                              dashboardTableHeaderCellClass,
+                              'px-3 py-2',
                               h === 'Trend' && 'text-center',
                             )}
                           >
@@ -1223,60 +1228,63 @@ export default function DashboardPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {DRIVERS.map((d) => (
+                      {DRIVERS.map((d, i) => (
                         <tr
                           key={d.name}
-                          className="group transition-all duration-300 hover:bg-emerald-50"
+                          className={cn(
+                            'group transition-all duration-150 border-b border-slate-100/50 hover:bg-slate-50/40',
+                            i % 2 === 1 && 'bg-slate-50/20',
+                          )}
                         >
-                          <td className="py-1 flex items-center gap-2 px-2">
-                            <div
-                              className={cn(
-                                'w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-medium text-[#22C55E] border border-[#22C55E]/20 shadow-sm transition-transform bg-white',
-                              )}
-                            >
-                              {d.name
-                                .split(' ')
-                                .map((n) => n[0])
-                                .join('')}
+                          <td className="h-[40px] px-3 align-middle">
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={cn(
+                                  'w-7 h-7 rounded-md flex items-center justify-center text-[10px] font-medium text-[#22C55E] border border-[#22C55E]/20 shadow-sm bg-white',
+                                )}
+                              >
+                                {d.name
+                                  .split(' ')
+                                  .map((n) => n[0])
+                                  .join('')}
+                              </div>
+                              <span className="text-[11px] font-medium text-[#2e4258]">
+                                {d.name}
+                              </span>
                             </div>
-                            <span className="text-[11px] font-medium text-[#334155]">
-                              {d.name}
-                            </span>
                           </td>
-                          <td className="py-1 text-[11px] font-medium text-[#334155] px-2">
+                          <td className="h-[40px] px-3 align-middle text-[11px] font-medium text-[#2e4258]">
                             {d.score}
                           </td>
-                          <td className="py-1 px-2">
-                            <div className="flex items-center gap-1 font-medium text-[#EB7A45] text-[9px] bg-[#FFF4ED] w-fit px-2 py-0.5 rounded-full border border-[#EB7A45]/20">
+                          <td className="h-[40px] px-3 align-middle">
+                            <div className="flex items-center gap-1 font-medium text-[#e8622a] text-[9px] bg-[#fdeee6] w-fit px-2 py-0.5 rounded-full border border-[#e8622a]/20">
                               {d.rating}{' '}
                               <Star className="w-2.5 h-2.5 fill-current" />
                             </div>
                           </td>
-                          <td className="py-1 px-2">
+                          <td className="h-[40px] px-3 align-middle">
                             <div className="flex items-center gap-2 w-20">
-                              <div className="flex-1 h-1 bg-[#dce8f4] rounded-full overflow-hidden">
+                              <div className="flex-1 h-1 bg-[#dce8f0] rounded-full overflow-hidden">
                                 <div
                                   className="h-full rounded-full"
                                   style={{
                                     width: `${d.perf}%`,
                                     backgroundColor:
-                                      d.perf > 85 ? '#22C55E' : '#EB7A45',
+                                      d.perf > 85 ? '#22C55E' : '#e8622a',
                                   }}
                                 />
                               </div>
-                              <span className="text-[9px] font-medium text-[#334155]">
+                              <span className="text-[9px] font-medium text-[#2e4258]">
                                 {d.perf}%
                               </span>
                             </div>
                           </td>
-                          <td className="py-1 px-2 text-center">
-                            <div className="trend-cell">
-                              {d.trend === 'up' ? (
-                                <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500" />
-                              ) : (
-                                <ArrowDownRight className="w-3.5 h-3.5 text-rose-500" />
-                              )}
-                            </div>
+                          <td className="h-[40px] px-3 align-middle text-center">
+                            {d.trend === 'up' ? (
+                              <ArrowUpRight className="w-3.5 h-3.5 text-emerald-500 inline" />
+                            ) : (
+                              <ArrowDownRight className="w-3.5 h-3.5 text-rose-500 inline" />
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -1295,12 +1303,12 @@ export default function DashboardPage() {
                 <div className="flex-1 min-h-0 overflow-x-auto p-2">
                   <table className="w-full text-left">
                     <thead>
-                      <tr>
+                      <tr className={dashboardTableHeaderRowClass}>
                         {['Trip', 'Route', 'Duration', 'Status', 'Type'].map(
                           (h) => (
                             <th
                               key={h}
-                              className="pb-1.5 typo-table-header px-2"
+                              className={cn(dashboardTableHeaderCellClass, 'px-3 py-2')}
                             >
                               {h}
                             </th>
@@ -1309,37 +1317,40 @@ export default function DashboardPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {TRIPS.map((t) => (
+                      {TRIPS.map((t, i) => (
                         <tr
                           key={t.id}
-                          className="group hover:bg-[#2F4B69]/05 transition-all duration-300"
+                          className={cn(
+                            'group transition-all duration-150 border-b border-slate-100/50 hover:bg-slate-50/40',
+                            i % 2 === 1 && 'bg-slate-50/20',
+                          )}
                         >
-                          <td className="py-1.5 px-2">
-                            <div className="flex items-center gap-2 font-medium text-[#334155] text-[11px]">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#2F4B69]" />
+                          <td className="h-[40px] px-3 align-middle">
+                            <div className="flex items-center gap-2 font-medium text-[#2e4258] text-[11px]">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#3d6b8e]" />
                               {t.id}
                             </div>
                           </td>
-                          <td className="py-1.5 text-[11px] font-medium text-[#334155] px-2">
+                          <td className="h-[40px] px-3 align-middle text-[11px] font-medium text-[#2e4258]">
                             {t.route}
                           </td>
-                          <td className="py-1.5 text-[11px] font-medium text-[#334155] px-2">
+                          <td className="h-[40px] px-3 align-middle text-[11px] font-medium text-[#2e4258]">
                             {t.dur}
                           </td>
-                          <td className="py-1.5 px-2">
+                          <td className="h-[40px] px-3 align-middle">
                             <span
                               className={cn(
-                                'px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider border',
+                                'px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider border',
                                 t.status === 'Completed'
                                   ? 'bg-[#EAF9F0] text-[#22C55E] border-[#22C55E]/20'
-                                  : 'bg-[#FFF4ED] text-[#EB7A45] border-[#EB7A45]/20',
+                                  : 'bg-[#fdeee6] text-[#e8622a] border-[#e8622a]/20',
                               )}
                             >
                               {t.status}
                             </span>
                           </td>
-                          <td className="py-1.5 px-2">
-                            <span className="px-2 py-0.5 rounded-full bg-[#EEF5FB] text-[#3E5F82] text-[9px] font-medium uppercase tracking-widest">
+                          <td className="h-[40px] px-3 align-middle">
+                            <span className="px-2 py-0.5 rounded-full bg-[#eef4f8] text-[#5a8aad] text-[9px] font-medium uppercase tracking-widest">
                               {t.type}
                             </span>
                           </td>
@@ -1361,7 +1372,7 @@ export default function DashboardPage() {
                 <div className="space-y-1 relative">
                   {ACTIVITY.map((item) => (
                     <div key={item.title} className="flex gap-2 relative z-10">
-                      <div className="w-2 h-2 rounded-full border-2 border-white shadow-md mt-0.5 shrink-0 bg-blue-500" />
+                      <div className="w-2 h-2 rounded-full border-2 border-white shadow-md mt-0.5 shrink-0 bg-[#3d6b8e]" />
                       <div>
                         <h4 className="text-[13px] font-medium text-slate-800 leading-tight">
                           {item.title}
@@ -1375,7 +1386,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   ))}
-                  <div className="absolute bottom-2 left-[4.5px] top-[10px] w-px bg-blue-100" />
+                  <div className="absolute bottom-2 left-[4.5px] top-[10px] w-px bg-[#dce8f0]" />
                 </div>
               </Card>
 
@@ -1384,19 +1395,19 @@ export default function DashboardPage() {
                 <div className="space-y-1">
                   {[
                     { l: 'Bay occupancy', p: 78, c: '#22C55E' },
-                    { l: 'Turnaround', p: 64, c: '#EB7A45' },
-                    { l: 'Technician availability', p: 83, c: '#2F4B69' },
+                    { l: 'Turnaround', p: 64, c: '#e8622a' },
+                    { l: 'Technician availability', p: 83, c: '#3d6b8e' },
                   ].map((item) => (
                     <div key={item.l} className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-black text-[#7f93a7] uppercase tracking-widest">
+                        <span className="text-[9px] font-black text-[#6b8299] uppercase tracking-widest">
                           {item.l}
                         </span>
-                        <span className="text-[10px] font-black text-[#243648]">
+                        <span className="text-[10px] font-black text-[#1e3448]">
                           {item.p}%
                         </span>
                       </div>
-                      <div className="h-1 bg-[#dce8f4] rounded-full overflow-hidden">
+                      <div className="h-1 bg-[#dce8f0] rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -1444,7 +1455,7 @@ export default function DashboardPage() {
                         border,
                       )}
                     >
-                      <p className="text-[8px] font-black text-[#7f93a7] uppercase tracking-widest">
+                      <p className="text-[8px] font-black text-[#6b8299] uppercase tracking-widest">
                         {label}
                       </p>
                       <p className={cn('text-[14px] font-black mt-[1px]', clr)}>

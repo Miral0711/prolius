@@ -29,7 +29,7 @@ export function PageFooter({
   return (
     <footer className={cn(PAGE_FOOTER_ROOT_CLASSNAME, className)}>
       <p className={PAGE_FOOTER_TEXT_CLASSNAME}>
-        Copyright &copy; 2026 Blitztech Solutions FZE LLC. All rights reserved.
+        &copy; 2026 developed by Prolius
       </p>
     </footer>
   );

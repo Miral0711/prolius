@@ -11,7 +11,7 @@ export function Tag({ className, variant = 'plate', children, ...props }: TagPro
       className={cn(
         'inline-flex max-w-full items-center truncate rounded border px-1.5 py-0.5 font-mono text-xs font-medium tabular-nums leading-none',
         variant === 'plate' &&
-          'border-blue-100/80 bg-blue-50/80 text-blue-700',
+          'border-[#dcedf8]/80 bg-[#e8f0f8]/80 text-[#2e5f8a]',
         variant === 'neutral' && 'border-slate-200/80 bg-slate-50/90 text-slate-800',
         className,
       )}

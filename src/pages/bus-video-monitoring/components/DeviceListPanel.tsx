@@ -36,7 +36,7 @@ function DeviceRow({
       className={cn(
         'group relative flex flex-col gap-2 p-2.5 rounded-xl border transition-all cursor-pointer mb-2',
         selected 
-          ? 'bg-blue-600 border-blue-500 shadow-md' 
+          ? 'bg-[#2e5f8a] border-blue-500 shadow-md' 
           : 'bg-white/50 border-white/40 hover:bg-white shadow-sm'
       )}
       onClick={() => onCheckedChange(!selected)}
@@ -98,7 +98,7 @@ export function DeviceListPanel({
 
       <div className="mb-4 shrink-0 space-y-2.5 px-0.5">
         <div className="relative group">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 transition-colors group-focus-within:text-blue-500" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 transition-colors group-focus-within:text-[#2e5f8a]" />
           <input
             type="text"
             value={search}
@@ -106,7 +106,7 @@ export function DeviceListPanel({
             placeholder="Search fleet, plate, driver..."
             className="w-full h-9 pl-8 pr-8 bg-white/50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
           />
-          <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors">
+          <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#2e5f8a] transition-colors">
             <Filter className="h-3.5 w-3.5" />
           </button>
         </div>

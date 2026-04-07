@@ -23,7 +23,7 @@ export function SearchInput({
         className={cn(
           'h-8 w-full border-slate-200 bg-white pl-8 text-2sm font-medium text-slate-800 shadow-none',
           'placeholder:font-normal placeholder:text-slate-300',
-          'focus-visible:border-blue-500/50 focus-visible:ring-2 focus-visible:ring-blue-500/10',
+          'focus-visible:border-[#2e5f8a]/50 focus-visible:ring-2 focus-visible:ring-[#2e5f8a]/10',
           className,
         )}
         {...props}

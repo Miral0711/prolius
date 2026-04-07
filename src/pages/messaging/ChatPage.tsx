@@ -236,7 +236,7 @@ function PanelHeader({ title, icon: Icon, action }: { title: string; icon?: any;
   return (
     <div className="flex items-center justify-between mb-4 px-1">
       <div className="flex items-center gap-2">
-        {Icon && <Icon className="h-4 w-4 text-blue-500" />}
+        {Icon && <Icon className="h-4 w-4 text-[#2e5f8a]" />}
         <h3 className={typography.sectionTitle}>{title}</h3>
       </div>
       {action}
@@ -305,7 +305,7 @@ export default function ChatPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors">
+                <button className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#2e5f8a] transition-colors">
                   <Filter className="h-3 w-3" />
                 </button>
               </div>
@@ -317,7 +317,7 @@ export default function ChatPage() {
                     className={cn(
                       'flex-1 whitespace-nowrap rounded-lg px-2 py-1 transition-all',
                       typography.chatActionLabel,
-                      tab === 'All' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:bg-white/40',
+                      tab === 'All' ? 'bg-white text-[#2e5f8a] shadow-sm' : 'text-gray-500 hover:bg-white/40',
                     )}
                   >
                     {tab}
@@ -342,13 +342,13 @@ export default function ChatPage() {
                   >
                     {/* Active Highlight Border */}
                     {activeChatId === chat.id && (
-                      <div className="absolute top-2 bottom-2 left-0 w-1 bg-blue-600 rounded-r-full shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
+                      <div className="absolute top-2 bottom-2 left-0 w-1 bg-[#2e5f8a] rounded-r-full shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
                     )}
  
                     <div className="relative shrink-0">
                       <div className={cn(
                         "h-8.5 w-8.5 rounded-lg flex items-center justify-center border overflow-hidden bg-slate-100",
-                        activeChatId === chat.id ? "border-blue-100" : "border-white"
+                        activeChatId === chat.id ? "border-[#dcedf8]" : "border-white"
                       )}>
                         {chat.avatar ? (
                           <img src={toAbsoluteUrl(chat.avatar)} className="h-full w-full object-cover" alt="" />
@@ -399,7 +399,7 @@ export default function ChatPage() {
                           {chat.lastMessage}
                         </span>
                         {chat.unreadCount > 0 && (
-                          <span className="flex h-3 min-w-[12px] shrink-0 items-center justify-center rounded-full bg-blue-500 px-1 text-xs font-normal tabular-nums text-white shadow-sm shadow-blue-500/20">
+                          <span className="flex h-3 min-w-[12px] shrink-0 items-center justify-center rounded-full bg-[#2e5f8a] px-1 text-xs font-normal tabular-nums text-white shadow-sm shadow-[#2e5f8a]/20">
                             {chat.unreadCount}
                           </span>
                         )}
@@ -414,7 +414,7 @@ export default function ChatPage() {
               <Button
                 variant="ghost"
                 className={cn(
-                  'h-8 w-full gap-2 rounded-sm border border-white/60 bg-white/40 text-blue-600 shadow-sm transition-all hover:bg-white',
+                  'h-8 w-full gap-2 rounded-sm border border-white/60 bg-white/40 text-[#2e5f8a] shadow-sm transition-all hover:bg-white',
                   typography.chatActionLabel,
                 )}
               >
@@ -436,7 +436,7 @@ export default function ChatPage() {
                   {activeChat?.avatar ? (
                     <img src={toAbsoluteUrl(activeChat.avatar)} className="h-full w-full object-cover" alt="" />
                   ) : (
-                    activeChat?.type === 'group' ? <Users className="h-4.5 w-4.5 text-blue-500" /> : <User className="h-4.5 w-4.5 text-blue-500" />
+                    activeChat?.type === 'group' ? <Users className="h-4.5 w-4.5 text-[#2e5f8a]" /> : <User className="h-4.5 w-4.5 text-[#2e5f8a]" />
                   )}
                   {activeChat?.type !== 'group' && (
                     <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-white" />
@@ -453,7 +453,7 @@ export default function ChatPage() {
                           <span
                             className={cn(
                               typography.chatTag,
-                              'rounded border border-blue-100 bg-blue-50/50 px-1.5 py-0.5 uppercase leading-none text-blue-600',
+                              'rounded border border-[#dcedf8] bg-[#e8f0f8]/50 px-1.5 py-0.5 uppercase leading-none text-[#2e5f8a]',
                             )}
                           >
                             Drivers: 12
@@ -514,7 +514,7 @@ export default function ChatPage() {
                       <TooltipTrigger asChild>
                         <Button variant="ghost" size="icon" className={cn(
                           "h-8.5 w-8.5 rounded-lg transition-all",
-                          btn.color === 'blue' && "text-blue-600 hover:bg-blue-50 hover:border-blue-100",
+                          btn.color === 'blue' && "text-[#2e5f8a] hover:bg-[#e8f0f8] hover:border-[#dcedf8]",
                           btn.color === 'emerald' && "text-emerald-600 hover:bg-emerald-50 hover:border-emerald-100",
                           btn.color === 'slate' && "text-slate-500 hover:bg-slate-100 hover:border-slate-200",
                         )}>
@@ -537,7 +537,7 @@ export default function ChatPage() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className={cn("h-8.5 w-8.5 rounded-lg text-slate-500 transition-all", !rightPanelVisible ? "bg-slate-100 text-blue-600 border-slate-200" : "hover:bg-slate-50")}
+                  className={cn("h-8.5 w-8.5 rounded-lg text-slate-500 transition-all", !rightPanelVisible ? "bg-slate-100 text-[#2e5f8a] border-slate-200" : "hover:bg-slate-50")}
                   onClick={() => setRightPanelVisible(!rightPanelVisible)}
                 >
                   <Info className="h-4 w-4" />
@@ -581,7 +581,7 @@ export default function ChatPage() {
                          ) : (
                             <div
                               className={cn(
-                                'flex h-full w-full items-center justify-center bg-blue-50 uppercase text-blue-500',
+                                'flex h-full w-full items-center justify-center bg-[#e8f0f8] uppercase text-[#2e5f8a]',
                                 typography.chatActionLabel,
                               )}
                             >
@@ -616,7 +616,7 @@ export default function ChatPage() {
                              <span
                                className={cn(
                                  typography.chatTag,
-                                 'flex items-center gap-1 rounded-md border border-blue-600/10 bg-blue-600/5 px-2 py-0.5 uppercase text-blue-600 shadow-sm',
+                                 'flex items-center gap-1 rounded-md border border-[#2e5f8a]/10 bg-[#2e5f8a]/5 px-2 py-0.5 uppercase text-[#2e5f8a] shadow-sm',
                                )}
                              >
                                <Bus className="h-2.5 w-2.5" /> {msg.context.vehicle}
@@ -638,7 +638,7 @@ export default function ChatPage() {
                       <div className={cn(
                         "relative px-3 py-2 rounded-xl shadow-sm border transition-all duration-300 hover:shadow-md",
                         msg.isMe 
-                          ? "bg-blue-600/10 border-blue-500/20 text-slate-800 rounded-tr-sm" 
+                          ? "bg-[#2e5f8a]/10 border-[#2e5f8a]/20 text-slate-800 rounded-tr-sm" 
                           : "bg-white border-slate-100/80 text-slate-700 rounded-tl-sm shadow-black/5"
                       )}>
                         {/* Message Content */}
@@ -650,7 +650,7 @@ export default function ChatPage() {
                           <div className="flex items-center gap-4 py-0.5 min-w-[200px]">
                             <div className={cn(
                               "h-10 w-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm border",
-                              msg.isMe ? "bg-blue-600/10 border-blue-200/20 text-blue-600" : "bg-slate-50 border-slate-100 text-slate-500"
+                              msg.isMe ? "bg-[#2e5f8a]/10 border-[#d0e2f0]/20 text-[#2e5f8a]" : "bg-[#f4f8fb] border-slate-100 text-slate-500"
                             )}>
                                <FileText className="h-5 w-5" />
                             </div>
@@ -672,14 +672,14 @@ export default function ChatPage() {
                                   type="button"
                                   className={cn(
                                     typography.chatActionLabel,
-                                    'cursor-pointer text-blue-600 hover:underline',
+                                    'cursor-pointer text-[#2e5f8a] hover:underline',
                                   )}
                                 >
                                   Download
                                 </button>
                               </div>
                             </div>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg shrink-0 text-slate-400 hover:text-blue-600 hover:bg-white transition-all">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg shrink-0 text-slate-400 hover:text-[#2e5f8a] hover:bg-white transition-all">
                                <ExternalLink className="h-4 w-4" />
                             </Button>
                           </div>
@@ -696,7 +696,7 @@ export default function ChatPage() {
                           {msg.isMe && (
                             <div className="flex items-center">
                               {msg.status === 'read' 
-                                ? <CheckCheck className="h-3 w-3 text-blue-600" /> 
+                                ? <CheckCheck className="h-3 w-3 text-[#2e5f8a]" /> 
                                 : <Check className="h-3 w-3 text-blue-400" />
                               }
                             </div>
@@ -713,7 +713,7 @@ export default function ChatPage() {
             <div className="p-2 bg-white border-t border-slate-200 relative z-20">
               <div className="relative group">
                 <div className="flex-1 flex items-center gap-1.5 bg-white border border-slate-200 shadow-md rounded-md overflow-hidden p-1.5 min-h-0">
-                  <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-blue-600 transition-all shrink-0">
+                  <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-[#2e5f8a] transition-all shrink-0">
                     <Plus className="h-3.5 w-3.5" />
                   </Button>
                   <Input
@@ -727,10 +727,10 @@ export default function ChatPage() {
                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                   />
                   <div className="flex items-center gap-0.5 shrink-0 pr-0.5">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-blue-600 transition-all">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-[#2e5f8a] transition-all">
                       <Smile className="h-3.5 w-3.5" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-blue-600 transition-all">
+                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-sm text-slate-400 hover:bg-white hover:text-[#2e5f8a] transition-all">
                       <Paperclip className="h-3.5 w-3.5" />
                     </Button>
                     <div className="w-px h-3.5 bg-slate-200 mx-1" />
@@ -738,7 +738,7 @@ export default function ChatPage() {
                       onClick={handleSendMessage}
                       size="sm"
                       className={cn(
-                        'h-7 gap-2 rounded-sm bg-blue-600 px-4 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700',
+                        'h-7 gap-2 rounded-sm bg-[#2e5f8a] px-4 text-white shadow-md shadow-[#2e5f8a]/20 hover:bg-blue-700',
                         typography.chatActionLabel,
                       )}
                     >
@@ -763,7 +763,7 @@ export default function ChatPage() {
                       typography.chatActionLabel,
                     )}
                   >
-                    <act.icon className="h-2 w-2 text-blue-500" />
+                    <act.icon className="h-2 w-2 text-[#2e5f8a]" />
                     {act.label}
                   </button>
                 ))}
@@ -771,7 +771,7 @@ export default function ChatPage() {
             </div>
             
             {/* Background Decorative Blur */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#2e5f8a]/5 rounded-full blur-[120px] pointer-events-none" />
           </div>
         </div>
 
@@ -784,14 +784,14 @@ export default function ChatPage() {
               <div className="space-y-4 shrink-0">
                 {/* Profile Card Section */}
                 <div className="p-4 relative border-b border-slate-100">
-                  <div className="absolute -top-10 -right-10 h-32 w-32 bg-blue-500/5 rounded-full blur-3xl opacity-50" />
+                  <div className="absolute -top-10 -right-10 h-32 w-32 bg-[#2e5f8a]/5 rounded-full blur-3xl opacity-50" />
                   <div className="flex flex-col items-center text-center relative z-10">
                     <div className="relative mb-3">
                       <div className="h-14 w-14 rounded-lg border border-slate-100 p-0.5 shadow-sm bg-white">
                         {activeChat?.avatar ? (
                           <img src={toAbsoluteUrl(activeChat.avatar)} className="h-full w-full rounded-lg object-cover" alt="" />
                         ) : (
-                          <div className="h-full w-full rounded-lg bg-slate-50 flex items-center justify-center">
+                          <div className="h-full w-full rounded-lg bg-[#f4f8fb] flex items-center justify-center">
                             <User className="h-6 w-6 text-slate-400" />
                           </div>
                         )}
@@ -817,10 +817,10 @@ export default function ChatPage() {
                         { icon: MapPin, label: 'Track', color: 'rose' },
                         { icon: Settings, label: 'Ops', color: 'slate' }
                       ].map((btn, i) => (
-                        <button key={i} className="flex flex-col items-center gap-1.5 p-2 rounded-lg bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-md transition-all active:scale-95 group">
+                        <button key={i} className="flex flex-col items-center gap-1.5 p-2 rounded-lg bg-[#f4f8fb] border border-slate-100 hover:bg-white hover:shadow-md transition-all active:scale-95 group">
                           <btn.icon className={cn(
                             "h-3.5 w-3.5 transition-colors",
-                            btn.color === 'blue' && "text-blue-500",
+                            btn.color === 'blue' && "text-[#2e5f8a]",
                             btn.color === 'emerald' && "text-emerald-500",
                             btn.color === 'rose' && "text-rose-500",
                             btn.color === 'slate' && "text-slate-500",
@@ -849,8 +849,8 @@ export default function ChatPage() {
                       <span className={cn(typography.chatFieldLabel, 'mb-1.5')}>
                         Asset
                       </span>
-                      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-100 bg-slate-50 px-2 py-1">
-                        <Bus className="h-3 w-3 text-blue-500" />
+                      <div className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-100 bg-[#f4f8fb] px-2 py-1">
+                        <Bus className="h-3 w-3 text-[#2e5f8a]" />
                         <span className={cn(typography.chatSidebarPreview, 'leading-none')}>
                           {activeChat?.participants[0]?.vehicle || 'HQ-01'}
                         </span>
@@ -877,9 +877,9 @@ export default function ChatPage() {
                     <span className={cn(typography.sectionTitle, 'mb-2 px-1')}>
                       Current Assignment
                     </span>
-                    <div className="group flex cursor-pointer items-center justify-between rounded-lg border border-slate-100 bg-slate-50 p-2 transition-all hover:bg-white hover:shadow-sm">
+                    <div className="group flex cursor-pointer items-center justify-between rounded-lg border border-slate-100 bg-[#f4f8fb] p-2 transition-all hover:bg-white hover:shadow-sm">
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-sm border border-slate-100 bg-white text-blue-600 shadow-sm">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-sm border border-slate-100 bg-white text-[#2e5f8a] shadow-sm">
                           <MapPin className="h-3 w-3" />
                         </div>
                         <div className="flex min-w-0 flex-col">
@@ -896,14 +896,14 @@ export default function ChatPage() {
                           </span>
                         </div>
                       </div>
-                      <ExternalLink className="h-3 w-3 text-slate-300 transition-colors group-hover:text-blue-500" />
+                      <ExternalLink className="h-3 w-3 text-slate-300 transition-colors group-hover:text-[#2e5f8a]" />
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Command Center (Bottom Section) */}
-              <div className="mt-auto p-4 shrink-0 bg-slate-50/30">
+              <div className="mt-auto p-4 shrink-0 bg-[#f4f8fb]/30">
                 <PanelHeader title="Command Center" icon={Settings} />
                 <div className="space-y-3 mt-3">
                   {[
@@ -921,7 +921,7 @@ export default function ChatPage() {
                     >
                       <btn.icon className={cn(
                         "h-4 w-4 shrink-0 opacity-70 group-hover:opacity-100",
-                        btn.color === 'blue' && "text-blue-600",
+                        btn.color === 'blue' && "text-[#2e5f8a]",
                         btn.color === 'emerald' && "text-emerald-700",
                         btn.color === 'rose' && "text-rose-600",
                       )} />

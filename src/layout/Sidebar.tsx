@@ -47,7 +47,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-50 flex h-full flex-col bg-[#1e1e2d] text-white/70 transition-all duration-250 ease-in-out shadow-xl',
+        'fixed left-0 top-0 z-50 flex h-full flex-col bg-[#1a2e3f] text-white/70 transition-all duration-250 ease-in-out shadow-xl',
       )}
       style={{
         width: collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED,
@@ -61,7 +61,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="flex h-[64px] items-center justify-between px-6 border-b border-white/5">
         {!collapsed && (
           <span className="text-lg font-semibold tracking-tight text-white">
-            TRIDEN <span className="text-blue-400">FLEET</span>
+            TRIDEN <span className="text-[#7ab3d4]">FLEET</span>
           </span>
         )}
         <button
@@ -97,7 +97,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 {active && (
                   <motion.div
                     layoutId="active-bar"
-                    className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-blue-500 rounded-r-full"
+                    className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#e8622a] rounded-r-full"
                   />
                 )}
 
@@ -116,7 +116,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     className={cn(
                       'h-5 w-5 shrink-0',
                       active
-                        ? 'text-blue-400'
+                        ? 'text-[#7ab3d4]'
                         : 'text-white/60 group-hover:text-white',
                     )}
                   />
@@ -131,7 +131,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
                   {/* Tooltip on Collapsed */}
                   {collapsed && hoveredItem === item.label && (
-                    <div className="fixed left-[80px] px-3 py-2 bg-[#1e1e2d] text-white text-xs font-medium rounded-md shadow-lg pointer-events-none z-[60] border border-white/10">
+                    <div className="fixed left-[80px] px-3 py-2 bg-[#1a2e3f] text-white text-xs font-medium rounded-md shadow-lg pointer-events-none z-[60] border border-white/10">
                       {item.label}
                     </div>
                   )}
@@ -145,7 +145,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="fixed z-[100] bg-[#1e1e2d] border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]"
+                      className="fixed z-[100] bg-[#1a2e3f] border border-white/10 rounded-lg shadow-2xl py-2 min-w-[200px]"
                       style={{
                         left: collapsed
                           ? SIDEBAR_WIDTH_COLLAPSED + 12
@@ -190,7 +190,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -10 }}
-                                    className="absolute left-full top-0 ml-2 bg-[#1e1e2d] border border-white/10 rounded-lg shadow-2xl py-2 min-w-[180px]"
+                                    className="absolute left-full top-0 ml-2 bg-[#1a2e3f] border border-white/10 rounded-lg shadow-2xl py-2 min-w-[180px]"
                                   >
                                     {sub.children?.map((leaf) => (
                                       <Link
@@ -229,7 +229,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             collapsed && 'justify-center',
           )}
         >
-          <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-semibold text-xs">
+          <div className="h-8 w-8 rounded-full bg-[#3d6b8e]/30 flex items-center justify-center text-[#7ab3d4] font-semibold text-xs">
             JS
           </div>
           {!collapsed && (

@@ -185,7 +185,7 @@ function GlassButton({ icon: Icon, className }: { icon: any; className?: string 
       size="icon" 
       variant="ghost" 
       className={cn(
-        "h-9 w-9 rounded-lg bg-white/90 backdrop-blur-xl border border-white/60 hover:bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] text-slate-500 hover:text-blue-600 transition-all hover:scale-105 active:scale-95 group",
+        "h-9 w-9 rounded-lg bg-white/90 backdrop-blur-xl border border-white/60 hover:bg-white shadow-[0_4px_12px_rgba(0,0,0,0.06)] text-slate-500 hover:text-[#2e5f8a] transition-all hover:scale-105 active:scale-95 group",
         className
       )}
     >

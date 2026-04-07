@@ -29,7 +29,7 @@ export const KPI_TINT: Record<
   blue: {
     border: 'border-l-blue-400/70',
     glow: 'bg-blue-400/20',
-    badge: 'bg-blue-500/15 text-blue-600 border-blue-200/60',
+    badge: 'bg-[#2e5f8a]/15 text-[#2e5f8a] border-[#d0e2f0]/60',
     iconCircle: 'bg-slate-100/70 text-slate-600',
   },
   violet: {

@@ -10,7 +10,7 @@ const variantClasses: Record<ActionIconVariant, string> = {
   default: 'text-slate-500 hover:bg-slate-50 hover:text-slate-800',
   danger: 'text-rose-600 hover:bg-rose-50/90 hover:text-rose-700',
   warning: 'text-amber-600 hover:bg-amber-50/90 hover:text-amber-800',
-  info: 'text-blue-600 hover:bg-blue-50/90 hover:text-blue-700',
+  info: 'text-[#2e5f8a] hover:bg-[#e8f0f8]/90 hover:text-[#2e5f8a]',
   success: 'text-emerald-600 hover:bg-emerald-50/90 hover:text-emerald-700',
 };
 

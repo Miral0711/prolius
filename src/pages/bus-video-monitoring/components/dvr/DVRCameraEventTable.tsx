@@ -19,7 +19,7 @@ const SevPill = ({ s }: { s: 'high' | 'medium' | 'low' }) => {
   const styles = {
     high: 'bg-rose-500',
     medium: 'bg-amber-500',
-    low: 'bg-blue-500',
+    low: 'bg-[#2e5f8a]',
   };
   return (
     <div className="flex items-center gap-1.5">
@@ -42,7 +42,7 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
 
       <div className="max-h-[180px] overflow-y-auto scrollbar-thin">
         <table className="w-full text-left">
-          <thead className="sticky top-0 bg-slate-50 border-b border-slate-100 z-10">
+          <thead className="sticky top-0 bg-[#f4f8fb] border-b border-slate-100 z-10">
             <tr>
               <th className="px-3 py-1.5 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Cam</th>
               <th className="px-3 py-1.5 text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] leading-none">Severity</th>
@@ -64,7 +64,7 @@ export const DVRCameraEventTable: React.FC<DVRCameraEventTableProps> = ({ events
                 <td className="px-3 py-1.5 text-right">
                   <button
                     onClick={() => onJump(ev.pct)}
-                    className="h-5.5 w-5.5 inline-flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100/50"
+                    className="h-5.5 w-5.5 inline-flex items-center justify-center rounded-lg bg-[#e8f0f8] text-[#2e5f8a] hover:bg-[#2e5f8a] hover:text-white transition-all shadow-sm border border-[#dcedf8]/50"
                   >
                     <Play className="h-2 w-2 ml-0.5 fill-current" />
                   </button>

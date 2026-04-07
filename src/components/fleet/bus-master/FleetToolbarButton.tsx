@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 const tones = {
   primary:
-    'border border-blue-200 bg-blue-50 text-blue-700 shadow-sm hover:border-blue-300 hover:bg-blue-100',
+    'border border-[#d0e2f0] bg-[#e8f0f8] text-[#2e5f8a] shadow-sm hover:border-blue-300 hover:bg-[#d8ecf8]',
   success:
     'border border-emerald-200 bg-emerald-50 text-emerald-700 shadow-sm hover:border-emerald-300 hover:bg-emerald-100',
   danger:

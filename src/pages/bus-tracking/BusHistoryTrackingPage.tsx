@@ -27,14 +27,14 @@ import { BusHistoryMapCard } from './components/BusHistoryMapCard';
 
 /** Right-panel Export / Report / Share — distinct hierarchy, subtle brand tints */
 const HISTORY_TOOLBAR_BTN_PRIMARY = cn(
-  'h-7 w-full max-w-full justify-center gap-1.5 rounded-md border border-blue-100/60 bg-blue-50/90 px-2 text-slate-700 shadow-sm transition-all duration-200',
-  'hover:border-blue-200/70 hover:bg-blue-100/95 hover:text-slate-900 hover:shadow-md',
+  'h-7 w-full max-w-full justify-center gap-1.5 rounded-md border border-[#dcedf8]/60 bg-[#e8f0f8]/90 px-2 text-slate-700 shadow-sm transition-all duration-200',
+  'hover:border-[#d0e2f0]/70 hover:bg-blue-100/95 hover:text-slate-900 hover:shadow-md',
   'active:scale-[0.99]',
 );
 
 const HISTORY_TOOLBAR_BTN_SECONDARY = cn(
   'h-7 w-full max-w-full justify-center gap-1.5 rounded-md border border-transparent bg-transparent px-2 text-slate-700 transition-all duration-200',
-  'hover:border-slate-200/50 hover:bg-blue-50/90 hover:text-slate-900 hover:shadow-sm',
+  'hover:border-slate-200/50 hover:bg-[#e8f0f8]/90 hover:text-slate-900 hover:shadow-sm',
   'active:scale-[0.99]',
 );
 
@@ -56,7 +56,7 @@ export default function BusHistoryTrackingPage() {
             <div className="flex h-full min-h-0 w-[240px] shrink-0 flex-col overflow-hidden">
               <GlassCard className="flex-1 flex flex-col gap-2 p-2 border-white/60 bg-white/80 backdrop-blur-2xl shadow-sm border border-slate-200/40 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 rounded-xl">
                 <div className="flex items-center justify-between mb-0.5 px-0.5 mt-0.5">
-                  <h3 className={cn(typography.sectionTitle, 'text-blue-600')}>
+                  <h3 className={cn(typography.sectionTitle, 'text-[#2e5f8a]')}>
                     Route inquiry
                   </h3>
                   <Settings2 className="h-3 w-3 text-slate-300" />
@@ -77,7 +77,7 @@ export default function BusHistoryTrackingPage() {
                       </span>
                     </div>
                     <div className="relative group">
-                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-blue-500" />
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400 group-focus-within:text-[#2e5f8a]" />
                       <Input
                         value={selectedVehicle}
                         onChange={(e) => setSelectedVehicle(e.target.value)}
@@ -199,7 +199,7 @@ export default function BusHistoryTrackingPage() {
                         <div
                           className={cn(
                             'h-3 w-5.5 rounded-full transition-colors relative',
-                            t.active ? 'bg-blue-600' : 'bg-slate-200',
+                            t.active ? 'bg-[#2e5f8a]' : 'bg-slate-200',
                           )}
                         >
                           <div
@@ -215,7 +215,7 @@ export default function BusHistoryTrackingPage() {
 
                   <Button
                     className={cn(
-                      'mt-1 inline-flex h-8 w-full shrink-0 items-center justify-center rounded-lg bg-blue-600 px-3 text-center text-white shadow-md shadow-blue-100/50 transition-all hover:bg-blue-700 active:scale-95',
+                      'mt-1 inline-flex h-8 w-full shrink-0 items-center justify-center rounded-lg bg-[#2e5f8a] px-3 text-center text-white shadow-md shadow-blue-100/50 transition-all hover:bg-blue-700 active:scale-95',
                       typography.caption,
                       'font-medium tracking-tight leading-none',
                     )}
@@ -241,10 +241,10 @@ export default function BusHistoryTrackingPage() {
                     ].map((v, i) => (
                       <div
                         key={i}
-                        className="flex items-center justify-between p-1.5 rounded-lg bg-slate-50/40 border border-slate-100 hover:border-blue-200 transition-all cursor-pointer group"
+                        className="flex items-center justify-between p-1.5 rounded-lg bg-slate-50/40 border border-slate-100 hover:border-[#d0e2f0] transition-all cursor-pointer group"
                       >
                         <div className="flex items-center gap-1.5">
-                          <History className="h-2.5 w-2.5 text-slate-300 group-hover:text-blue-500" />
+                          <History className="h-2.5 w-2.5 text-slate-300 group-hover:text-[#2e5f8a]" />
                           <span
                             className={cn(
                               typography.body,
@@ -327,7 +327,7 @@ export default function BusHistoryTrackingPage() {
                       {
                         label: 'Duration',
                         value: MOCK_TRIP_SUMMARY.duration,
-                        color: 'text-blue-600',
+                        color: 'text-[#2e5f8a]',
                       },
                       { label: 'Distance', value: MOCK_TRIP_SUMMARY.distance },
                     ].map((stat, i) => (
@@ -383,7 +383,7 @@ export default function BusHistoryTrackingPage() {
                           'font-medium tracking-tight',
                         )}
                       >
-                        <Download className="h-3 w-3 shrink-0 text-blue-600" />
+                        <Download className="h-3 w-3 shrink-0 text-[#2e5f8a]" />
                         Export
                       </Button>
                     </div>
@@ -432,7 +432,7 @@ export default function BusHistoryTrackingPage() {
                   <GlassCard className="p-2.5 border-white/60 shadow-sm border border-slate-200/40 bg-white/80 backdrop-blur-xl rounded-xl overflow-hidden relative">
                     <div className="mb-2.5 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-1.5 px-0.5">
                       <span
-                        className="inline-flex shrink-0 text-blue-500"
+                        className="inline-flex shrink-0 text-[#2e5f8a]"
                         aria-hidden
                       >
                         <TrendingUp className="size-3.5" />
@@ -534,7 +534,7 @@ export default function BusHistoryTrackingPage() {
                             className={cn(
                               'flex-1 rounded-[1px] transition-all duration-300',
                               isCurrent
-                                ? 'bg-blue-600 scale-y-110 z-10 shadow-[0_0_10px_rgba(37,99,235,0.5)]'
+                                ? 'bg-[#2e5f8a] scale-y-110 z-10 shadow-[0_0_10px_rgba(37,99,235,0.5)]'
                                 : isOverspeed
                                   ? 'bg-rose-500/50'
                                   : 'bg-blue-100/40 hover:bg-blue-200/60',
@@ -579,7 +579,7 @@ export default function BusHistoryTrackingPage() {
                   <GlassCard className="p-2.5 border-white/60 shadow-sm border border-slate-200/40 bg-white/80 backdrop-blur-xl rounded-xl">
                     <div className="mb-2.5 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-1.5 px-0.5">
                       <span
-                        className="inline-flex shrink-0 text-blue-500"
+                        className="inline-flex shrink-0 text-[#2e5f8a]"
                         aria-hidden
                       >
                         <MapPin className="size-3.5" />
@@ -641,7 +641,7 @@ export default function BusHistoryTrackingPage() {
                       ].map((s, i) => (
                         <div
                           key={i}
-                          className="flex flex-col p-2 rounded-xl bg-slate-50/50 border border-slate-100/40 hover:border-blue-100 transition-all cursor-default"
+                          className="flex flex-col p-2 rounded-xl bg-slate-50/50 border border-slate-100/40 hover:border-[#dcedf8] transition-all cursor-default"
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex flex-col min-w-0 pr-1.5">
@@ -666,7 +666,7 @@ export default function BusHistoryTrackingPage() {
                               <span
                                 className={cn(
                                   typography.body,
-                                  'mb-0.5 font-medium leading-none text-blue-600',
+                                  'mb-0.5 font-medium leading-none text-[#2e5f8a]',
                                 )}
                               >
                                 {s.dur}
@@ -674,7 +674,7 @@ export default function BusHistoryTrackingPage() {
                               <span
                                 className={cn(
                                   typography.caption,
-                                  'rounded-sm bg-blue-100 px-1 font-medium text-blue-700 tracking-tight',
+                                  'rounded-sm bg-blue-100 px-1 font-medium text-[#2e5f8a] tracking-tight',
                                 )}
                               >
                                 {s.status}
@@ -713,7 +713,7 @@ export default function BusHistoryTrackingPage() {
                               ev.type === 'Overspeed'
                                 ? 'bg-rose-500'
                                 : ev.type === 'Vehicle stopped'
-                                  ? 'bg-blue-500'
+                                  ? 'bg-[#2e5f8a]'
                                   : ev.type === 'Trip started'
                                     ? 'bg-emerald-500'
                                     : 'bg-slate-400',

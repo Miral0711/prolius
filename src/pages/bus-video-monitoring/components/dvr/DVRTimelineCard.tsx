@@ -44,7 +44,7 @@ export const DVRTimelineCard: React.FC<DVRTimelineCardProps> = ({
             {[
               { label: 'Braking', color: 'bg-rose-500' },
               { label: 'Speeding', color: 'bg-amber-500' },
-              { label: 'Signal', color: 'bg-blue-500' },
+              { label: 'Signal', color: 'bg-[#2e5f8a]' },
             ].map(l => (
               <div key={l.label} className="flex items-center gap-1">
                 <span className={cn('h-1 w-1 rounded-full', l.color)} />
@@ -53,7 +53,7 @@ export const DVRTimelineCard: React.FC<DVRTimelineCardProps> = ({
             ))}
           </div>
           <div className="h-5 w-px bg-slate-100" />
-          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-0.5 shadow-inner">
+          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-[#f4f8fb] p-0.5 shadow-inner">
             <button type="button" className="h-5 w-5 flex items-center justify-center rounded text-sm font-semibold text-slate-400 hover:bg-white hover:text-slate-600 transition-all">−</button>
             <button type="button" className="h-5 w-5 flex items-center justify-center rounded text-sm font-semibold text-slate-400 hover:bg-white hover:text-slate-600 transition-all">+</button>
           </div>
@@ -70,17 +70,17 @@ export const DVRTimelineCard: React.FC<DVRTimelineCardProps> = ({
 
         {/* Timeline Tracks */}
         <div
-          className="relative w-full h-8 rounded-xl bg-slate-50 border border-slate-100/60 overflow-visible cursor-pointer group/timeline shadow-inner"
+          className="relative w-full h-8 rounded-xl bg-[#f4f8fb] border border-slate-100/60 overflow-visible cursor-pointer group/timeline shadow-inner"
           onClick={e => {
             const r = e.currentTarget.getBoundingClientRect();
             onProgressChange(Math.round(((e.clientX - r.left) / r.width) * 100));
           }}
         >
           {/* Main Background Highlight */}
-          <div className="absolute inset-x-3 top-1.5 bottom-1.5 bg-blue-500/5 rounded-full" />
+          <div className="absolute inset-x-3 top-1.5 bottom-1.5 bg-[#2e5f8a]/5 rounded-full" />
           
           {/* Progress Bar (Visual Only) */}
-          <div className="absolute top-0 bottom-0 left-0 bg-blue-600/5 transition-all duration-300 pointer-events-none" style={{ width: `${progress}%` }} />
+          <div className="absolute top-0 bottom-0 left-0 bg-[#2e5f8a]/5 transition-all duration-300 pointer-events-none" style={{ width: `${progress}%` }} />
 
           {/* Event Markers */}
           {events.map((ev, i) => (
@@ -109,8 +109,8 @@ export const DVRTimelineCard: React.FC<DVRTimelineCardProps> = ({
           ))}
 
           {/* Current Progress Handle */}
-          <div className="absolute top-0 bottom-0 w-0.5 bg-blue-600 z-20 shadow-[0_0_12px_rgba(37,99,235,0.6)]" style={{ left: `${progress}%` }}>
-            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-2xs font-mono font-semibold px-1 py-0.5 rounded-full shadow-lg">
+          <div className="absolute top-0 bottom-0 w-0.5 bg-[#2e5f8a] z-20 shadow-[0_0_12px_rgba(37,99,235,0.6)]" style={{ left: `${progress}%` }}>
+            <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#2e5f8a] text-white text-2xs font-mono font-semibold px-1 py-0.5 rounded-full shadow-lg">
               {progress}%
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-white border-2 border-blue-600 shadow-lg" />
@@ -123,7 +123,7 @@ export const DVRTimelineCard: React.FC<DVRTimelineCardProps> = ({
         {[
           { label: 'Harsh Braking', value: '2', c: 'bg-rose-50 text-rose-600 border-rose-100' },
           { label: 'Speed Violations', value: '2', c: 'bg-amber-50 text-amber-600 border-amber-100' },
-          { label: 'Camera Errors', value: '1', c: 'bg-blue-50 text-blue-600 border-blue-100' },
+          { label: 'Camera Errors', value: '1', c: 'bg-[#e8f0f8] text-[#2e5f8a] border-[#dcedf8]' },
           { label: 'Geofence Breaches', value: '1', c: 'bg-violet-50 text-violet-600 border-violet-100' },
         ].map(s => (
           <span key={s.label} className={cn('inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-2xs font-semibold border uppercase tracking-tight', s.c)}>

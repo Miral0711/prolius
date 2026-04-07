@@ -22,8 +22,8 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
       value: '4/4 Active', 
       status: 'healthy', 
       icon: Zap, 
-      color: 'text-blue-500', 
-      bg: 'bg-blue-50' 
+      color: 'text-[#2e5f8a]', 
+      bg: 'bg-[#e8f0f8]' 
     },
     { 
       label: 'Last DVR Upload', 
@@ -91,7 +91,7 @@ export const DVRSurveillanceHealthCard: React.FC<DVRSurveillanceHealthCardProps>
         })}
       </div>
 
-      <div className="mt-auto p-1 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center gap-1.5">
+      <div className="mt-auto p-1 rounded-lg bg-[#f4f8fb] border border-slate-100 flex items-center justify-center gap-1.5">
          <div className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
          <span className="text-2xs font-semibold text-slate-400 uppercase tracking-[0.08rem] whitespace-nowrap">Pass: Mar 13, 13:03</span>
       </div>

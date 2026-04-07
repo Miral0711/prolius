@@ -73,8 +73,8 @@ const AlertKpiCard = ({ alert, count }: { alert: typeof AI_ALERT_TYPES[0]; count
             !isZero ? (
               alert.color === 'rose' ? "bg-rose-50 text-rose-500" :
               alert.color === 'amber' ? "bg-amber-50 text-amber-500" :
-              alert.color === 'blue' ? "bg-blue-50 text-blue-500" : "bg-slate-50 text-slate-500"
-            ) : "bg-slate-50 text-slate-400"
+              alert.color === 'blue' ? "bg-[#e8f0f8] text-[#2e5f8a]" : "bg-[#f4f8fb] text-slate-500"
+            ) : "bg-[#f4f8fb] text-slate-400"
           )}>
             <Icon className="h-3 w-3" />
           </div>
@@ -101,7 +101,7 @@ const AlertKpiCard = ({ alert, count }: { alert: typeof AI_ALERT_TYPES[0]; count
 const ChartCard = ({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) => (
   <GlassCard className={cn("flex flex-col min-h-[235px] h-full border-slate-200/60 bg-white shadow-sm p-4 transition-all duration-200 hover:shadow-md", className)}>
     <h3 className={cn(typography.cardTitle, 'mb-3 flex items-center gap-2')}>
-      <TrendingUp className="h-4 w-4 text-blue-500" />
+      <TrendingUp className="h-4 w-4 text-[#2e5f8a]" />
       {title}
     </h3>
     <div className="flex-1 min-h-0">
@@ -155,7 +155,7 @@ export default function AiAlertMonitoringPage() {
           <Button variant="outline" size="sm" className="h-8 gap-2 px-3 shadow-sm bg-white hover:bg-slate-50 text-slate-700 font-semibold border-slate-200 text-2sm">
             <FileText className="h-3.5 w-3.5" /> Report
           </Button>
-          <Button size="sm" className="h-8 gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-2sm px-3 shadow-sm">
+          <Button size="sm" className="h-8 gap-2 bg-[#2e5f8a] hover:bg-blue-700 text-white font-semibold text-2sm px-3 shadow-sm">
             <RefreshCw className="h-3.5 w-3.5" /> Refresh
           </Button>
         </div>
@@ -208,7 +208,7 @@ export default function AiAlertMonitoringPage() {
             <SectionHeader 
               title="Critical AI Alerts" 
               icon={Zap} 
-              action={<a href="#" className="text-2sm font-medium text-blue-600 hover:underline">View All</a>}
+              action={<a href="#" className="text-2sm font-medium text-[#2e5f8a] hover:underline">View All</a>}
             />
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {alertCounts.map((alert) => (
@@ -318,7 +318,7 @@ export default function AiAlertMonitoringPage() {
                   { icon: AlertTriangle, label: 'Harsh Braking', value: '5', color: 'text-rose-500' },
                   { icon: Zap, label: 'Harsh Accel.', value: '3', color: 'text-rose-500' },
                   { icon: History, label: 'Harsh L-Turn', value: '2', color: 'text-emerald-500' },
-                  { icon: History, label: 'Harsh R-Turn', value: '2', color: 'text-blue-500' },
+                  { icon: History, label: 'Harsh R-Turn', value: '2', color: 'text-[#2e5f8a]' },
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between group">
                     <div className="flex items-center gap-2">
@@ -361,7 +361,7 @@ export default function AiAlertMonitoringPage() {
               <p className="text-slate-500 text-xs leading-snug mb-3">
                 Synthesize fleet safety trends into a single boardroom-ready report.
               </p>
-              <Button className="w-full h-8 bg-blue-600 hover:bg-blue-700 text-white text-2sm font-semibold shadow-sm">
+              <Button className="w-full h-8 bg-[#2e5f8a] hover:bg-blue-700 text-white text-2sm font-semibold shadow-sm">
                 Generate Report
               </Button>
             </div>

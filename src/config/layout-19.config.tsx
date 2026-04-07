@@ -4,9 +4,14 @@ import {
   BriefcaseBusiness,
   Car,
   CircleGauge,
+  ClipboardList,
   Cpu,
   Fuel,
+  Search,
+  ShieldAlert,
   ShieldCheck,
+  Trophy,
+  Truck,
   UserRound,
   Wrench,
 } from 'lucide-react';
@@ -41,6 +46,54 @@ export const MENU_SIDEBAR: MenuConfig = [
       },
       { title: 'OBD-II/DTC', path: '/dashboard/obd-dtc', icon: Cpu },
     ],
+  },
+  {
+    title: 'Fleet Planning',
+    children: [{ title: 'Fleet Planning', path: '/fleet-planning', icon: Truck }],
+  },
+  {
+    title: 'Vehicle Checks',
+    children: [{ title: 'Vehicle Checks', path: '/vehicle-checks', icon: ClipboardList }],
+  },
+  {
+    title: 'Vehicle Defects',
+    children: [{ title: 'Vehicle Defects', path: '/vehicle-defects', icon: AlertTriangle }],
+  },
+  {
+    title: 'Reported Incidents',
+    children: [{ title: 'Reported Incidents', path: '/reported-incidents', icon: ShieldAlert }],
+  },
+  {
+    title: 'Vehicle Profiles',
+    children: [{ title: 'Vehicle Profiles', path: '/vehicle-profiles', icon: UserRound }],
+  },
+  {
+    title: 'Vehicle Search',
+    children: [{ title: 'Vehicle Search', path: '/vehicle-search', icon: Search }],
+  },
+  {
+    title: 'Asset Checks',
+    children: [{ title: 'Asset Checks', path: '/asset-checks', icon: ShieldCheck }],
+  },
+  {
+    title: 'Asset Defects',
+    children: [{ title: 'Asset Defects', path: '/asset-defects', icon: AlertTriangle }],
+  },
+  {
+    title: 'Asset Profiles',
+    children: [{ title: 'Asset Profiles', path: '/asset-profiles', icon: BriefcaseBusiness }],
+  },
+  {
+    title: 'Asset Search',
+    children: [{ title: 'Asset Search', path: '/asset-search', icon: Search }],
+  },
+  {
+    title: 'Workshops',
+    children: [{ title: 'Workshops', path: '/workshops', icon: Wrench }],
+  },
+  {
+    title: 'Earned Recognition',
+    children: [{ title: 'Earned Recognition', path: '/earned-recognition', icon: Trophy }],
   },
   {
     title: 'Manager Cockpit',

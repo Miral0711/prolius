@@ -61,14 +61,14 @@ export default function BusLiveTrackingPage() {
       padding={PAGE_SURFACE_FOOTER_PADDING}
       fill
       sectionGap="none"
-      className="bg-slate-50"
+      className="bg-[#f0f4f8]"
     >
       <PageSurface.Body className="min-h-0 flex-1 overflow-hidden">
       <div className="relative flex h-full min-h-0 w-full flex-1 overflow-hidden">
         
         {/* Left Sidebar - Fleet Resource Panel */}
         <aside className={cn(
-          "relative h-full border-r border-slate-200 bg-white/80 backdrop-blur-xl z-[40] transition-all duration-500 ease-in-out shrink-0 overflow-hidden",
+          "relative h-full border-r border-[#d4e0ea] bg-white/80 backdrop-blur-xl z-[40] transition-all duration-500 ease-in-out shrink-0 overflow-hidden",
           isListOpen ? "w-[300px] opacity-100 visible" : "w-0 opacity-0 invisible"
         )}>
           <div className="w-[300px] h-full overflow-hidden">
@@ -82,7 +82,7 @@ export default function BusLiveTrackingPage() {
         </aside>
 
         {/* MAP AREA - Central Operational Theatre */}
-        <main className="flex-1 min-w-0 h-full relative overflow-hidden bg-slate-100">
+        <main className="flex-1 min-w-0 h-full relative overflow-hidden bg-[#e8eef4]">
            {/* Map Component - Edge to Edge in this area */}
            <div className="absolute inset-0 w-full h-full">
               <FleetMap 
@@ -100,7 +100,7 @@ export default function BusLiveTrackingPage() {
 
            {/* Floating Legend */}
            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[30] pointer-events-none">
-              <div className="flex items-center gap-4 px-4 py-2 bg-white/95 backdrop-blur-md border border-slate-200/60 shadow-xl rounded-full">
+              <div className="flex items-center gap-4 px-4 py-2 bg-white/95 backdrop-blur-md border border-[#d4e0ea]/60 shadow-xl rounded-full">
                   {[
                     { color: 'bg-emerald-500', label: 'Online' },
                     { color: 'bg-amber-400', label: 'Idling' },
@@ -134,7 +134,7 @@ export default function BusLiveTrackingPage() {
 
         {/* Right Panel - Vehicle Telemetry */}
         <aside className={cn(
-          "relative h-full border-l border-slate-200 bg-white/80 backdrop-blur-xl z-[40] transition-all duration-500 ease-in-out shrink-0 overflow-hidden",
+          "relative h-full border-l border-[#d4e0ea] bg-white/80 backdrop-blur-xl z-[40] transition-all duration-500 ease-in-out shrink-0 overflow-hidden",
           (isDetailsOpen && !!selectedVehicle) ? "w-[330px] opacity-100 visible" : "w-0 opacity-0 invisible"
         )}>
            <div className="w-[330px] h-full overflow-hidden">

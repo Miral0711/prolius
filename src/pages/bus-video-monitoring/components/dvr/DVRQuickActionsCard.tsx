@@ -5,7 +5,7 @@ import { typography } from '@/lib/typography';
 
 export const DVRQuickActionsCard: React.FC = () => {
   const actions = [
-    { icon: Download, label: 'Export', c: 'text-blue-600', bg: 'bg-blue-50/50 border-blue-100/50 hover:bg-blue-100 hover:border-blue-200 shadow-blue-500/5' },
+    { icon: Download, label: 'Export', c: 'text-[#2e5f8a]', bg: 'bg-[#e8f0f8]/50 border-[#dcedf8]/50 hover:bg-blue-100 hover:border-[#d0e2f0] shadow-blue-500/5' },
     { icon: ZoomIn, label: 'Snapshot', c: 'text-violet-600', bg: 'bg-violet-50/50 border-violet-100/50 hover:bg-violet-100 hover:border-violet-200 shadow-violet-500/5' },
     { icon: Share2, label: 'Share', c: 'text-emerald-600', bg: 'bg-emerald-50/50 border-emerald-100/50 hover:bg-emerald-100 hover:border-emerald-200 shadow-emerald-500/5' },
     { icon: Flag, label: 'Report', c: 'text-rose-600', bg: 'bg-rose-50/50 border-rose-100/50 hover:bg-rose-100 hover:border-rose-200 shadow-rose-500/5' },
@@ -40,7 +40,7 @@ export const DVRQuickActionsCard: React.FC = () => {
         })}
       </div>
       
-      <div className="mt-0.5 flex items-center justify-center py-1 px-3 bg-slate-50 rounded-lg border border-dashed border-slate-200 group cursor-pointer hover:bg-slate-100 transition-colors">
+      <div className="mt-0.5 flex items-center justify-center py-1 px-3 bg-[#f4f8fb] rounded-lg border border-dashed border-slate-200 group cursor-pointer hover:bg-slate-100 transition-colors">
         <span className="text-2xs font-medium text-slate-400 uppercase tracking-[0.08rem] group-hover:text-slate-600">Advanced Hub</span>
       </div>
     </div>

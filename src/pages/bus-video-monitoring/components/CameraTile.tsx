@@ -95,7 +95,7 @@ export function CameraTile({
                 <TooltipTrigger asChild>
                   <button className={cn(
                     "h-6 w-6 rounded flex items-center justify-center transition-all bg-black/40 border border-white/10 text-white hover:scale-110",
-                    btn.primary ? "bg-blue-600 border-blue-500 hover:bg-blue-500" : "hover:bg-white/20"
+                    btn.primary ? "bg-[#2e5f8a] border-blue-500 hover:bg-[#2e5f8a]" : "hover:bg-white/20"
                   )}>
                     <btn.icon className="h-3 w-3" />
                   </button>

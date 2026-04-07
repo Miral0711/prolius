@@ -35,8 +35,8 @@ export const fleetSurface = {
    * Light grid lines (Bus List / structured data tables).
    * Unified color for vertical + horizontal rules; `first:border-l` closes the left edge.
    */
-  tableGridCell: 'border-b border-r border-slate-200/70 first:border-l',
-  tableGridHeaderCell: 'border-r border-slate-200/70 first:border-l',
+  tableGridCell: 'border-b border-r border-[#d4e0ea] first:border-l',
+  tableGridHeaderCell: 'border-r border-[#d4e0ea] first:border-l',
 } as const;
 
 export const fleetType = {

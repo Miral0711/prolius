@@ -24,7 +24,7 @@ const SevBadge = ({ s }: { s: 'high' | 'medium' | 'low' }) => {
   const styles = {
     high: 'bg-rose-50 text-rose-600 border-rose-100',
     medium: 'bg-amber-50 text-amber-600 border-amber-100',
-    low: 'bg-slate-50 text-slate-500 border-slate-200',
+    low: 'bg-[#f4f8fb] text-slate-500 border-slate-200',
   };
   return (
     <span className={cn(
@@ -47,7 +47,7 @@ export const DVREventLogCard: React.FC<DVREventLogCardProps> = ({
       "rounded-xl border border-white bg-white shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] flex flex-col min-h-0 transition-all overflow-hidden",
       className
     )}>
-      <div className="p-3 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
+      <div className="p-3 border-b border-slate-100 flex items-center justify-between bg-[#f4f8fb]/30">
         <div className="flex items-center gap-2">
           <div className="p-1 rounded-lg bg-rose-50">
             <AlertTriangle className="h-3.5 w-3.5 text-rose-600" />
@@ -76,16 +76,16 @@ export const DVREventLogCard: React.FC<DVREventLogCardProps> = ({
                   key={i}
                   className={cn(
                     'group cursor-pointer transition-all duration-200 hover:bg-slate-50/80',
-                    isSelected ? 'bg-blue-50/80' : ''
+                    isSelected ? 'bg-[#e8f0f8]/80' : ''
                   )}
                   onClick={() => onEventSelect(i)}
                 >
                   <td className="px-4 py-2.5">
-                    <span className="text-xs font-mono font-semibold text-slate-600 group-hover:text-blue-600 transition-colors">{ev.time}</span>
+                    <span className="text-xs font-mono font-semibold text-slate-600 group-hover:text-[#2e5f8a] transition-colors">{ev.time}</span>
                   </td>
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-2">
-                      <div className={cn('p-1 rounded-lg transition-all group-hover:scale-110', isSelected ? 'bg-white shadow-sm' : 'bg-slate-50')}>
+                      <div className={cn('p-1 rounded-lg transition-all group-hover:scale-110', isSelected ? 'bg-white shadow-sm' : 'bg-[#f4f8fb]')}>
                         <Icon className={cn('h-3 w-3', ev.ic)} />
                       </div>
                       <span className="text-xs font-medium text-slate-700 truncate max-w-[140px]">{ev.type}</span>

@@ -43,57 +43,57 @@ const SIDEBAR_ITEMS: MenuItem[] = [
   },
   {
     title: 'Fleet Planning',
-    path: '/dashboard/fleet-planning',
+    path: '/fleet-planning',
     icon: Truck,
   },
   {
     title: 'Vehicle Checks',
-    path: '/dashboard/vehicle-checks',
+    path: '/vehicle-checks',
     icon: ClipboardList,
   },
   {
     title: 'Vehicle Defects',
-    path: '/dashboard/vehicle-defects',
+    path: '/vehicle-defects',
     icon: AlertTriangle,
   },
   {
     title: 'Reported Incidents',
-    path: '/dashboard/reported-incidents',
+    path: '/reported-incidents',
     icon: ShieldAlert,
   },
   {
     title: 'Vehicle Profiles',
-    path: '/dashboard/vehicle-profiles',
+    path: '/vehicle-profiles',
     icon: UserRound,
   },
   {
     title: 'Vehicle Search',
-    path: '/dashboard/vehicle-search',
+    path: '/vehicle-search',
     icon: Search,
   },
   {
     title: 'Asset Checks',
-    path: '/dashboard/asset-checks',
+    path: '/asset-checks',
     icon: ShieldCheck,
   },
   {
     title: 'Asset Defects',
-    path: '/dashboard/asset-defects',
+    path: '/asset-defects',
     icon: AlertTriangle,
   },
   {
     title: 'Asset Profiles',
-    path: '/dashboard/asset-profiles',
+    path: '/asset-profiles',
     icon: BriefcaseBusiness,
   },
   {
     title: 'Asset Search',
-    path: '/dashboard/asset-search',
+    path: '/asset-search',
     icon: Search,
   },
   {
     title: 'Workshops',
-    path: '/dashboard/workshops',
+    path: '/workshops',
     icon: Wrench,
   },
   {
@@ -103,7 +103,7 @@ const SIDEBAR_ITEMS: MenuItem[] = [
   },
   {
     title: 'Earned Recognition',
-    path: '/dashboard/earned-recognition',
+    path: '/earned-recognition',
     icon: Trophy,
   },
   {

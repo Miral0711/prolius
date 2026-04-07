@@ -193,7 +193,7 @@ export function BusHistoryMapCard({
             >
               <Popup>
                 <div className="min-w-[100px] space-y-1.5 p-0.5 text-center">
-                  <div className={cn(typography.meta, 'border-b border-slate-100 pb-1 font-mono not-italic text-blue-600 tabular-nums')}>
+                  <div className={cn(typography.meta, 'border-b border-slate-100 pb-1 font-mono not-italic text-[#2e5f8a] tabular-nums')}>
                     {currentPoint.timestamp}
                   </div>
                   <div className={cn(typography.kpi, 'tabular-nums text-slate-800')}>
@@ -223,7 +223,7 @@ export function BusHistoryMapCard({
       </div>
 
       {/* Advanced Playback Console - Integrated */}
-      <div className="flex h-[52px] w-full min-w-0 shrink-0 items-center gap-4 border-t border-slate-100 bg-slate-50/95 px-4 backdrop-blur-2xl z-[1000]">
+      <div className="flex h-[52px] w-full min-w-0 shrink-0 items-center gap-4 border-t border-slate-100 bg-[#f4f8fb]/95 px-4 backdrop-blur-2xl z-[1000]">
         
         {/* Actions Group */}
         <div className="flex items-center gap-2 shrink-0">
@@ -242,7 +242,7 @@ export function BusHistoryMapCard({
             size="icon" 
             className={cn(
                "h-9 w-9 rounded-lg shadow-md transition-all active:scale-95",
-               isPlaying ? "bg-slate-800 hover:bg-slate-900 shadow-slate-200" : "bg-blue-600 hover:bg-blue-700 shadow-blue-100"
+               isPlaying ? "bg-slate-800 hover:bg-slate-900 shadow-slate-200" : "bg-[#2e5f8a] hover:bg-blue-700 shadow-blue-100"
             )}
             onClick={() => setIsPlaying(!isPlaying)}
           >
@@ -254,7 +254,7 @@ export function BusHistoryMapCard({
         <div className="flex-1 flex flex-col gap-1 relative py-1">
           <div className="flex justify-between items-center mb-0.5">
             <div className="flex items-center gap-2">
-               <span className={cn(typography.meta, 'rounded border border-blue-100/50 bg-blue-50 px-1.5 py-0.5 font-mono leading-none not-italic text-blue-600 tabular-nums')}>
+               <span className={cn(typography.meta, 'rounded border border-[#dcedf8]/50 bg-[#e8f0f8] px-1.5 py-0.5 font-mono leading-none not-italic text-[#2e5f8a] tabular-nums')}>
                  {route[playbackIndex]?.timestamp || '00:00:00'}
                </span>
                {hoverIndex !== null && (
@@ -274,7 +274,7 @@ export function BusHistoryMapCard({
             
             {/* Active Progress */}
             <div 
-              className="absolute inset-0 h-1.5 my-auto bg-blue-600 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(37,99,235,0.2)]" 
+              className="absolute inset-0 h-1.5 my-auto bg-[#2e5f8a] rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(37,99,235,0.2)]" 
               style={{ width: `${progressPercent}%` }}
             />
 
@@ -288,7 +288,7 @@ export function BusHistoryMapCard({
                     key={i} 
                     className={cn(
                        "absolute top-1/2 -translate-y-1/2 w-1.5 h-3 rounded-full border-2 border-white shadow-sm z-10",
-                       ev.type === 'Overspeed' ? 'bg-rose-500' : 'bg-blue-500'
+                       ev.type === 'Overspeed' ? 'bg-rose-500' : 'bg-[#2e5f8a]'
                     )}
                     style={{ left: `${pos}%` }}
                   />
@@ -316,7 +316,7 @@ export function BusHistoryMapCard({
               className="absolute h-4 w-4 bg-white border-2 border-blue-600 rounded-full shadow-lg z-10 transition-all pointer-events-none flex items-center justify-center"
               style={{ left: `calc(${progressPercent}% - 8px)` }}
             >
-               <div className="h-1 w-1 bg-blue-600 rounded-full" />
+               <div className="h-1 w-1 bg-[#2e5f8a] rounded-full" />
             </div>
           </div>
         </div>
@@ -333,7 +333,7 @@ export function BusHistoryMapCard({
               className={cn(
                 typography.caption,
                 'h-7 min-w-[28px] rounded px-1.5 font-medium transition-all tracking-tight',
-                playbackSpeed === s ? "border border-slate-100 bg-white text-blue-600 shadow-sm" : "text-slate-400 hover:text-slate-700"
+                playbackSpeed === s ? "border border-slate-100 bg-white text-[#2e5f8a] shadow-sm" : "text-slate-400 hover:text-slate-700"
               )}
             >
               x{s}

@@ -50,7 +50,7 @@ export const PlaybackTimeline = ({
 
       {/* Progress Fill */}
       <div
-        className="absolute h-full bg-blue-600 rounded-full transition-all"
+        className="absolute h-full bg-[#2e5f8a] rounded-full transition-all"
         style={{ width: `${progress}%` }}
       >
         <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 h-4 w-4 rounded-full bg-white border-2 border-blue-600 shadow-lg scale-0 group-hover/slider:scale-100 transition-transform z-30" />
@@ -95,7 +95,7 @@ export function PlaybackControls({
       {/* 1. Play Toggle */}
       <button
         onClick={onTogglePlay}
-        className="h-10 w-10 min-w-[40px] rounded-xl flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-md active:scale-90"
+        className="h-10 w-10 min-w-[40px] rounded-xl flex items-center justify-center bg-[#2e5f8a] text-white hover:bg-blue-700 transition-all shadow-md active:scale-90"
       >
         {isPlaying ? (
           <Pause className="h-4 w-4 fill-current" />
@@ -112,7 +112,7 @@ export function PlaybackControls({
       />
 
       {/* 3. Time Display */}
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200/60 rounded-xl">
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#f4f8fb] border border-slate-200/60 rounded-xl">
         <span
           className={cn(
             dvrTypography.valueTight,
@@ -142,7 +142,7 @@ export function PlaybackControls({
               dvrTypography.control,
               'px-3 h-7 rounded-lg transition-all',
               selectedSpeed === s
-                ? 'bg-white text-blue-600 shadow-sm border border-slate-200'
+                ? 'bg-white text-[#2e5f8a] shadow-sm border border-slate-200'
                 : 'text-gray-400 hover:text-gray-600',
             )}
           >
@@ -160,7 +160,7 @@ export function DvrTimelineAnalytics() {
     <div className="mt-3 pt-3 border-t border-slate-100">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Info className="h-4 w-4 text-blue-500" />
+          <Info className="h-4 w-4 text-[#2e5f8a]" />
           <h3 className={cn(dvrTypography.sectionTitle, 'leading-none')}>
             Archive Content Distribution
           </h3>
@@ -173,7 +173,7 @@ export function DvrTimelineAnalytics() {
       </div>
 
       <div className="relative space-y-2">
-        <div className="flex h-3 w-full gap-0.5 rounded-full overflow-hidden shadow-inner bg-slate-50">
+        <div className="flex h-3 w-full gap-0.5 rounded-full overflow-hidden shadow-inner bg-[#f4f8fb]">
           {Array.from({ length: 24 }).map((_, i) => {
             const colors = [
               'bg-slate-200',

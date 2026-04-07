@@ -329,8 +329,8 @@ export default function BusMasterPage() {
       title: 'Total Buses',
       value: 779,
       icon: Bus,
-      color: 'text-blue-500',
-      bg: 'bg-blue-50',
+      color: 'text-[#2e5f8a]',
+      bg: 'bg-[#e8f0f8]',
     },
     {
       title: 'Active',
@@ -392,7 +392,7 @@ export default function BusMasterPage() {
         padding={PAGE_SURFACE_FOOTER_PADDING}
         fill
         sectionGap="none"
-        className="min-h-0 flex-1 bg-blue-50/70"
+        className="min-h-0 flex-1 bg-[#f0f4f8]"
       >
         <PageSurface.Body className="flex min-h-0 flex-1 flex-col overflow-hidden">
           <div
@@ -417,7 +417,7 @@ export default function BusMasterPage() {
                   icon={k.icon}
                   color={k.color}
                   bgColor={k.bg}
-                  className="border-slate-200/90 bg-white shadow-sm"
+                  className="border-[#d4e0ea] bg-white shadow-sm"
                 />
               ))}
             </div>
@@ -425,7 +425,7 @@ export default function BusMasterPage() {
             {/* Filters — solid card (Bus Master reference) */}
             <div
               className={cn(
-                'max-w-full shrink-0 rounded-md border border-slate-200/90 bg-white shadow-sm',
+                'max-w-full shrink-0 rounded-md border border-[#d4e0ea] bg-white shadow-sm',
                 fleetSurface.filterBar,
               )}
             >
