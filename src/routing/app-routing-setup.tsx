@@ -16,7 +16,7 @@ import CreateJobPage from '@/pages/job-dispatching/CreateJobPage';
 import ManagerCockpitPage from '@/pages/manager-cockpit';
 import MessagingPage from '@/pages/messaging/MessagingPage';
 import SettingsPage from '@/pages/settings/SettingsPage';
-import { Navigate, Route, Routes, useParams } from 'react-router';
+import { Navigate, Route, Routes, useParams, Link } from 'react-router';
 import { PageSurface } from '@/components/layout';
 import { Layout19 } from '@/components/layouts/layout-19';
 
@@ -31,12 +31,12 @@ function PlaceholderPage() {
         <h1 className="text-xl font-semibold text-[#1F2937] capitalize">{title}</h1>
         <p className="mt-2 text-sm text-[#64748B]">
           For this page's UI refer to this link:{' '}
-          <a
-            href="/fleet-planning"
+          <Link
+            to="/fleet-planning"
             className="font-medium text-[#3d6b8e] underline underline-offset-2 hover:text-[#2e5270]"
           >
             fleet-planning
-          </a>
+          </Link>
         </p>
       </PageSurface.Body>
     </PageSurface>
