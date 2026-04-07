@@ -15,6 +15,7 @@ import BusMasterPage from '@/pages/fleet-management/bus/BusMasterPage';
 import CreateJobPage from '@/pages/job-dispatching/CreateJobPage';
 import ManagerCockpitPage from '@/pages/manager-cockpit';
 import MessagingPage from '@/pages/messaging/MessagingPage';
+import SettingsPage from '@/pages/settings/SettingsPage';
 import { Navigate, Route, Routes, useParams } from 'react-router';
 import { PageSurface } from '@/components/layout';
 import { Layout19 } from '@/components/layouts/layout-19';
@@ -27,10 +28,16 @@ function PlaceholderPage() {
   return (
     <PageSurface padding="md">
       <PageSurface.Body>
-        <h1 className="text-xl font-semibold text-[#1F2937] capitalize">
-          {title}
-        </h1>
-        <p className="mt-1 text-[#64748B]">Path: {path || '/'}</p>
+        <h1 className="text-xl font-semibold text-[#1F2937] capitalize">{title}</h1>
+        <p className="mt-2 text-sm text-[#64748B]">
+          For this page's UI refer to this link:{' '}
+          <a
+            href="/fleet-planning"
+            className="font-medium text-[#3d6b8e] underline underline-offset-2 hover:text-[#2e5270]"
+          >
+            fleet-planning
+          </a>
+        </p>
       </PageSurface.Body>
     </PageSurface>
   );
@@ -111,8 +118,11 @@ export function AppRoutingSetup() {
         <Route path="/workshops" element={<PlaceholderPage />} />
         <Route path="/earned-recognition" element={<EarnedRecognitionPage />} />
         <Route path="/wasl-management/*" element={<PlaceholderPage />} />
+        <Route path="/system-management/settings" element={<SettingsPage />} />
         <Route path="/system-management/*" element={<PlaceholderPage />} />
+        <Route path="/reports/overview" element={<PlaceholderPage />} />
         <Route path="/reports/*" element={<PlaceholderPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/logout" element={<PlaceholderPage />} />
       </Route>
 

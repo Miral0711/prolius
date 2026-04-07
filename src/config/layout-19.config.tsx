@@ -8,6 +8,7 @@ import {
   Cpu,
   Fuel,
   Search,
+  Settings,
   ShieldAlert,
   ShieldCheck,
   Trophy,
@@ -270,112 +271,50 @@ export const MENU_SIDEBAR: MenuConfig = [
       { title: 'Holiday Management', path: '/system-management/holiday' },
       { title: 'Ride Type Management', path: '/system-management/ride-type' },
       { title: 'MDM', path: '/system-management/mdm' },
+      { title: 'Settings', path: '/system-management/settings' },
     ],
   },
   {
     title: 'Reports',
     children: [
-      {
-        title: 'Data Usage',
-        children: [
-          { title: 'Taxi', path: '/reports/data-usage/taxi' },
-          { title: 'Bus', path: '/reports/data-usage/bus' },
-        ],
-      },
-      {
-        title: 'Operations & Trips',
-        children: [
-          {
-            title: 'Job/Booking',
-            path: '/reports/operations-trips/job-booking',
-          },
-          { title: 'Taxi Trip', path: '/reports/operations-trips/taxi-trip' },
-          {
-            title: 'Trip Activity',
-            path: '/reports/operations-trips/trip-activity',
-          },
-          {
-            title: 'Trip Classification',
-            path: '/reports/operations-trips/trip-classification',
-          },
-          { title: 'Shift', path: '/reports/operations-trips/shift' },
-        ],
-      },
-      {
-        title: 'Tracking & Movement',
-        children: [
-          { title: 'Movement', path: '/reports/tracking-movement/movement' },
-          { title: 'Distance', path: '/reports/tracking-movement/distance' },
-          { title: 'Tracking', path: '/reports/tracking-movement/tracking' },
-          { title: 'Geofence', path: '/reports/tracking-movement/geofence' },
-        ],
-      },
-      {
-        title: 'Drivers',
-        children: [
-          { title: 'Taxi Driver', path: '/reports/drivers/taxi' },
-          { title: 'Driver', path: '/reports/drivers/driver' },
-          { title: 'Driver Scorecards', path: '/reports/drivers/scorecards' },
-          { title: 'Driver Behaviour', path: '/reports/drivers/behaviour' },
-        ],
-      },
-      {
-        title: 'Fleet & Vehicle',
-        children: [
-          { title: 'Alerts', path: '/reports/fleet-vehicle/alerts' },
-          { title: 'Fuel', path: '/reports/fleet-vehicle/fuel' },
-          { title: 'OBD', path: '/reports/fleet-vehicle/obd' },
-          { title: 'Maintenance', path: '/reports/fleet-vehicle/maintenance' },
-          { title: 'Parts / Inventory', path: '/reports/fleet-vehicle/parts' },
-          {
-            title: 'Vehicle Inspections',
-            path: '/reports/fleet-vehicle/inspections',
-          },
-        ],
-      },
-      {
-        title: 'Revenue & Payments',
-        children: [
-          {
-            title: 'Taxi Revenue',
-            path: '/reports/revenue-payments/taxi-revenue',
-          },
-          {
-            title: 'Revenue Dashboard',
-            path: '/reports/revenue-payments/dashboard',
-          },
-          {
-            title: 'Advanced Analytics',
-            path: '/reports/revenue-payments/analytics',
-          },
-          { title: 'Expense', path: '/reports/revenue-payments/expense' },
-          { title: 'Billing', path: '/reports/revenue-payments/billing' },
-          {
-            title: 'Wallet Transactions',
-            path: '/reports/revenue-payments/wallet',
-          },
-          {
-            title: 'Payment Disputes',
-            path: '/reports/revenue-payments/disputes',
-          },
-          {
-            title: 'Fare Adjustments',
-            path: '/reports/revenue-payments/fare-adjustments',
-          },
-        ],
-      },
-      {
-        title: 'System & Communications',
-        children: [
-          {
-            title: 'App Version',
-            path: '/reports/system-communications/app-version',
-          },
-          { title: 'Logs', path: '/reports/system-communications/logs' },
-          { title: 'VoIP Calls', path: '/reports/system-communications/voip' },
-        ],
-      },
+      { title: 'Reports', path: '/reports/overview' },
+      { title: 'Data Usage — Taxi', path: '/reports/data-usage/taxi' },
+      { title: 'Data Usage — Bus', path: '/reports/data-usage/bus' },
+      { title: 'Job/Booking', path: '/reports/operations-trips/job-booking' },
+      { title: 'Taxi Trip', path: '/reports/operations-trips/taxi-trip' },
+      { title: 'Trip Activity', path: '/reports/operations-trips/trip-activity' },
+      { title: 'Trip Classification', path: '/reports/operations-trips/trip-classification' },
+      { title: 'Shift', path: '/reports/operations-trips/shift' },
+      { title: 'Movement', path: '/reports/tracking-movement/movement' },
+      { title: 'Distance', path: '/reports/tracking-movement/distance' },
+      { title: 'Tracking', path: '/reports/tracking-movement/tracking' },
+      { title: 'Geofence', path: '/reports/tracking-movement/geofence' },
+      { title: 'Taxi Driver', path: '/reports/drivers/taxi' },
+      { title: 'Driver', path: '/reports/drivers/driver' },
+      { title: 'Driver Scorecards', path: '/reports/drivers/scorecards' },
+      { title: 'Driver Behaviour', path: '/reports/drivers/behaviour' },
+      { title: 'Alerts', path: '/reports/fleet-vehicle/alerts' },
+      { title: 'Fuel', path: '/reports/fleet-vehicle/fuel' },
+      { title: 'OBD', path: '/reports/fleet-vehicle/obd' },
+      { title: 'Maintenance', path: '/reports/fleet-vehicle/maintenance' },
+      { title: 'Parts / Inventory', path: '/reports/fleet-vehicle/parts' },
+      { title: 'Vehicle Inspections', path: '/reports/fleet-vehicle/inspections' },
+      { title: 'Taxi Revenue', path: '/reports/revenue-payments/taxi-revenue' },
+      { title: 'Revenue Dashboard', path: '/reports/revenue-payments/dashboard' },
+      { title: 'Advanced Analytics', path: '/reports/revenue-payments/analytics' },
+      { title: 'Expense', path: '/reports/revenue-payments/expense' },
+      { title: 'Billing', path: '/reports/revenue-payments/billing' },
+      { title: 'Wallet Transactions', path: '/reports/revenue-payments/wallet' },
+      { title: 'Payment Disputes', path: '/reports/revenue-payments/disputes' },
+      { title: 'Fare Adjustments', path: '/reports/revenue-payments/fare-adjustments' },
+      { title: 'App Version', path: '/reports/system-communications/app-version' },
+      { title: 'Logs', path: '/reports/system-communications/logs' },
+      { title: 'VoIP Calls', path: '/reports/system-communications/voip' },
     ],
+  },
+  {
+    title: 'Settings',
+    children: [{ title: 'Settings', path: '/settings', icon: Settings }],
   },
   {
     title: 'Logout',
