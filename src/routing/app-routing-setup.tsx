@@ -16,6 +16,13 @@ import CreateJobPage from '@/pages/job-dispatching/CreateJobPage';
 import ManagerCockpitPage from '@/pages/manager-cockpit';
 import MessagingPage from '@/pages/messaging/MessagingPage';
 import SettingsPage from '@/pages/settings/SettingsPage';
+import VehicleSearchPage from '@/pages/vehicle-search/VehicleSearchPage';
+import AssetChecksPage from '@/pages/asset-checks/AssetChecksPage';
+import AssetProfilesPage from '@/pages/asset-profiles/AssetProfilesPage';
+import AssetSearchPage from '@/pages/asset-search/AssetSearchPage';
+import WorkshopsPage from '@/pages/workshops/WorkshopsPage';
+import UserManagementPage from '@/pages/system-management/user/UserManagementPage';
+import ReportsPage from '@/pages/reports/ReportsPage';
 import { Navigate, Route, Routes, useParams, Link } from 'react-router';
 import { PageSurface } from '@/components/layout';
 import { Layout19 } from '@/components/layouts/layout-19';
@@ -110,18 +117,19 @@ export function AppRoutingSetup() {
         <Route path="/vehicle-defects" element={<VehicleDefectsPage />} />
         <Route path="/reported-incidents" element={<ReportedIncidentsPage />} />
         <Route path="/vehicle-profiles" element={<VehicleProfilesPage />} />
-        <Route path="/vehicle-search" element={<PlaceholderPage />} />
-        <Route path="/asset-checks" element={<PlaceholderPage />} />
+        <Route path="/vehicle-search" element={<VehicleSearchPage />} />
+        <Route path="/asset-checks" element={<AssetChecksPage />} />
         <Route path="/asset-defects" element={<AssetDefectsPage />} />
-        <Route path="/asset-profiles" element={<PlaceholderPage />} />
-        <Route path="/asset-search" element={<PlaceholderPage />} />
-        <Route path="/workshops" element={<PlaceholderPage />} />
+        <Route path="/asset-profiles" element={<AssetProfilesPage />} />
+        <Route path="/asset-search" element={<AssetSearchPage />} />
+        <Route path="/workshops" element={<WorkshopsPage />} />
         <Route path="/earned-recognition" element={<EarnedRecognitionPage />} />
         <Route path="/wasl-management/*" element={<PlaceholderPage />} />
         <Route path="/system-management/settings" element={<SettingsPage />} />
+        <Route path="/system-management/user" element={<UserManagementPage />} />
         <Route path="/system-management/*" element={<PlaceholderPage />} />
-        <Route path="/reports/overview" element={<PlaceholderPage />} />
-        <Route path="/reports/*" element={<PlaceholderPage />} />
+        <Route path="/reports/overview" element={<ReportsPage />} />
+        <Route path="/reports/*" element={<ReportsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/logout" element={<PlaceholderPage />} />
       </Route>

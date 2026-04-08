@@ -263,7 +263,7 @@ export const MENU_SIDEBAR: MenuConfig = [
     children: [
       { title: 'Company', path: '/system-management/company' },
       { title: 'Roles and Permission', path: '/system-management/roles' },
-      { title: 'User', path: '/system-management/user' },
+      { title: 'User Management', path: '/system-management/user' },
       { title: 'App Management', path: '/system-management/app' },
       { title: 'Ads Management', path: '/system-management/ads' },
       { title: 'Tariff Update', path: '/system-management/tariff-update' },

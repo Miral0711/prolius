@@ -1,8 +1,5 @@
 import { useMemo, useState } from 'react';
-import { PageShell } from '@/components/ui/page-shell';
-import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
-import { fleetSurface } from '@/components/fleet/bus-master/tokens';
-import { cn } from '@/lib/utils';
+import { PageLayout } from '@/components/shared';
 import { VEHICLE_PROFILES_MOCK } from './mock-data';
 import { VehicleProfilesSearchBar } from './components/VehicleProfilesSearchBar';
 import { VehicleProfilesTable } from './components/VehicleProfilesTable';
@@ -52,49 +49,28 @@ export default function VehicleProfilesPage() {
     console.log(action, row);
 
   return (
-    <PageShell
-      title="Vehicle Profiles"
-      hideHeader
-      className="flex h-full min-h-0 flex-1 flex-col space-y-0"
-      contentWrapperClassName="relative flex min-h-0 flex-1 flex-col"
-    >
-      <PageSurface
-        padding={PAGE_SURFACE_FOOTER_PADDING}
-        fill
-        sectionGap="none"
-        className="min-h-0 flex-1 bg-[#f0f4f8]"
-      >
-        <PageSurface.Body className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div className={cn('flex min-h-0 flex-1 flex-col', fleetSurface.sectionGap)}>
-
-            {/* Search bar */}
-            <VehicleProfilesSearchBar
-              value={searchQuery}
-              onChange={setSearchQuery}
-              onSearch={handleSearch}
-              onClear={handleClear}
-            />
-
-            {/* Table */}
-            <VehicleProfilesTable
-              rows={pagedRows}
-              totalCount={filteredRows.length}
-              page={page}
-              pageSize={pageSize}
-              showArchived={showArchived}
-              onShowArchivedChange={(v) => { setShowArchived(v); setPage(1); }}
-              onPageChange={setPage}
-              onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
-              onResetColumns={() => {}}
-              onAddProfile={() => console.log('Add profile')}
-              onView={(row) => handleAction('view', row)}
-              onEdit={(row) => handleAction('edit', row)}
-              onDelete={(row) => handleAction('delete', row)}
-            />
-          </div>
-        </PageSurface.Body>
-        <PageSurface.Footer />
-      </PageSurface>
-    </PageShell>
+    <PageLayout title="Vehicle Profiles">
+      <VehicleProfilesSearchBar
+        value={searchQuery}
+        onChange={setSearchQuery}
+        onSearch={handleSearch}
+        onClear={handleClear}
+      />
+      <VehicleProfilesTable
+        rows={pagedRows}
+        totalCount={filteredRows.length}
+        page={page}
+        pageSize={pageSize}
+        showArchived={showArchived}
+        onShowArchivedChange={(v) => { setShowArchived(v); setPage(1); }}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+        onResetColumns={() => {}}
+        onAddProfile={() => console.log('Add profile')}
+        onView={(row) => handleAction('view', row)}
+        onEdit={(row) => handleAction('edit', row)}
+        onDelete={(row) => handleAction('delete', row)}
+      />
+    </PageLayout>
   );
 }

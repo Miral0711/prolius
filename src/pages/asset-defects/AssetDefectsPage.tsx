@@ -1,8 +1,5 @@
 import { useMemo, useState } from 'react';
-import { PageShell } from '@/components/ui/page-shell';
-import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
-import { fleetSurface } from '@/components/fleet/bus-master/tokens';
-import { cn } from '@/lib/utils';
+import { PageLayout, SearchPanel } from '@/components/shared';
 import { ASSET_DEFECTS_MOCK } from './mock-data';
 import type { AdvancedSearchState } from './components/AssetDefectsAdvancedSearch';
 import { AssetDefectsAdvancedSearch } from './components/AssetDefectsAdvancedSearch';
@@ -88,67 +85,40 @@ export default function AssetDefectsPage() {
   };
 
   return (
-    <PageShell
-      title="Asset Defects"
-      hideHeader
-      className="flex h-full min-h-0 flex-1 flex-col space-y-0"
-      contentWrapperClassName="relative flex min-h-0 flex-1 flex-col"
-    >
-      <PageSurface
-        padding={PAGE_SURFACE_FOOTER_PADDING}
-        fill
-        sectionGap="none"
-        className="min-h-0 flex-1 bg-[#f0f4f8]"
-      >
-        <PageSurface.Body className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div className={cn('flex min-h-0 flex-1 flex-col', fleetSurface.sectionGap)}>
-
-            {/* Search panel */}
-            <div
-              className={cn(
-                'max-w-full shrink-0 rounded-md border border-slate-200/90 bg-white shadow-sm',
-                fleetSurface.filterBar,
-              )}
-            >
-              <div className="flex flex-col gap-2">
-                <SearchModeTabs value={searchMode} onChange={handleTabChange} />
-
-                {searchMode === 'quick' ? (
-                  <AssetDefectsQuickSearch
-                    state={quickState}
-                    onChange={setQuickState}
-                    onSearch={handleSearch}
-                    onClear={handleClear}
-                    assetNumberOptions={ASSET_NUMBERS}
-                  />
-                ) : (
-                  <AssetDefectsAdvancedSearch
-                    state={advancedState}
-                    onChange={setAdvancedState}
-                    onSearch={handleSearch}
-                    onClear={handleClear}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Table */}
-            <AssetDefectsTable
-              rows={pagedRows}
-              totalCount={filteredRows.length}
-              page={page}
-              pageSize={pageSize}
-              showArchived={showArchived}
-              onShowArchivedChange={(v) => { setShowArchived(v); setPage(1); }}
-              onPageChange={setPage}
-              onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
-              onResetColumns={() => {}}
-              onViewDetail={(row) => console.log('View asset defect:', row)}
+    <PageLayout title="Asset Defects">
+      <SearchPanel>
+        <div className="flex flex-col gap-2">
+          <SearchModeTabs value={searchMode} onChange={handleTabChange} />
+          {searchMode === 'quick' ? (
+            <AssetDefectsQuickSearch
+              state={quickState}
+              onChange={setQuickState}
+              onSearch={handleSearch}
+              onClear={handleClear}
+              assetNumberOptions={ASSET_NUMBERS}
             />
-          </div>
-        </PageSurface.Body>
-        <PageSurface.Footer />
-      </PageSurface>
-    </PageShell>
+          ) : (
+            <AssetDefectsAdvancedSearch
+              state={advancedState}
+              onChange={setAdvancedState}
+              onSearch={handleSearch}
+              onClear={handleClear}
+            />
+          )}
+        </div>
+      </SearchPanel>
+      <AssetDefectsTable
+        rows={pagedRows}
+        totalCount={filteredRows.length}
+        page={page}
+        pageSize={pageSize}
+        showArchived={showArchived}
+        onShowArchivedChange={(v) => { setShowArchived(v); setPage(1); }}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+        onResetColumns={() => {}}
+        onViewDetail={(row) => console.log('View asset defect:', row)}
+      />
+    </PageLayout>
   );
 }

@@ -3,21 +3,13 @@ import { StatusBadge, type StatusVariant } from '@/components/dashboard/StatusBa
 import {
   DataTable,
   DataTableBodyScroll,
-  DataTableFooter,
   DataTableTable,
-  DataTableToolbar,
   TableCell,
   TableHeader,
   TableHeaderCell,
   TableRow,
 } from '@/components/fleet/bus-master/DataTable';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { TableToolbar, TablePagination } from '@/components/shared';
 import { cn } from '@/lib/utils';
 import { REPORTED_ISSUES_MOCK, type IssueStatus } from '../mock-data';
 import { useMemo, useState } from 'react';
@@ -37,33 +29,15 @@ export function ReportedIssuesTab() {
   const [pageSize, setPageSize] = useState(10);
 
   const totalCount = REPORTED_ISSUES_MOCK.length;
-  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-  const showingFrom = totalCount === 0 ? 0 : (page - 1) * pageSize + 1;
-  const showingTo = Math.min(page * pageSize, totalCount);
 
   const pagedRows = useMemo(
     () => REPORTED_ISSUES_MOCK.slice((page - 1) * pageSize, page * pageSize),
     [page, pageSize],
   );
 
-  const pageNumbers: (number | '…')[] = [];
-  if (totalPages <= 7) {
-    for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
-  } else {
-    pageNumbers.push(1);
-    if (page > 3) pageNumbers.push('…');
-    for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) pageNumbers.push(i);
-    if (page < totalPages - 2) pageNumbers.push('…');
-    pageNumbers.push(totalPages);
-  }
-
   return (
     <DataTable className="min-h-0">
-      <DataTableToolbar>
-        <h3 className="text-sm font-bold uppercase tracking-[0.02rem] text-slate-800">
-          Reported Issues
-        </h3>
-      </DataTableToolbar>
+      <TableToolbar title="Reported Issues" showExportButtons={false} />
 
       <DataTableBodyScroll>
         <DataTableTable className="min-w-[860px]">
@@ -87,7 +61,7 @@ export function ReportedIssuesTab() {
           <tbody className="bg-white">
             {pagedRows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={COL_COUNT} align="center" className="py-10 text-2sm text-slate-500">
+                <TableCell colSpan={8} align="center" className="py-10 text-2sm text-slate-500">
                   No reported issues found.
                 </TableCell>
               </TableRow>
@@ -138,58 +112,14 @@ export function ReportedIssuesTab() {
         </DataTableTable>
       </DataTableBodyScroll>
 
-      <DataTableFooter className="flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1">
-          <div className="flex items-center gap-1.5 text-xs text-slate-500">
-            <span>Show</span>
-            <Select
-              value={String(pageSize)}
-              onValueChange={(v) => { setPageSize(Number(v)); setPage(1); }}
-            >
-              <SelectTrigger className="h-7 w-[60px] border-slate-200 bg-white px-2 text-xs font-medium shadow-none">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {[10, 25, 50].map((n) => (
-                  <SelectItem key={n} value={String(n)}>{n}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <span>entries</span>
-          </div>
-          {totalCount > 0 && (
-            <p className="text-xs text-slate-500">
-              Viewing{' '}
-              <span className="font-medium tabular-nums text-slate-700">{showingFrom}</span>
-              {' – '}
-              <span className="font-medium tabular-nums text-slate-700">{showingTo}</span>
-              {' of '}
-              <span className="font-medium tabular-nums text-slate-700">{totalCount}</span>
-            </p>
-          )}
-        </div>
-        <div className="flex shrink-0 flex-wrap items-center justify-end gap-0.5">
-          <button type="button" disabled={page === 1} onClick={() => setPage(1)}
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-40">«</button>
-          <button type="button" disabled={page === 1} onClick={() => setPage(page - 1)}
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-40">Previous</button>
-          {pageNumbers.map((p, i) =>
-            p === '…' ? (
-              <span key={`e-${i}`} className="px-0.5 text-xs font-medium text-slate-400">…</span>
-            ) : (
-              <button key={p} type="button" onClick={() => setPage(p)}
-                className={cn(
-                  'flex h-6 min-w-[1.5rem] items-center justify-center rounded border px-0.5 text-xs font-medium transition-all',
-                  p === page ? 'border-[#2e5f8a] bg-[#2e5f8a] text-white shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50',
-                )}>{p}</button>
-            )
-          )}
-          <button type="button" disabled={page === totalPages} onClick={() => setPage(page + 1)}
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-40">Next</button>
-          <button type="button" disabled={page === totalPages} onClick={() => setPage(totalPages)}
-            className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-40">»</button>
-        </div>
-      </DataTableFooter>
+      <TablePagination
+        page={page}
+        pageSize={pageSize}
+        totalCount={totalCount}
+        onPageChange={setPage}
+        onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+        pageSizeOptions={[10, 25, 50]}
+      />
     </DataTable>
   );
 }

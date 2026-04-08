@@ -9,7 +9,6 @@ import {
   XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { PageShell } from '@/components/ui/page-shell';
 import { StatCard } from '@/components/dashboard/StatCard';
 import {
   BusListTable,
@@ -21,7 +20,7 @@ import {
   type MdtHealthState,
   type RowMenuEntry,
 } from '@/components/fleet/bus-master';
-import { PageSurface, PAGE_SURFACE_FOOTER_PADDING } from '@/components/layout';
+import { PageLayout } from '@/components/shared';
 
 /* ═══════════════════════════════════════════════════════════════
    TYPES & DUMMY DATA
@@ -382,121 +381,78 @@ export default function BusMasterPage() {
   };
 
   return (
-    <PageShell
-      title="Bus Management"
-      hideHeader
-      className="flex h-full min-h-0 flex-1 flex-col space-y-0"
-      contentWrapperClassName="relative flex min-h-0 flex-1 flex-col"
-    >
-      <PageSurface
-        padding={PAGE_SURFACE_FOOTER_PADDING}
-        fill
-        sectionGap="none"
-        className="min-h-0 flex-1 bg-[#f0f4f8]"
+    <PageLayout title="Bus Management">
+      {/* KPI */}
+      <div
+        className={cn(
+          'grid shrink-0 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
+          fleetSurface.kpiGap,
+        )}
       >
-        <PageSurface.Body className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div
-            className={cn(
-              'flex min-h-0 flex-1 flex-col',
-              fleetSurface.sectionGap,
-            )}
-          >
-            {/* KPI */}
-            <div
-              className={cn(
-                'grid shrink-0 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
-                fleetSurface.kpiGap,
-              )}
-            >
-              {kpis.map((k, i) => (
-                <StatCard
-                  key={i}
-                  compact
-                  label={k.title}
-                  value={k.value}
-                  icon={k.icon}
-                  color={k.color}
-                  bgColor={k.bg}
-                  className="border-[#d4e0ea] bg-white shadow-sm"
-                />
-              ))}
-            </div>
+        {kpis.map((k, i) => (
+          <StatCard
+            key={i}
+            compact
+            label={k.title}
+            value={k.value}
+            icon={k.icon}
+            color={k.color}
+            bgColor={k.bg}
+            className="border-[#d4e0ea] bg-white shadow-sm"
+          />
+        ))}
+      </div>
 
-            {/* Filters — solid card (Bus Master reference) */}
-            <div
-              className={cn(
-                'max-w-full shrink-0 rounded-md border border-[#d4e0ea] bg-white shadow-sm',
-                fleetSurface.filterBar,
-              )}
-            >
-              <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-                  <FilterDropdown
-                    defaultValue="all"
-                    widthClassName="min-w-[160px] max-w-[200px]"
-                    items={[
-                      { value: 'all', label: 'Select Company' },
-                      { value: 'riyadh', label: 'Riyadh Bus Co.' },
-                    ]}
-                  />
-                  <FilterDropdown
-                    defaultValue="all"
-                    widthClassName="min-w-[140px] max-w-[180px]"
-                    items={[{ value: 'all', label: 'Select Plate' }]}
-                  />
-                  <SearchInput
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    containerClassName="min-w-[160px] max-w-[260px] flex-1"
-                  />
-                </div>
-                <div className="flex flex-wrap items-center gap-1.5 lg:justify-end">
-                  <FleetToolbarButton
-                    tone="success"
-                    tabIndex={-1}
-                    className="px-2.5 sm:px-3"
-                  >
-                    Active
-                  </FleetToolbarButton>
-                  <FleetToolbarButton
-                    tone="danger"
-                    tabIndex={-1}
-                    className="px-2.5 sm:px-3"
-                  >
-                    Out of service
-                  </FleetToolbarButton>
-                  <FleetToolbarButton
-                    tone="warning"
-                    tabIndex={-1}
-                    className="px-2.5 sm:px-3"
-                  >
-                    Maintenance
-                  </FleetToolbarButton>
-                  <FleetToolbarButton
-                    tone="primary"
-                    className="gap-1.5 px-2.5 sm:px-3"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    Add New Bus
-                  </FleetToolbarButton>
-                </div>
-              </div>
-            </div>
-
-            <BusListTable
-              rows={BUS_MASTER_DUMMY}
-              selectedIds={selectedIds}
-              onToggleRow={toggleSelect}
-              onToggleAll={toggleAll}
-              totalEntryCount={779}
-              getRowMenuEntries={buildRowMenuEntries}
+      {/* Filters */}
+      <div
+        className={cn(
+          'max-w-full shrink-0 rounded-md border border-[#d4e0ea] bg-white shadow-sm',
+          fleetSurface.filterBar,
+        )}
+      >
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+            <FilterDropdown
+              defaultValue="all"
+              widthClassName="min-w-[160px] max-w-[200px]"
+              items={[
+                { value: 'all', label: 'Select Company' },
+                { value: 'riyadh', label: 'Riyadh Bus Co.' },
+              ]}
+            />
+            <FilterDropdown
+              defaultValue="all"
+              widthClassName="min-w-[140px] max-w-[180px]"
+              items={[{ value: 'all', label: 'Select Plate' }]}
+            />
+            <SearchInput
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              containerClassName="min-w-[160px] max-w-[260px] flex-1"
             />
           </div>
-        </PageSurface.Body>
-        <PageSurface.Footer />
-      </PageSurface>
-    </PageShell>
+          <div className="flex flex-wrap items-center gap-1.5 lg:justify-end">
+            <FleetToolbarButton tone="success" tabIndex={-1} className="px-2.5 sm:px-3">Active</FleetToolbarButton>
+            <FleetToolbarButton tone="danger" tabIndex={-1} className="px-2.5 sm:px-3">Out of service</FleetToolbarButton>
+            <FleetToolbarButton tone="warning" tabIndex={-1} className="px-2.5 sm:px-3">Maintenance</FleetToolbarButton>
+            <FleetToolbarButton tone="primary" className="gap-1.5 px-2.5 sm:px-3">
+              <Plus className="h-3.5 w-3.5" />
+              Add New Bus
+            </FleetToolbarButton>
+          </div>
+        </div>
+      </div>
+
+      <BusListTable
+        rows={BUS_MASTER_DUMMY}
+        selectedIds={selectedIds}
+        onToggleRow={toggleSelect}
+        onToggleAll={toggleAll}
+        totalEntryCount={779}
+        getRowMenuEntries={buildRowMenuEntries}
+      />
+    </PageLayout>
   );
 }
 

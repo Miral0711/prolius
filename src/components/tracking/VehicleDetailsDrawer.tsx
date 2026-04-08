@@ -17,85 +17,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { typography } from '@/lib/typography';
+import { PanelHeader } from '@/components/shared/PanelHeader';
+import { InfoGridRow } from '@/components/shared/InfoGridRow';
 
 interface VehicleDetailsDrawerProps {
   vehicle: BusLiveVehicle | null;
   onClose: () => void;
-}
-
-function PanelHeader({ title, icon: Icon, extra }: { title: string; icon?: any; extra?: string }) {
-  return (
-    <header className="mb-2 border-b border-slate-100 pb-2">
-      <div className="flex flex-nowrap items-baseline justify-between gap-3 px-2">
-        <div
-          className={cn(
-            'min-w-0 flex-1',
-            Icon &&
-              'grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-1.5',
-          )}
-        >
-          {Icon ? (
-            <span className="inline-flex translate-y-0.5 text-[#2e5f8a]" aria-hidden>
-              <Icon className="size-3.5" />
-            </span>
-          ) : null}
-          <h3
-            className={cn(
-              typography.sectionTitle,
-              'min-w-0 truncate',
-              Icon && 'col-start-2',
-            )}
-          >
-            {title}
-          </h3>
-        </div>
-        {extra ? (
-          <span
-            className={cn(
-              typography.meta,
-              'max-w-[42%] shrink-0 whitespace-nowrap text-right text-slate-500 tabular-nums',
-            )}
-          >
-            {extra}
-          </span>
-        ) : null}
-      </div>
-    </header>
-  );
-}
-
-function GridRow({ label, value, status, theme = 'light', icon: Icon }: { 
-  label: string; 
-  value: string | number; 
-  status?: 'online' | 'offline' | 'warn' | 'active';
-  theme?: 'light' | 'soft' ;
-  icon?: any;
-}) {
-  return (
-    <div className={cn(
-      "flex flex-col gap-0.5 px-2 py-1.5 rounded-md border transition-all group",
-      theme === 'light' ? "bg-white border-slate-100/60" : "bg-slate-50/50 border-transparent"
-    )}>
-      <div className="flex items-center gap-1">
-        {Icon && <Icon className="h-2 w-2 text-slate-400 group-hover:text-[#2e5f8a] transition-colors" />}
-        <span className={cn(typography.caption, 'truncate font-normal leading-tight text-slate-500 tracking-tight')}>
-          {label}
-        </span>
-      </div>
-      <div className="flex items-center gap-1.5 min-w-0">
-        {status && (
-          <div className={cn(
-            "h-1.5 w-1.5 rounded-full shrink-0 shadow-[0_0_4px_rgba(0,0,0,0.1)]",
-            status === 'online' || status === 'active' ? 'bg-emerald-500' : 
-            status === 'offline' ? 'bg-slate-300' : 'bg-rose-500'
-          )} />
-        )}
-        <span className={cn(typography.body, 'font-medium text-slate-800 truncate leading-tight')}>
-          {value || '--'}
-        </span>
-      </div>
-    </div>
-  );
 }
 
 export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerProps) {
@@ -188,12 +115,12 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
           <section>
             <PanelHeader title="Vehicle Information" icon={Activity} />
             <div className="grid grid-cols-2 gap-1.5">
-              <GridRow label="Plate No" value={vehicle.plate} />
-              <GridRow label="Vehicle Status" value={vehicle.vehicleStatus} status={vehicle.status === 'Online' ? 'online' : 'offline'} />
-              <GridRow label="Current Speed" value={`${vehicle.speed} KM/H`} />
-              <GridRow label="Engine Status" value={vehicle.engineStatus} status={vehicle.engineStatus === 'On' ? 'online' : 'offline'} />
-              <GridRow label="Driver Login" value={vehicle.driverLogin ? 'Logged In' : 'Logged Out'} status={vehicle.driverLogin ? 'online' : 'warn'} />
-              <GridRow label="Battery / Volt" value={vehicle.batteryVoltage || '24.8V'} />
+              <InfoGridRow label="Plate No" value={vehicle.plate} />
+              <InfoGridRow label="Vehicle Status" value={vehicle.vehicleStatus} status={vehicle.status === 'Online' ? 'online' : 'offline'} />
+              <InfoGridRow label="Current Speed" value={`${vehicle.speed} KM/H`} />
+              <InfoGridRow label="Engine Status" value={vehicle.engineStatus} status={vehicle.engineStatus === 'On' ? 'online' : 'offline'} />
+              <InfoGridRow label="Driver Login" value={vehicle.driverLogin ? 'Logged In' : 'Logged Out'} status={vehicle.driverLogin ? 'online' : 'warn'} />
+              <InfoGridRow label="Battery / Volt" value={vehicle.batteryVoltage || '24.8V'} />
             </div>
           </section>
 
@@ -201,17 +128,17 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
           <section>
             <PanelHeader title="Device Information" icon={Cpu} extra={`ver ${vehicle.mdvrVersion}`} />
             <div className="grid grid-cols-2 gap-1.5">
-              <GridRow label="Device ID" value={vehicle.deviceId} theme="soft" />
-              <GridRow label="MDVR Status" value={vehicle.dvrStatus} status={vehicle.dvrStatus === 'Online' ? 'online' : 'offline'} theme="soft" />
-              <GridRow label="IMEI" value="864221045..." theme="soft" />
-              <GridRow label="MDVR Version" value={vehicle.mdvrVersion} theme="soft" />
-              <GridRow label="SIM ID" value="899661123..." theme="soft" />
-              <GridRow label="App Version" value="v2.4.1" theme="soft" />
+              <InfoGridRow label="Device ID" value={vehicle.deviceId} theme="soft" />
+              <InfoGridRow label="MDVR Status" value={vehicle.dvrStatus} status={vehicle.dvrStatus === 'Online' ? 'online' : 'offline'} theme="soft" />
+              <InfoGridRow label="IMEI" value="864221045..." theme="soft" />
+              <InfoGridRow label="MDVR Version" value={vehicle.mdvrVersion} theme="soft" />
+              <InfoGridRow label="SIM ID" value="899661123..." theme="soft" />
+              <InfoGridRow label="App Version" value="v2.4.1" theme="soft" />
               <div className="col-span-2">
-                <GridRow label="Storage / SD Card" value="128GB / 92% Free Health" theme="soft" />
+                <InfoGridRow label="Storage / SD Card" value="128GB / 92% Free Health" theme="soft" />
               </div>
               <div className="col-span-2">
-                <GridRow label="Device Time" value={vehicle.gpsTime || '--'} theme="soft" />
+                <InfoGridRow label="Device Time" value={vehicle.gpsTime || '--'} theme="soft" />
               </div>
             </div>
           </section>
@@ -220,11 +147,11 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
           <section>
             <PanelHeader title="Camera / Visual" icon={Eye} />
             <div className="grid grid-cols-2 gap-1.5">
-              <GridRow label="DVR Link" value={vehicle.dvrStatus} status={vehicle.dvrStatus === 'Online' ? 'online' : 'offline'} />
-              <GridRow label="Camera 1" value={vehicle.camera1Status} status={vehicle.camera1Status === 'Online' ? 'active' : 'offline'} />
-              <GridRow label="Camera 2" value={vehicle.camera2Status} status={vehicle.camera2Status === 'Online' ? 'active' : 'offline'} />
-              <GridRow label="Connected Cams" value={vehicle.connectedCameras} />
-              <GridRow label="Disconnected" value={vehicle.disconnectedCameras} status={vehicle.disconnectedCameras > 0 ? 'warn' : undefined} />
+              <InfoGridRow label="DVR Link" value={vehicle.dvrStatus} status={vehicle.dvrStatus === 'Online' ? 'online' : 'offline'} />
+              <InfoGridRow label="Camera 1" value={vehicle.camera1Status} status={vehicle.camera1Status === 'Online' ? 'active' : 'offline'} />
+              <InfoGridRow label="Camera 2" value={vehicle.camera2Status} status={vehicle.camera2Status === 'Online' ? 'active' : 'offline'} />
+              <InfoGridRow label="Connected Cams" value={vehicle.connectedCameras} />
+              <InfoGridRow label="Disconnected" value={vehicle.disconnectedCameras} status={vehicle.disconnectedCameras > 0 ? 'warn' : undefined} />
             </div>
           </section>
 
@@ -232,14 +159,14 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
           <section>
             <PanelHeader title="GPS & Network" icon={Radio} />
             <div className="grid grid-cols-2 gap-1.5">
-              <GridRow label="GPS Status" value={vehicle.lat ? 'Fixed' : 'Searching'} status={vehicle.lat ? 'online' : 'warn'} theme="soft" />
-              <GridRow label="Network Type" value="5G / LTE" theme="soft" />
-              <GridRow label="Signal Quality" value="Excellent" status="online" theme="soft" />
-              <GridRow label="IP Address" value="192.168.1.42" theme="soft" />
-              <GridRow label="Satellites" value={`${vehicle.gpsSatellites} Locked`} theme="soft" />
-              <GridRow label="Latency" value="24ms" status="online" theme="soft" />
+              <InfoGridRow label="GPS Status" value={vehicle.lat ? 'Fixed' : 'Searching'} status={vehicle.lat ? 'online' : 'warn'} theme="soft" />
+              <InfoGridRow label="Network Type" value="5G / LTE" theme="soft" />
+              <InfoGridRow label="Signal Quality" value="Excellent" status="online" theme="soft" />
+              <InfoGridRow label="IP Address" value="192.168.1.42" theme="soft" />
+              <InfoGridRow label="Satellites" value={`${vehicle.gpsSatellites} Locked`} theme="soft" />
+              <InfoGridRow label="Latency" value="24ms" status="online" theme="soft" />
               <div className="col-span-2">
-                <GridRow 
+                <InfoGridRow 
                   label="Coordinates" 
                   value={(vehicle.lat !== null && vehicle.lng !== null) ? `${vehicle.lat.toFixed(4)}, ${vehicle.lng.toFixed(4)}` : '--'} 
                   theme="soft" 
@@ -254,17 +181,17 @@ export function VehicleDetailsDrawer({ vehicle, onClose }: VehicleDetailsDrawerP
             <PanelHeader title="Alerts & Operations" icon={Bell} />
             <div className="grid grid-cols-2 gap-1.5">
               <div className="col-span-2">
-                <GridRow label="Last Alarm" value="None Detected" status="online" />
+                <InfoGridRow label="Last Alarm" value="None Detected" status="online" />
               </div>
-              <GridRow label="Ignition" value={vehicle.engineStatus} />
-              <GridRow label="Load" value="Optimal" status="online" />
-              <GridRow label="Operator" value={vehicle.driver} />
-              <GridRow label="Safety Score" value="98%" status="online" />
+              <InfoGridRow label="Ignition" value={vehicle.engineStatus} />
+              <InfoGridRow label="Load" value="Optimal" status="online" />
+              <InfoGridRow label="Operator" value={vehicle.driver} />
+              <InfoGridRow label="Safety Score" value="98%" status="online" />
               <div className="col-span-2">
-                <GridRow label="Terminal Area" value="Depot Zone A / Riyadh Central" />
+                <InfoGridRow label="Terminal Area" value="Depot Zone A / Riyadh Central" />
               </div>
               <div className="col-span-2">
-                <GridRow label="Geofence Zone" value="Active Operational Area" status="active" />
+                <InfoGridRow label="Geofence Zone" value="Active Operational Area" status="active" />
               </div>
             </div>
           </section>
