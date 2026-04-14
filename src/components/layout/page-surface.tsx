@@ -14,7 +14,7 @@ export const PAGE_SURFACE_PADDING = {
 export type PageSurfacePadding = keyof typeof PAGE_SURFACE_PADDING;
 
 /**
- * Matches Live Bus Tracking (`padding="xs"`): use this on any route that renders
+ * Matches full-height pages (`padding="xs"`): use this on any route that renders
  * `PageSurface.Footer` so inset + space below the copyright line match the reference page.
  */
 export const PAGE_SURFACE_FOOTER_PADDING: PageSurfacePadding = 'xs';

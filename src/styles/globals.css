@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @source "../**/*.{js,ts,jsx,tsx}";
-/* Explicit pages/features for Bus Live Tracking and other route components */
+/* Explicit pages/features for route components */
 @source "../pages/**/*.{ts,tsx,js,jsx}";
 
 @import 'tw-animate-css';

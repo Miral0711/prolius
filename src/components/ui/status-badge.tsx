@@ -18,7 +18,7 @@ export interface StatusBadgeProps
   showDot?: boolean;
 }
 
-/** Reusable online/offline pill used across tracking & DVR surfaces. */
+/** Reusable online/offline pill used across monitoring surfaces. */
 export function StatusBadge({
   status,
   label,

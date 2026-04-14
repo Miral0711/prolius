@@ -42,12 +42,12 @@ export function DashboardKpiSection() {
           />
         ))}
         <Link
-          to="/bus-tracking/live"
+          to="/fleet-planning"
           className="col-span-2 flex h-[56px] flex-col items-center justify-center rounded-lg border border-slate-200 bg-white/60 p-2.5 backdrop-blur-md shadow-sm transition-colors hover:border-blue-200 hover:bg-blue-50/30 sm:col-span-1 lg:col-span-1"
         >
           <MapPin className="mb-2 h-5 w-5 text-blue-500" />
-          <span className="text-sm font-medium text-slate-700">Open Map</span>
-          <span className="text-xs text-slate-500">Live Tracking</span>
+          <span className="text-sm font-medium text-slate-700">Fleet Planning</span>
+          <span className="text-xs text-slate-500">View schedule</span>
         </Link>
       </div>
     </section>

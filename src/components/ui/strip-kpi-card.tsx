@@ -30,7 +30,6 @@ export interface StripKpiCardProps {
 
 /**
  * Compact horizontal KPI tile for map overlays and monitoring strips.
- * Shared by Live Bus Tracking and Live DVR Monitoring.
  */
 export function StripKpiCard({
   label,

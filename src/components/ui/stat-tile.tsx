@@ -104,7 +104,7 @@ export interface StatTileProps {
   tint?: StatTileTint;
   className?: string;
   /** Use 'cockpit' for Manager Cockpit top section (icon circle + KPI hierarchy). */
-  /** Use 'compact' for denser KPI rows (Bus Live Tracking). */
+  /** Use 'compact' for denser KPI rows. */
   variant?: 'default' | 'cockpit' | 'compact';
 }
 

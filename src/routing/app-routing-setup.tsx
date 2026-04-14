@@ -1,4 +1,3 @@
-import AiAlertMonitoringPage from '@/pages/bus-ai-alerts/AiAlertMonitoringPage';
 import VehicleChecksPage from '@/pages/vehicle-checks/VehicleChecksPage';
 import VehicleDefectsPage from '@/pages/vehicle-defects/VehicleDefectsPage';
 import ReportedIncidentsPage from '@/pages/reported-incidents/ReportedIncidentsPage';
@@ -6,137 +5,91 @@ import VehicleProfilesPage from '@/pages/vehicle-profiles/VehicleProfilesPage';
 import AssetDefectsPage from '@/pages/asset-defects/AssetDefectsPage';
 import EarnedRecognitionPage from '@/pages/earned-recognition/EarnedRecognitionPage';
 import FleetPlanningPage from '@/pages/fleet-planning/FleetPlanningPage';
-import BusHistoryTrackingPage from '@/pages/bus-tracking/BusHistoryTrackingPage';
-import BusLiveTrackingPage from '@/pages/bus-tracking/BusLiveTrackingPage';
-import HistoryDvrPage from '@/pages/bus-video-monitoring/HistoryDvrPage';
-import LiveDvrMonitoringPage from '@/pages/bus-video-monitoring/LiveDvrMonitoringPage';
 import DashboardPage from '@/pages/dashboard/DashboardPage';
-import BusMasterPage from '@/pages/fleet-management/bus/BusMasterPage';
-import CreateJobPage from '@/pages/job-dispatching/CreateJobPage';
-import ManagerCockpitPage from '@/pages/manager-cockpit';
 import MessagingPage from '@/pages/messaging/MessagingPage';
 import SettingsPage from '@/pages/settings/SettingsPage';
-import VehicleSearchPage from '@/pages/vehicle-search/VehicleSearchPage';
 import AssetChecksPage from '@/pages/asset-checks/AssetChecksPage';
 import AssetProfilesPage from '@/pages/asset-profiles/AssetProfilesPage';
-import AssetSearchPage from '@/pages/asset-search/AssetSearchPage';
 import WorkshopsPage from '@/pages/workshops/WorkshopsPage';
 import UserManagementPage from '@/pages/system-management/user/UserManagementPage';
 import ReportsPage from '@/pages/reports/ReportsPage';
-import { Navigate, Route, Routes, useParams, Link } from 'react-router';
-import { PageSurface } from '@/components/layout';
+import LiveTrackingPage from '@/pages/tracking/LiveTrackingPage';
+import HistoryTrackingPage from '@/pages/tracking/HistoryTrackingPage';
+import AlertsPage from '@/pages/tracking/AlertsPage';
+import InspectionsPage from '@/pages/vehicle-management/InspectionsPage';
+import MaintenanceRecordsPage from '@/pages/vehicle-management/MaintenanceRecordsPage';
+import InventoryPage from '@/pages/asset-management/InventoryPage';
+import SuppliersPage from '@/pages/asset-management/SuppliersPage';
+import RolesPermissionsPage from '@/pages/system-management/RolesPermissionsPage';
+import { Navigate, Route, Routes } from 'react-router';
 import { Layout19 } from '@/components/layouts/layout-19';
-
-function PlaceholderPage() {
-  const { '*': splat } = useParams();
-  const path = splat ? `/${splat}` : '';
-  const title =
-    path.split('/').filter(Boolean).pop()?.replace(/-/g, ' ') ?? 'Page';
-  return (
-    <PageSurface padding="md">
-      <PageSurface.Body>
-        <h1 className="text-xl font-semibold text-[#1F2937] capitalize">{title}</h1>
-        <p className="mt-2 text-sm text-[#64748B]">
-          For this page's UI refer to this link:{' '}
-          <Link
-            to="/fleet-planning"
-            className="font-medium text-[#3d6b8e] underline underline-offset-2 hover:text-[#2e5270]"
-          >
-            fleet-planning
-          </Link>
-        </p>
-      </PageSurface.Body>
-    </PageSurface>
-  );
-}
 
 export function AppRoutingSetup() {
   return (
     <Routes>
       <Route element={<Layout19 />}>
+        {/* Dashboard */}
         <Route path="/dashboard/overview" element={<DashboardPage />} />
-        <Route
-          path="/dashboard"
-          element={<Navigate to="/dashboard/overview" replace />}
-        />
-        <Route path="/dashboard/*" element={<PlaceholderPage />} />
-        <Route path="/manager-cockpit" element={<ManagerCockpitPage />} />
-        <Route
-          path="/bus-tracking"
-          element={<Navigate to="/bus-tracking/live" replace />}
-        />
-        <Route path="/bus-tracking/live" element={<BusLiveTrackingPage />} />
-        <Route
-          path="/bus-tracking/history"
-          element={<BusHistoryTrackingPage />}
-        />
-        <Route path="/bus-tracking/*" element={<PlaceholderPage />} />
-        <Route path="/bus-driver-list" element={<PlaceholderPage />} />
-        <Route path="/bus-route-planning" element={<PlaceholderPage />} />
-        <Route
-          path="/bus-video-monitoring/live-dvr"
-          element={<LiveDvrMonitoringPage />}
-        />
-        <Route
-          path="/bus-video-monitoring/history-dvr"
-          element={<HistoryDvrPage />}
-        />
-        <Route path="/bus-video-monitoring/*" element={<PlaceholderPage />} />
-        <Route
-          path="/bus-alert-monitoring"
-          element={<Navigate to="/bus-alert-monitoring/overview" replace />}
-        />
-        <Route
-          path="/bus-alert-monitoring/overview"
-          element={<AiAlertMonitoringPage />}
-        />
-        <Route
-          path="/bus-alert-monitoring/ai-alerts"
-          element={<AiAlertMonitoringPage />}
-        />
-        <Route path="/bus-alert-monitoring/*" element={<PlaceholderPage />} />
-        <Route path="/taxi-tracking/*" element={<PlaceholderPage />} />
-        <Route path="/job-dispatching" element={<CreateJobPage />} />
-        <Route path="/job-dispatching/create-job" element={<CreateJobPage />} />
-        <Route path="/job-dispatching/*" element={<PlaceholderPage />} />
-        <Route path="/shift-management/*" element={<PlaceholderPage />} />
-        <Route
-          path="/messaging"
-          element={<Navigate to="/messaging/chat" replace />}
-        />
+        <Route path="/dashboard" element={<Navigate to="/dashboard/overview" replace />} />
+
+        {/* Fleet Planning */}
+        <Route path="/fleet-planning" element={<FleetPlanningPage />} />
+
+        {/* Tracking & Monitoring */}
+        <Route path="/tracking/live" element={<LiveTrackingPage />} />
+        <Route path="/tracking/history" element={<HistoryTrackingPage />} />
+        <Route path="/tracking/alerts" element={<AlertsPage />} />
+        <Route path="/tracking/incidents" element={<ReportedIncidentsPage />} />
+
+        {/* Vehicle Management */}
+        <Route path="/vehicle-management/profiles" element={<VehicleProfilesPage />} />
+        <Route path="/vehicle-management/checks" element={<VehicleChecksPage />} />
+        <Route path="/vehicle-management/defects" element={<VehicleDefectsPage />} />
+        <Route path="/vehicle-management/inspections" element={<InspectionsPage />} />
+        <Route path="/vehicle-management/maintenance" element={<MaintenanceRecordsPage />} />
+
+        {/* Asset Management */}
+        <Route path="/asset-management/profiles" element={<AssetProfilesPage />} />
+        <Route path="/asset-management/checks" element={<AssetChecksPage />} />
+        <Route path="/asset-management/defects" element={<AssetDefectsPage />} />
+        <Route path="/asset-management/inventory" element={<InventoryPage />} />
+        <Route path="/asset-management/suppliers" element={<SuppliersPage />} />
+
+        {/* Workshops */}
+        <Route path="/workshops" element={<WorkshopsPage />} />
+
+        {/* Messaging */}
+        <Route path="/messaging" element={<Navigate to="/messaging/chat" replace />} />
         <Route path="/messaging/chat" element={<MessagingPage />} />
         <Route path="/messaging/*" element={<MessagingPage />} />
-        <Route path="/taxi-video-monitoring/*" element={<PlaceholderPage />} />
-        <Route path="/taxi-alert-monitoring/*" element={<PlaceholderPage />} />
-        <Route path="/ads-management/*" element={<PlaceholderPage />} />
-        <Route path="/crm/*" element={<PlaceholderPage />} />
-        <Route path="/fleet-management/bus" element={<BusMasterPage />} />
-        <Route path="/fleet-management/*" element={<PlaceholderPage />} />
-        <Route path="/fleet-planning" element={<FleetPlanningPage />} />
-        <Route path="/vehicle-checks" element={<VehicleChecksPage />} />
-        <Route path="/vehicle-defects" element={<VehicleDefectsPage />} />
-        <Route path="/reported-incidents" element={<ReportedIncidentsPage />} />
-        <Route path="/vehicle-profiles" element={<VehicleProfilesPage />} />
-        <Route path="/vehicle-search" element={<VehicleSearchPage />} />
-        <Route path="/asset-checks" element={<AssetChecksPage />} />
-        <Route path="/asset-defects" element={<AssetDefectsPage />} />
-        <Route path="/asset-profiles" element={<AssetProfilesPage />} />
-        <Route path="/asset-search" element={<AssetSearchPage />} />
-        <Route path="/workshops" element={<WorkshopsPage />} />
+
+        {/* Earned Recognition */}
         <Route path="/earned-recognition" element={<EarnedRecognitionPage />} />
-        <Route path="/wasl-management/*" element={<PlaceholderPage />} />
-        <Route path="/system-management/settings" element={<SettingsPage />} />
-        <Route path="/system-management/user" element={<UserManagementPage />} />
-        <Route path="/system-management/*" element={<PlaceholderPage />} />
+
+        {/* Reports */}
         <Route path="/reports/overview" element={<ReportsPage />} />
         <Route path="/reports/*" element={<ReportsPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/logout" element={<PlaceholderPage />} />
+
+        {/* User & System Management */}
+        <Route path="/system-management/users" element={<UserManagementPage />} />
+        <Route path="/system-management/roles" element={<RolesPermissionsPage />} />
+        <Route path="/system-management/settings" element={<SettingsPage />} />
+
+        {/* Legacy redirects — keep old URLs working */}
+        <Route path="/vehicle-checks" element={<Navigate to="/vehicle-management/checks" replace />} />
+        <Route path="/vehicle-defects" element={<Navigate to="/vehicle-management/defects" replace />} />
+        <Route path="/vehicle-profiles" element={<Navigate to="/vehicle-management/profiles" replace />} />
+        <Route path="/vehicle-search" element={<Navigate to="/vehicle-management/profiles" replace />} />
+        <Route path="/asset-checks" element={<Navigate to="/asset-management/checks" replace />} />
+        <Route path="/asset-defects" element={<Navigate to="/asset-management/defects" replace />} />
+        <Route path="/asset-profiles" element={<Navigate to="/asset-management/profiles" replace />} />
+        <Route path="/asset-search" element={<Navigate to="/asset-management/profiles" replace />} />
+        <Route path="/reported-incidents" element={<Navigate to="/tracking/incidents" replace />} />
+        <Route path="/system-management/user" element={<Navigate to="/system-management/users" replace />} />
+        <Route path="/settings" element={<Navigate to="/system-management/settings" replace />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/dashboard/overview" replace />} />
     </Routes>
   );
 }
-
-

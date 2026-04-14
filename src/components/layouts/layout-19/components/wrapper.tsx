@@ -12,25 +12,13 @@ export function Wrapper() {
   const { isMobile } = useLayout();
   const { pathname } = useLocation();
 
-  /** Main fills viewport below header; inner PageSurface / panels own scroll (same chain as Live Bus Tracking). */
+  /** Main fills viewport below header; inner PageSurface / panels own scroll. */
   const isViewportFillMain =
-    pathname === '/bus-tracking/live' ||
-    pathname === '/bus-tracking/history' ||
-    pathname === '/messaging/chat' ||
-    pathname === '/bus-video-monitoring/live-dvr' ||
-    pathname === '/bus-video-monitoring/history-dvr' ||
-    pathname === '/fleet-management/bus' ||
-    pathname.startsWith('/job-dispatching') ||
-    pathname === '/manager-cockpit' ||
-    pathname.startsWith('/bus-alert-monitoring');
-
-  // Example of passing status label specifically for dashboard
-  const statusLabel =
-    pathname === '/dashboard/overview' ? 'Live Fleet Monitor' : undefined;
+    pathname === '/messaging/chat' || pathname === '/tracking/live';
 
   return (
     <div className={cn(pageBackground, 'flex flex-col')}>
-      <Header statusLabel={statusLabel} />
+      <Header />
 
       <div
         className={cn(

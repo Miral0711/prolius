@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
  */
 const pageContainerClass = 'relative mx-auto w-full space-y-1.5';
 
-/** Full-viewport child under app header; used by DVR pages, Create Job, etc. */
+/** Full-viewport child under app header; used by Create Job, Messaging, and similar full-height pages. */
 export const PAGE_SHELL_VIEWPORT_FILL_CLASSNAME =
   'flex h-full min-h-0 flex-1 flex-col space-y-0 overflow-hidden bg-transparent pt-0 pb-0 max-w-none';
 

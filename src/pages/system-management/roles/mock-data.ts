@@ -1,0 +1,158 @@
+import type { Role, ModulePermissions } from './types';
+
+const MODULES_TEMPLATE: Omit<ModulePermissions, 'permissions'>[] = [
+  { moduleId: 'dashboard',          moduleLabel: 'Dashboard',              available: ['view', 'export'] },
+  { moduleId: 'fleet-planning',     moduleLabel: 'Fleet Planning',         available: ['view', 'create', 'edit', 'delete', 'export', 'approve'] },
+  { moduleId: 'tracking',           moduleLabel: 'Tracking & Monitoring',  available: ['view', 'export', 'configure'] },
+  { moduleId: 'vehicle-management', moduleLabel: 'Vehicle Management',     available: ['view', 'create', 'edit', 'delete', 'export'] },
+  { moduleId: 'asset-management',   moduleLabel: 'Asset Management',       available: ['view', 'create', 'edit', 'delete', 'export'] },
+  { moduleId: 'workshops',          moduleLabel: 'Workshops',              available: ['view', 'create', 'edit', 'delete', 'export', 'approve'] },
+  { moduleId: 'messaging',          moduleLabel: 'Messaging',              available: ['view', 'create', 'delete', 'assign'] },
+  { moduleId: 'reports',            moduleLabel: 'Reports',                available: ['view', 'export', 'configure'] },
+  { moduleId: 'system-management',  moduleLabel: 'System Management',      available: ['view', 'create', 'edit', 'delete', 'configure', 'assign'] },
+];
+
+function makeModules(grants: Record<string, string[]>): ModulePermissions[] {
+  return MODULES_TEMPLATE.map((m) => {
+    const allowed = grants[m.moduleId] ?? [];
+    const permissions: ModulePermissions['permissions'] = {};
+    m.available.forEach((k) => { permissions[k] = allowed.includes(k); });
+    return { ...m, permissions };
+  });
+}
+
+export const ROLES_MOCK: Role[] = [
+  {
+    id: 'admin',
+    name: 'Administrator',
+    description: 'Full system access with all permissions enabled.',
+    userCount: 3,
+    type: 'system',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view', 'export'],
+      'fleet-planning':     ['view', 'create', 'edit', 'delete', 'export', 'approve'],
+      'tracking':           ['view', 'export', 'configure'],
+      'vehicle-management': ['view', 'create', 'edit', 'delete', 'export'],
+      'asset-management':   ['view', 'create', 'edit', 'delete', 'export'],
+      'workshops':          ['view', 'create', 'edit', 'delete', 'export', 'approve'],
+      'messaging':          ['view', 'create', 'delete', 'assign'],
+      'reports':            ['view', 'export', 'configure'],
+      'system-management':  ['view', 'create', 'edit', 'delete', 'configure', 'assign'],
+    }),
+  },
+  {
+    id: 'manager',
+    name: 'Manager',
+    description: 'Operational oversight with reporting and approval rights.',
+    userCount: 12,
+    type: 'system',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view', 'export'],
+      'fleet-planning':     ['view', 'create', 'edit', 'export', 'approve'],
+      'tracking':           ['view', 'export'],
+      'vehicle-management': ['view', 'create', 'edit', 'export'],
+      'asset-management':   ['view', 'create', 'edit', 'export'],
+      'workshops':          ['view', 'create', 'edit', 'export', 'approve'],
+      'messaging':          ['view', 'create'],
+      'reports':            ['view', 'export'],
+      'system-management':  ['view'],
+    }),
+  },
+  {
+    id: 'operator',
+    name: 'Operator',
+    description: 'Day-to-day operations: fleet, tracking, and job dispatch.',
+    userCount: 47,
+    type: 'system',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view'],
+      'fleet-planning':     ['view', 'create', 'edit'],
+      'tracking':           ['view'],
+      'vehicle-management': ['view', 'edit'],
+      'asset-management':   ['view', 'edit'],
+      'workshops':          ['view', 'create'],
+      'messaging':          ['view', 'create'],
+      'reports':            ['view'],
+      'system-management':  [],
+    }),
+  },
+  {
+    id: 'viewer',
+    name: 'Viewer',
+    description: 'Read-only access across all modules.',
+    userCount: 28,
+    type: 'system',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view'],
+      'fleet-planning':     ['view'],
+      'tracking':           ['view'],
+      'vehicle-management': ['view'],
+      'asset-management':   ['view'],
+      'workshops':          ['view'],
+      'messaging':          ['view'],
+      'reports':            ['view'],
+      'system-management':  [],
+    }),
+  },
+  {
+    id: 'workshop-tech',
+    name: 'Workshop Technician',
+    description: 'Access limited to workshop and vehicle maintenance tasks.',
+    userCount: 9,
+    type: 'custom',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view'],
+      'fleet-planning':     [],
+      'tracking':           [],
+      'vehicle-management': ['view', 'edit'],
+      'asset-management':   ['view'],
+      'workshops':          ['view', 'create', 'edit'],
+      'messaging':          ['view', 'create'],
+      'reports':            ['view'],
+      'system-management':  [],
+    }),
+  },
+  {
+    id: 'reports-analyst',
+    name: 'Reports Analyst',
+    description: 'Read and export access focused on reporting and analytics.',
+    userCount: 5,
+    type: 'custom',
+    status: 'active',
+    modules: makeModules({
+      'dashboard':          ['view', 'export'],
+      'fleet-planning':     ['view'],
+      'tracking':           ['view', 'export'],
+      'vehicle-management': ['view'],
+      'asset-management':   ['view'],
+      'workshops':          ['view'],
+      'messaging':          [],
+      'reports':            ['view', 'export', 'configure'],
+      'system-management':  [],
+    }),
+  },
+  {
+    id: 'dispatcher',
+    name: 'Dispatcher',
+    description: 'Job dispatching and fleet planning with limited system access.',
+    userCount: 14,
+    type: 'custom',
+    status: 'disabled',
+    modules: makeModules({
+      'dashboard':          ['view'],
+      'fleet-planning':     ['view', 'create', 'edit'],
+      'tracking':           ['view'],
+      'vehicle-management': ['view'],
+      'asset-management':   [],
+      'workshops':          [],
+      'messaging':          ['view', 'create', 'assign'],
+      'reports':            ['view'],
+      'system-management':  [],
+    }),
+  },
+];

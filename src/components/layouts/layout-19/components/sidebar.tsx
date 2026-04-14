@@ -2,33 +2,27 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   BarChart3,
-  Bell,
-  BookOpen,
-  Bus,
-  Camera,
-  Car,
+  BriefcaseBusiness,
   ChevronRight,
   ClipboardList,
-  Clock,
-  BriefcaseBusiness,
-  Gauge,
-  Globe,
+  History,
   LayoutDashboard,
-  LogOut,
   MapPin,
-  Search,
   MessageSquare,
   Package,
   Settings,
-  ShieldCheck,
-  Shield,
   ShieldAlert,
+  ShieldCheck,
   Trophy,
   Truck,
   UserRound,
   Users,
   Wrench,
-  Video,
+  Bell,
+  ClipboardCheck,
+  Boxes,
+  ShoppingCart,
+  Lock,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
@@ -65,667 +59,6 @@ const SUBMENU_CLOSE_DELAY_MS = 100;
    2. NAV CONFIGURATION
    ═══════════════════════════════════════════════════════════════ */
 
-const LEGACY_NAV_ITEMS: NavItem[] = [
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    children: [
-      { id: 'dash-overview', label: 'Overview', path: '/dashboard/overview' },
-      { id: 'dash-vehicles', label: 'Vehicles', path: '/dashboard/vehicles' },
-      { id: 'dash-drivers', label: 'Drivers', path: '/dashboard/drivers' },
-      { id: 'dash-bookings', label: 'Bookings', path: '/dashboard/bookings' },
-      { id: 'dash-revenue', label: 'Revenue', path: '/dashboard/revenue' },
-      {
-        id: 'dash-maintenance',
-        label: 'Maintenance',
-        path: '/dashboard/maintenance',
-      },
-      { id: 'dash-safety', label: 'Safety', path: '/dashboard/safety' },
-      { id: 'dash-eld', label: 'ELD/HOS', path: '/dashboard/eld-hos' },
-      {
-        id: 'dash-ai',
-        label: 'AI Alerts',
-        path: '/bus-alert-monitoring/overview',
-      },
-      {
-        id: 'dash-idling',
-        label: 'Idling Reports',
-        path: '/dashboard/idling-reports',
-      },
-      {
-        id: 'dash-fuel',
-        label: 'Fuel Management',
-        path: '/dashboard/fuel-management',
-      },
-      { id: 'dash-obd', label: 'OBD-II/DTC', path: '/dashboard/obd-dtc' },
-    ],
-  },
-  {
-    id: 'cockpit',
-    label: 'Manager Cockpit',
-    icon: Gauge,
-    path: '/manager-cockpit',
-  },
-  {
-    id: 'bus-tracking',
-    label: 'Bus Tracking',
-    icon: Bus,
-    children: [
-      { id: 'bus-live', label: 'Live', path: '/bus-tracking/live' },
-      { id: 'bus-history', label: 'History', path: '/bus-tracking/history' },
-    ],
-  },
-  {
-    id: 'bus-driver',
-    label: 'Bus & Driver List',
-    icon: Users,
-    path: '/bus-driver-list',
-  },
-  {
-    id: 'bus-route',
-    label: 'Bus Route Planning',
-    icon: MapPin,
-    path: '/bus-route-planning',
-  },
-  {
-    id: 'bus-video',
-    label: 'Bus Video Monitoring',
-    icon: Video,
-    children: [
-      {
-        id: 'bus-dvr-live',
-        label: 'Live DVR',
-        path: '/bus-video-monitoring/live-dvr',
-      },
-      {
-        id: 'bus-dvr-hist',
-        label: 'History DVR',
-        path: '/bus-video-monitoring/history-dvr',
-      },
-    ],
-  },
-  {
-    id: 'bus-alert',
-    label: 'Bus Alert Monitoring',
-    icon: Bell,
-    children: [
-      {
-        id: 'bus-alert-ov',
-        label: 'Overview',
-        path: '/bus-alert-monitoring/overview',
-      },
-      {
-        id: 'bus-alert-list',
-        label: 'List',
-        path: '/bus-alert-monitoring/list',
-      },
-      {
-        id: 'bus-alert-hist',
-        label: 'History List',
-        path: '/bus-alert-monitoring/history-list',
-      },
-    ],
-  },
-  {
-    id: 'taxi-tracking',
-    label: 'Taxi Tracking',
-    icon: Car,
-    children: [
-      { id: 'taxi-live', label: 'Live', path: '/taxi-tracking/live' },
-      { id: 'taxi-history', label: 'History', path: '/taxi-tracking/history' },
-    ],
-  },
-  {
-    id: 'job-dispatch',
-    label: 'Job Dispatching',
-    icon: ClipboardList,
-    children: [
-      { id: 'job-list', label: 'Job List', path: '/job-dispatching/job-list' },
-      {
-        id: 'job-create',
-        label: 'Create Job',
-        path: '/job-dispatching/create-job',
-      },
-    ],
-  },
-  {
-    id: 'shift-mgmt',
-    label: 'Shift Management',
-    icon: Clock,
-    children: [
-      {
-        id: 'shift-all',
-        label: 'All Shifts',
-        path: '/shift-management/all-shifts',
-      },
-      {
-        id: 'shift-create',
-        label: 'Create Shift',
-        path: '/shift-management/create-shift',
-      },
-    ],
-  },
-  {
-    id: 'messaging',
-    label: 'Messaging',
-    icon: MessageSquare,
-    children: [
-      { id: 'msg-chat', label: 'Chat Interface', path: '/messaging/chat' },
-      {
-        id: 'msg-single',
-        label: 'Single Message',
-        path: '/messaging/single-message',
-      },
-      {
-        id: 'msg-groups',
-        label: 'Message Groups List',
-        path: '/messaging/message-groups',
-      },
-      {
-        id: 'msg-broadcasts',
-        label: 'Broadcasts',
-        path: '/messaging/broadcasts',
-      },
-    ],
-  },
-  {
-    id: 'taxi-video',
-    label: 'Taxi Video Monitoring',
-    icon: Camera,
-    children: [
-      {
-        id: 'taxi-dvr-live',
-        label: 'Live DVR',
-        path: '/taxi-video-monitoring/live-dvr',
-      },
-      {
-        id: 'taxi-dvr-hist',
-        label: 'History DVR',
-        path: '/taxi-video-monitoring/history-dvr',
-      },
-    ],
-  },
-  {
-    id: 'taxi-alert',
-    label: 'Taxi Alert Monitoring',
-    icon: ShieldAlert,
-    children: [
-      {
-        id: 'taxi-alert-ov',
-        label: 'Overview',
-        path: '/taxi-alert-monitoring/overview',
-      },
-      {
-        id: 'taxi-alert-list',
-        label: 'List',
-        path: '/taxi-alert-monitoring/list',
-      },
-      {
-        id: 'taxi-alert-hist',
-        label: 'History List',
-        path: '/taxi-alert-monitoring/history-list',
-      },
-    ],
-  },
-  {
-    id: 'ads-mgmt',
-    label: 'Ads Management',
-    icon: Globe,
-    children: [
-      {
-        id: 'ads-adverts',
-        label: 'Advertisements',
-        path: '/ads-management/advertisements',
-      },
-      {
-        id: 'ads-offers',
-        label: 'Special Offers',
-        path: '/ads-management/special-offers',
-      },
-      { id: 'ads-news', label: 'News', path: '/ads-management/news' },
-      { id: 'ads-lang', label: 'Language', path: '/ads-management/language' },
-    ],
-  },
-  {
-    id: 'crm',
-    label: 'CRM',
-    icon: BookOpen,
-    children: [
-      {
-        id: 'crm-app',
-        label: 'Passenger App Management',
-        path: '/pax-app-management',
-      },
-      {
-        id: 'crm-pass',
-        label: 'Passenger Management',
-        path: '/crm/passenger-management',
-      },
-      { id: 'crm-rides', label: 'Ride Types', path: '/crm/ride-types' },
-      { id: 'crm-coupons', label: 'Coupons', path: '/crm/coupons' },
-      {
-        id: 'crm-chauffeur',
-        label: 'Chauffeur Rates',
-        path: '/crm/chauffeur-rates',
-      },
-      { id: 'crm-chat', label: 'Passenger Chat', path: '/crm/passenger-chat' },
-      {
-        id: 'crm-support',
-        label: 'Support Tickets',
-        path: '/crm/support-tickets',
-      },
-      { id: 'crm-lost', label: 'Lost & Found', path: '/crm/lost-found' },
-      {
-        id: 'crm-offers',
-        label: 'Special Offers',
-        path: '/crm/special-offers',
-      },
-      {
-        id: 'crm-spend',
-        label: 'Spending Reports',
-        path: '/crm/spending-reports',
-      },
-    ],
-  },
-  {
-    id: 'fleet-mgmt',
-    label: 'Fleet Management',
-    icon: Truck,
-    children: [
-      {
-        id: 'fleet-bus',
-        label: 'Bus Management',
-        path: '/fleet-management/bus',
-      },
-      {
-        id: 'fleet-bus-dr',
-        label: 'Bus Drivers',
-        path: '/fleet-management/bus-drivers',
-      },
-      {
-        id: 'fleet-taxi',
-        label: 'Taxi Management',
-        path: '/fleet-management/taxi',
-      },
-      {
-        id: 'fleet-taxi-dr',
-        label: 'Taxi Drivers',
-        path: '/fleet-management/taxi-drivers',
-      },
-      {
-        id: 'fleet-parts',
-        label: 'Inventory Parts',
-        path: '/fleet-management/inventory-parts',
-      },
-      {
-        id: 'fleet-supp',
-        label: 'Suppliers',
-        path: '/fleet-management/suppliers',
-      },
-      {
-        id: 'fleet-mfr',
-        label: 'Vehicle Manufacturers',
-        path: '/fleet-management/vehicle-manufacturers',
-      },
-      {
-        id: 'fleet-inspect',
-        label: 'Vehicle Inspections',
-        path: '/fleet-management/vehicle-inspections',
-      },
-      {
-        id: 'fleet-maint',
-        label: 'Maintenance Records',
-        path: '/fleet-management/maintenance-records',
-      },
-      {
-        id: 'fleet-maint-type',
-        label: 'Maintenance Types',
-        path: '/fleet-management/maintenance-types',
-      },
-      {
-        id: 'fleet-geo',
-        label: 'Geofence Zones',
-        path: '/fleet-management/geofence-zones',
-      },
-    ],
-  },
-  {
-    id: 'wasl-mgmt',
-    label: 'WASL Management',
-    icon: Shield,
-    children: [
-      { id: 'wasl-device', label: 'Device', path: '/wasl-management/device' },
-      {
-        id: 'wasl-company',
-        label: 'Company',
-        path: '/wasl-management/company',
-      },
-      { id: 'wasl-bus', label: 'Bus', path: '/wasl-management/bus' },
-      { id: 'wasl-taxi', label: 'Taxi', path: '/wasl-management/taxi' },
-      {
-        id: 'wasl-bus-dr',
-        label: 'Bus Drivers',
-        path: '/wasl-management/bus-drivers',
-      },
-      {
-        id: 'wasl-taxi-dr',
-        label: 'Taxi Drivers',
-        path: '/wasl-management/taxi-drivers',
-      },
-      {
-        id: 'wasl-tariff',
-        label: 'Tariff Structure',
-        path: '/wasl-management/tariff-structure',
-      },
-      {
-        id: 'wasl-trips',
-        label: 'Taxi Trips',
-        path: '/wasl-management/taxi-trips',
-      },
-      {
-        id: 'wasl-bus-trk',
-        label: 'Bus Tracking',
-        path: '/wasl-management/bus-tracking',
-      },
-      {
-        id: 'wasl-taxi-trk',
-        label: 'Taxi Tracking',
-        path: '/wasl-management/taxi-tracking',
-      },
-      {
-        id: 'wasl-version',
-        label: 'App Version Monitoring',
-        path: '/wasl-management/app-version',
-      },
-      {
-        id: 'wasl-geo',
-        label: 'Geofence Zones',
-        path: '/wasl-management/geofence-zones',
-      },
-      {
-        id: 'wasl-maint',
-        label: 'Maintenance',
-        path: '/wasl-management/maintenance',
-      },
-      {
-        id: 'wasl-maint-type',
-        label: 'Maintenance Types',
-        path: '/wasl-management/maintenance-types',
-      },
-      {
-        id: 'wasl-inspect',
-        label: 'Vehicle Inspections',
-        path: '/wasl-management/vehicle-inspections',
-      },
-      {
-        id: 'wasl-supp',
-        label: 'Suppliers',
-        path: '/wasl-management/suppliers',
-      },
-      {
-        id: 'wasl-mfr',
-        label: 'Vehicle Manufacturers',
-        path: '/wasl-management/vehicle-manufacturers',
-      },
-    ],
-  },
-  {
-    id: 'system-mgmt',
-    label: 'System Management',
-    icon: Settings,
-    children: [
-      {
-        id: 'sys-company',
-        label: 'Company',
-        path: '/system-management/company',
-      },
-      {
-        id: 'sys-roles',
-        label: 'Roles and Permission',
-        path: '/system-management/roles',
-      },
-      { id: 'sys-user', label: 'User', path: '/system-management/user' },
-      {
-        id: 'sys-app',
-        label: 'App Management',
-        path: '/system-management/app',
-      },
-      {
-        id: 'sys-ads',
-        label: 'Ads Management',
-        path: '/system-management/ads',
-      },
-      {
-        id: 'sys-tariff',
-        label: 'Tariff Update',
-        path: '/system-management/tariff-update',
-      },
-      {
-        id: 'sys-group',
-        label: 'Group Location',
-        path: '/system-management/group-location',
-      },
-      {
-        id: 'sys-holiday',
-        label: 'Holiday Management',
-        path: '/system-management/holiday',
-      },
-      {
-        id: 'sys-ride',
-        label: 'Ride Type Management',
-        path: '/system-management/ride-type',
-      },
-      { id: 'sys-mdm', label: 'MDM', path: '/system-management/mdm' },
-    ],
-  },
-  {
-    id: 'reports',
-    label: 'Reports',
-    icon: BarChart3,
-    children: [
-      {
-        id: 'rpt-data',
-        label: 'Data Usage',
-        children: [
-          {
-            id: 'rpt-data-taxi',
-            label: 'Taxi',
-            path: '/reports/data-usage/taxi',
-          },
-          { id: 'rpt-data-bus', label: 'Bus', path: '/reports/data-usage/bus' },
-        ],
-      },
-      {
-        id: 'rpt-ops',
-        label: 'Operations & Trips',
-        children: [
-          {
-            id: 'rpt-ops-job',
-            label: 'Job/Booking',
-            path: '/reports/operations-trips/job-booking',
-          },
-          {
-            id: 'rpt-ops-taxi',
-            label: 'Taxi Trip',
-            path: '/reports/operations-trips/taxi-trip',
-          },
-          {
-            id: 'rpt-ops-act',
-            label: 'Trip Activity',
-            path: '/reports/operations-trips/trip-activity',
-          },
-          {
-            id: 'rpt-ops-class',
-            label: 'Trip Classification',
-            path: '/reports/operations-trips/trip-classification',
-          },
-          {
-            id: 'rpt-ops-shift',
-            label: 'Shift',
-            path: '/reports/operations-trips/shift',
-          },
-        ],
-      },
-      {
-        id: 'rpt-trk',
-        label: 'Tracking & Movement',
-        children: [
-          {
-            id: 'rpt-mv',
-            label: 'Movement',
-            path: '/reports/tracking-movement/movement',
-          },
-          {
-            id: 'rpt-dist',
-            label: 'Distance',
-            path: '/reports/tracking-movement/distance',
-          },
-          {
-            id: 'rpt-track',
-            label: 'Tracking',
-            path: '/reports/tracking-movement/tracking',
-          },
-          {
-            id: 'rpt-geo',
-            label: 'Geofence',
-            path: '/reports/tracking-movement/geofence',
-          },
-        ],
-      },
-      {
-        id: 'rpt-drv',
-        label: 'Drivers',
-        children: [
-          {
-            id: 'rpt-drv-taxi',
-            label: 'Taxi Driver',
-            path: '/reports/drivers/taxi',
-          },
-          {
-            id: 'rpt-drv-drv',
-            label: 'Driver',
-            path: '/reports/drivers/driver',
-          },
-          {
-            id: 'rpt-drv-score',
-            label: 'Driver Scorecards',
-            path: '/reports/drivers/scorecards',
-          },
-          {
-            id: 'rpt-drv-beh',
-            label: 'Driver Behaviour',
-            path: '/reports/drivers/behaviour',
-          },
-        ],
-      },
-      {
-        id: 'rpt-fleet',
-        label: 'Fleet & Vehicle',
-        children: [
-          {
-            id: 'rpt-fl-alerts',
-            label: 'Alerts',
-            path: '/reports/fleet-vehicle/alerts',
-          },
-          {
-            id: 'rpt-fl-fuel',
-            label: 'Fuel',
-            path: '/reports/fleet-vehicle/fuel',
-          },
-          {
-            id: 'rpt-fl-obd',
-            label: 'OBD',
-            path: '/reports/fleet-vehicle/obd',
-          },
-          {
-            id: 'rpt-fl-maint',
-            label: 'Maintenance',
-            path: '/reports/fleet-vehicle/maintenance',
-          },
-          {
-            id: 'rpt-fl-parts',
-            label: 'Parts / Inventory',
-            path: '/reports/fleet-vehicle/parts',
-          },
-          {
-            id: 'rpt-fl-inspect',
-            label: 'Vehicle Inspections',
-            path: '/reports/fleet-vehicle/inspections',
-          },
-        ],
-      },
-      {
-        id: 'rpt-rev',
-        label: 'Revenue & Payments',
-        children: [
-          {
-            id: 'rpt-rev-taxi',
-            label: 'Taxi Revenue',
-            path: '/reports/revenue-payments/taxi-revenue',
-          },
-          {
-            id: 'rpt-rev-dash',
-            label: 'Revenue Dashboard',
-            path: '/reports/revenue-payments/dashboard',
-          },
-          {
-            id: 'rpt-rev-analytics',
-            label: 'Advanced Analytics',
-            path: '/reports/revenue-payments/analytics',
-          },
-          {
-            id: 'rpt-rev-exp',
-            label: 'Expense',
-            path: '/reports/revenue-payments/expense',
-          },
-          {
-            id: 'rpt-rev-bill',
-            label: 'Billing',
-            path: '/reports/revenue-payments/billing',
-          },
-          {
-            id: 'rpt-rev-wallet',
-            label: 'Wallet Transactions',
-            path: '/reports/revenue-payments/wallet',
-          },
-          {
-            id: 'rpt-rev-disp',
-            label: 'Payment Disputes',
-            path: '/reports/revenue-payments/disputes',
-          },
-          {
-            id: 'rpt-rev-fare',
-            label: 'Fare Adjustments',
-            path: '/reports/revenue-payments/fare-adjustments',
-          },
-        ],
-      },
-      {
-        id: 'rpt-sys',
-        label: 'System & Communications',
-        children: [
-          {
-            id: 'rpt-sys-ver',
-            label: 'App Version',
-            path: '/reports/system-communications/app-version',
-          },
-          {
-            id: 'rpt-sys-logs',
-            label: 'Logs',
-            path: '/reports/system-communications/logs',
-          },
-          {
-            id: 'rpt-sys-voip',
-            label: 'VoIP Calls',
-            path: '/reports/system-communications/voip',
-          },
-        ],
-      },
-    ],
-  },
-  { id: 'logout', label: 'Logout', icon: LogOut, path: '/logout' },
-];
 
 const NAV_ITEMS: NavItem[] = [
   {
@@ -741,58 +74,39 @@ const NAV_ITEMS: NavItem[] = [
     path: '/fleet-planning',
   },
   {
-    id: 'vehicle-checks',
-    label: 'Vehicle Checks',
-    icon: ClipboardList,
-    path: '/vehicle-checks',
+    id: 'tracking',
+    label: 'Tracking & Monitoring',
+    icon: MapPin,
+    children: [
+      { id: 'tracking-live', label: 'Live Tracking', icon: MapPin, path: '/tracking/live' },
+      { id: 'tracking-history', label: 'History Tracking', icon: History, path: '/tracking/history' },
+      { id: 'tracking-alerts', label: 'Alerts', icon: Bell, path: '/tracking/alerts' },
+      { id: 'tracking-incidents', label: 'Incidents', icon: ShieldAlert, path: '/tracking/incidents' },
+    ],
   },
   {
-    id: 'vehicle-defects',
-    label: 'Vehicle Defects',
-    icon: AlertTriangle,
-    path: '/vehicle-defects',
+    id: 'vehicle-management',
+    label: 'Vehicle Management',
+    icon: Truck,
+    children: [
+      { id: 'vehicle-profiles', label: 'Vehicle Profiles', icon: UserRound, path: '/vehicle-management/profiles' },
+      { id: 'vehicle-checks', label: 'Vehicle Checks', icon: ClipboardList, path: '/vehicle-management/checks' },
+      { id: 'vehicle-defects', label: 'Vehicle Defects', icon: AlertTriangle, path: '/vehicle-management/defects' },
+      { id: 'vehicle-inspections', label: 'Inspections', icon: ClipboardCheck, path: '/vehicle-management/inspections' },
+      { id: 'vehicle-maintenance', label: 'Maintenance Records', icon: Wrench, path: '/vehicle-management/maintenance' },
+    ],
   },
   {
-    id: 'reported-incidents',
-    label: 'Reported Incidents',
-    icon: ShieldAlert,
-    path: '/reported-incidents',
-  },
-  {
-    id: 'vehicle-profiles',
-    label: 'Vehicle Profiles',
-    icon: UserRound,
-    path: '/vehicle-profiles',
-  },
-  {
-    id: 'vehicle-search',
-    label: 'Vehicle Search',
-    icon: Search,
-    path: '/vehicle-search',
-  },
-  {
-    id: 'asset-checks',
-    label: 'Asset Checks',
-    icon: ShieldCheck,
-    path: '/asset-checks',
-  },
-  {
-    id: 'asset-defects',
-    label: 'Asset Defects',
-    icon: AlertTriangle,
-    path: '/asset-defects',
-  },
-  {
-    id: 'asset-profiles',
-    label: 'Asset Profiles',
+    id: 'asset-management',
+    label: 'Asset Management',
     icon: BriefcaseBusiness,
-    path: '/asset-profiles',
-  },
-  {
-    id: 'asset-search',
-    label: 'Asset Search',
-    icon: Search,
-    path: '/asset-search',
+    children: [
+      { id: 'asset-profiles', label: 'Asset Profiles', icon: BriefcaseBusiness, path: '/asset-management/profiles' },
+      { id: 'asset-checks', label: 'Asset Checks', icon: ShieldCheck, path: '/asset-management/checks' },
+      { id: 'asset-defects', label: 'Asset Defects', icon: AlertTriangle, path: '/asset-management/defects' },
+      { id: 'asset-inventory', label: 'Inventory', icon: Boxes, path: '/asset-management/inventory' },
+      { id: 'asset-suppliers', label: 'Suppliers', icon: ShoppingCart, path: '/asset-management/suppliers' },
+    ],
   },
   {
     id: 'workshops',
@@ -819,16 +133,14 @@ const NAV_ITEMS: NavItem[] = [
     path: '/reports/overview',
   },
   {
-    id: 'user-management',
-    label: 'User Management',
+    id: 'system-management',
+    label: 'User & System Management',
     icon: Users,
-    path: '/system-management/user',
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    icon: Settings,
-    path: '/system-management/settings',
+    children: [
+      { id: 'system-users', label: 'Users', icon: Users, path: '/system-management/users' },
+      { id: 'system-roles', label: 'Roles & Permissions', icon: Lock, path: '/system-management/roles' },
+      { id: 'system-settings', label: 'Settings', icon: Settings, path: '/system-management/settings' },
+    ],
   },
 ];
 
