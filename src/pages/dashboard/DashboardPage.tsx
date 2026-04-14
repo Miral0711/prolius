@@ -48,6 +48,7 @@ import {
 } from 'recharts';
 import { Link } from 'react-router';
 import { cn } from '@/lib/utils';
+import { PageFooter } from '@/components/shared/PageFooter';
 import {
   dashboardTableHeaderCellClass,
   dashboardTableHeaderRowClass,
@@ -61,13 +62,13 @@ import {
 } from '@/components/ui/select';
 
 const TOKENS = {
-  pageBg: 'bg-[#f0f4f8]',
+  pageBg: 'bg-[#edf2f7]',
   sectionBg: 'bg-transparent',
   cardBg: 'bg-white',
-  cardRadius: 'rounded-[8px]',
-  cardShadow: 'shadow-[0_1px_8px_rgba(61,107,142,0.07)]',
-  strongShadow: 'shadow-[0_2px_12px_rgba(61,107,142,0.10)]',
-  cardBorder: 'border border-[#e8eef4]',
+  cardRadius: 'rounded-[6px]',
+  cardShadow: 'shadow-[0_1px_6px_rgba(61,107,142,0.08),0_0_0_1px_rgba(61,107,142,0.04)]',
+  strongShadow: 'shadow-[0_2px_12px_rgba(61,107,142,0.12),0_0_0_1px_rgba(61,107,142,0.06)]',
+  cardBorder: 'border border-[#e2eaf2]',
   titleColor: 'text-[#1e3448]',
   valueColor: 'text-[#1e3448]',
   labelColor: 'text-[#4f6478]',
@@ -357,13 +358,6 @@ const TRIP_STATUS_DATA = [
   { label: 'Delayed', value: 7, color: '#DC2626', bg: 'bg-[#FEECEC]', border: 'border-[#DC2626]/20', text: 'text-[#DC2626]' },
 ];
 
-const INTELLIGENCE_INSIGHTS = [
-  { icon: '⚠', text: '3 vehicles likely to require maintenance within 48h', level: 'warning' as const },
-  { icon: '📉', text: 'Idle time increased by 12% vs last week', level: 'warning' as const },
-  { icon: '🚀', text: 'Utilization improved by 5% this month', level: 'positive' as const },
-  { icon: '⛽', text: 'Fuel anomaly detected on VH-088 — 18% above avg', level: 'warning' as const },
-];
-
 // Map vehicles with status
 const MAP_VEHICLES = [
   { id: 'SXA-0388', left: '19%', top: '64%', status: 'available' as const, speed: '0 km/h', driver: 'Ahmed M.' },
@@ -382,6 +376,19 @@ const MAP_MARKER_STYLES = {
 } as const;
 
 type MapFilter = 'all' | 'available' | 'on-trip' | 'maintenance' | 'alert';
+
+// ── Role Switcher ──
+type DashboardRole = 'analyst' | 'ceo' | 'manager' | 'operations' | 'dispatcher' | 'workshop' | 'viewer';
+
+const DASHBOARD_ROLES: { value: DashboardRole; label: string }[] = [
+  { value: 'analyst', label: 'Analyst Dashboard' },
+  { value: 'ceo', label: 'CEO Dashboard' },
+  { value: 'manager', label: 'Manager Dashboard' },
+  { value: 'operations', label: 'Operations Dashboard' },
+  { value: 'dispatcher', label: 'Dispatcher Dashboard' },
+  { value: 'workshop', label: 'Workshop Dashboard' },
+  { value: 'viewer', label: 'Viewer Dashboard' },
+];
 
 // Mini sparkline SVG
 function Sparkline({ data, color }: { data: number[]; color: string }) {
@@ -416,7 +423,7 @@ function Card({
 }) {
   const styles = variant ? SEMANTIC_COLORS[variant] : null;
   return (
-    <div className={cn(TOKENS.cardBg, TOKENS.cardRadius, important ? TOKENS.strongShadow : TOKENS.cardShadow, TOKENS.cardBorder, styles?.border, className)}>
+    <div className={cn(TOKENS.cardBg, TOKENS.cardRadius, important ? TOKENS.strongShadow : TOKENS.cardShadow, TOKENS.cardBorder, styles?.border, 'transition-all duration-200', className)}>
       {children}
     </div>
   );
@@ -424,7 +431,7 @@ function Card({
 
 function SectionWrapper({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn(TOKENS.sectionBg, 'rounded-[8px] p-0 flex flex-col gap-2', className)}>
+    <div className={cn(TOKENS.sectionBg, 'rounded-[6px] p-0 flex flex-col gap-1.5', className)}>
       {children}
     </div>
   );
@@ -433,16 +440,16 @@ function SectionWrapper({ children, className }: { children: ReactNode; classNam
 function SectionTitle({ title, variant = 'blue', className }: { title: string; variant?: keyof typeof SEMANTIC_COLORS; className?: string }) {
   const color = SEMANTIC_COLORS[variant].main;
   return (
-    <div className="mb-3 flex items-center gap-2">
-      <div className="h-3.5 w-[3px] rounded-full opacity-100" style={{ backgroundColor: color }} aria-hidden />
-      <h3 className={cn('typo-section-title', className)}>{title}</h3>
+    <div className={cn('mb-2 flex items-center gap-1.5', className)}>
+      <div className="h-3 w-[2px] rounded-full" style={{ backgroundColor: color }} aria-hidden />
+      <h3 className="typo-section-title">{title}</h3>
     </div>
   );
 }
 
 type DashboardFilterValue = 'All' | string;
 
-function DashboardLabeledFilterSelect({ label, value, onValueChange, options }: {
+function DashboardLabeledFilterSelect({ label: _label, value, onValueChange, options }: {
   label: string;
   value: DashboardFilterValue;
   onValueChange: (next: string) => void;
@@ -462,6 +469,625 @@ function DashboardLabeledFilterSelect({ label, value, onValueChange, options }: 
   );
 }
 
+// ── Shared helper for role views ──
+function RoleKpiTile({ label, value, color, bg }: { label: string; value: string; color: string; bg: string }) {
+  return (
+    <div className={cn('rounded-[6px] px-3 py-2.5 flex flex-col gap-0.5 border border-[#e2eaf2] shadow-[0_1px_4px_rgba(61,107,142,0.06)] transition-all duration-200 hover:translate-y-[-1px] hover:shadow-[0_4px_12px_rgba(61,107,142,0.10)]', bg)}>
+      <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-[0.6px]">{label}</p>
+      <p className="text-[18px] font-black leading-tight tabular-nums" style={{ color }}>{value}</p>
+    </div>
+  );
+}
+
+function RoleProgressBar({ label, pct, color }: { label: string; pct: number; color: string }) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-[9px] font-semibold text-[#4f6478] uppercase tracking-[0.5px]">{label}</span>
+        <span className="text-[10px] font-black text-[#1e3448] tabular-nums">{pct}%</span>
+      </div>
+      <div className="h-2 w-full bg-[#dce8f0] rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-700 ease-out" style={{ width: `${pct}%`, backgroundColor: color }} />
+      </div>
+    </div>
+  );
+}
+// ── CEO Dashboard View ──
+function CEOView() {
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-3 gap-2">
+          <RoleKpiTile label="Total Revenue" value="$2.4M" color="#22C55E" bg="bg-[#EAF9F0]" />
+          <RoleKpiTile label="Fleet Utilization" value="72%" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Active Vehicles" value="311" color="#5a8aad" bg="bg-[#eef4f8]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Card variant="blue" className="p-2.5 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(61,107,142,0.12)] hover:translate-y-[-1px]">
+            <SectionTitle title="Monthly Revenue Trend" variant="blue" />
+            <div className="h-[140px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={ANALYTICS_TREND} margin={{ top: 4, right: 4, left: -28, bottom: 0 }}>
+                  <CartesianGrid vertical={false} stroke="#d4e0ea" strokeDasharray="3 3" opacity={0.3} />
+                  <XAxis dataKey="m" axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 700, fill: '#94a3b8' }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 700, fill: '#94a3b8' }} />
+                  <Tooltip
+                    contentStyle={{
+                      border: 'none',
+                      borderRadius: 8,
+                      boxShadow: '0 8px 24px rgba(61,107,142,0.14)',
+                      background: '#fff',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: '#1e3448',
+                      padding: '6px 10px',
+                    }}
+                    cursor={{ stroke: '#3d6b8e', strokeWidth: 1, strokeDasharray: '4 2' }}
+                  />
+                  <Area type="monotoneX" dataKey="efficiency" name="Revenue %" stroke="#3d6b8e" strokeWidth={2.5} fill="url(#revenueGrad)" dot={false} activeDot={{ r: 4, fill: '#3d6b8e', strokeWidth: 0 }} />
+                  <defs>
+                    <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#3d6b8e" stopOpacity={0.18} />
+                      <stop offset="100%" stopColor="#3d6b8e" stopOpacity={0.02} />
+                    </linearGradient>
+                  </defs>
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+          <Card variant="secondaryBlue" className="p-2.5 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(61,107,142,0.12)] hover:translate-y-[-1px]">
+            <SectionTitle title="Fleet Health Summary" variant="secondaryBlue" />
+            <div className="flex flex-col gap-3 mt-1">
+              <RoleProgressBar label="Roadworthy" pct={84} color="#22C55E" />
+              <RoleProgressBar label="Off Road" pct={9} color="#3d6b8e" />
+              <RoleProgressBar label="Under Inspection" pct={7} color="#5a8aad" />
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Card variant="red" className="p-2.5 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(220,38,38,0.10)] hover:translate-y-[-1px]">
+            <div className="flex items-center justify-between mb-2.5">
+              <SectionTitle title="Major Alerts" variant="red" className="mb-0" />
+              <span className="text-[10px] font-black text-white bg-[#DC2626] px-2.5 py-1 rounded-full shadow-[0_2px_8px_rgba(220,38,38,0.30)] leading-none">17</span>
+            </div>
+            <div className="flex items-start gap-2 p-2 rounded-[6px] bg-[#FEECEC]/60 border border-[#DC2626]/12">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#DC2626] shrink-0 mt-1 animate-pulse" />
+              <p className="text-[10px] leading-relaxed text-[#3d2020]">17 active alerts require executive attention. Fleet-wide safety score is <span className="font-black text-[#DC2626]">at risk</span>.</p>
+            </div>
+          </Card>
+          <Card variant="green" className="p-2.5 transition-all duration-200 hover:shadow-[0_4px_16px_rgba(61,107,142,0.12)] hover:translate-y-[-1px]">
+            <SectionTitle title="Top Performing Drivers" variant="green" />
+            <div className="flex flex-col divide-y divide-[#f0f4f8]">
+              {DRIVERS.slice(0, 2).map((d) => (
+                <div key={d.name} className="flex items-center gap-2 py-2 first:pt-0 last:pb-0 transition-colors duration-150 hover:bg-[#f4f8fb] rounded-[4px] px-1.5 -mx-1.5 cursor-default">
+                  <div className="w-6 h-6 rounded-[5px] flex items-center justify-center text-[9px] font-bold text-[#22C55E] border border-[#22C55E]/25 bg-[#EAF9F0] shrink-0">
+                    {d.name.split(' ').map((n) => n[0]).join('')}
+                  </div>
+                  <span className="text-[10px] font-semibold text-[#2e4258] flex-1">{d.name}</span>
+                  <div className="flex items-center gap-0.5 text-[#e8622a] text-[8px] bg-[#fdeee6] px-1.5 py-0.5 rounded-full border border-[#e8622a]/15 font-bold">
+                    {d.rating} <Star className="w-2 h-2 fill-current ml-0.5" />
+                  </div>
+                  <span className="text-[10px] font-black text-[#22C55E] tabular-nums">{d.perf}%</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+    </div>
+  );
+}
+// ── Manager Dashboard View ──
+function ManagerView() {
+  const statusStyles: Record<string, string> = {
+    Completed: 'bg-[#EAF9F0] text-[#22C55E] border-[#22C55E]/20',
+    'In Progress': 'bg-[#eef4f8] text-[#3d6b8e] border-[#3d6b8e]/20',
+    Delayed: 'bg-[#FEECEC] text-[#DC2626] border-[#DC2626]/20',
+  };
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <RoleKpiTile label="Active Vehicles" value="311" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Drivers on Duty" value="126" color="#22C55E" bg="bg-[#EAF9F0]" />
+          <RoleKpiTile label="Delayed Trips" value="7" color="#DC2626" bg="bg-[#FEECEC]" />
+          <RoleKpiTile label="Inspections Due" value="3" color="#e8622a" bg="bg-[#fdeee6]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Card variant="green" className="p-0 overflow-hidden">
+            <div className="px-2.5 py-2 bg-white border-b border-[#e8eef4]">
+              <SectionTitle title="Driver Performance" variant="green" className="mb-0" />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className={dashboardTableHeaderRowClass}>
+                    {['Rank', 'Driver', 'Score', 'Perf', 'Trend'].map((h) => (
+                      <th key={h} className={cn(dashboardTableHeaderCellClass, 'px-3 py-1.5')}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {DRIVERS.map((d, i) => (
+                    <tr key={d.name} className={cn('border-b border-[#f0f4f8] hover:bg-[#f4f8fb]', i % 2 === 1 && 'bg-[#fafcfd]')}>
+                      <td className="h-[34px] px-3 align-middle">
+                        <div className={cn('w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black border',
+                          d.rank === 1 ? 'bg-amber-50 text-amber-600 border-amber-200' : d.rank === 2 ? 'bg-slate-100 text-slate-500 border-slate-200' : 'bg-[#eef4f8] text-[#5a8aad] border-[#d4e0ea]'
+                        )}>{d.rank}</div>
+                      </td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-medium text-[#2e4258]">{d.name}</td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-bold text-[#2e4258]">{d.score}</td>
+                      <td className="h-[34px] px-3 align-middle">
+                        <div className="flex items-center gap-1 w-20">
+                          <div className="flex-1 h-1 bg-[#dce8f0] rounded-full overflow-hidden">
+                            <div className="h-full rounded-full" style={{ width: `${d.perf}%`, backgroundColor: d.perf >= 90 ? '#22C55E' : '#3d6b8e' }} />
+                          </div>
+                          <span className="text-[9px] font-bold text-[#2e4258]">{d.perf}%</span>
+                        </div>
+                      </td>
+                      <td className="h-[34px] px-3 align-middle">
+                        {d.trend === 'up'
+                          ? <span className="inline-flex items-center gap-0.5 text-[#22C55E] text-[8px] font-black"><ArrowUpRight className="w-3 h-3" />Up</span>
+                          : <span className="inline-flex items-center gap-0.5 text-[#DC2626] text-[8px] font-black"><ArrowDownRight className="w-3 h-3" />Down</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+          <Card variant="blue" className="p-0 overflow-hidden">
+            <div className="px-2.5 py-2 bg-white border-b border-[#e8eef4]">
+              <SectionTitle title="Recent Trips" variant="blue" className="mb-0" />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className={dashboardTableHeaderRowClass}>
+                    {['ID', 'Route', 'Dur', 'Status'].map((h) => (
+                      <th key={h} className={cn(dashboardTableHeaderCellClass, 'px-3 py-1.5')}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {TRIPS.map((t, i) => (
+                    <tr key={t.id} className={cn('border-b border-[#f0f4f8] hover:bg-[#f4f8fb]', i % 2 === 1 && 'bg-[#fafcfd]')}>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-bold text-[#2e4258]">{t.id}</td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-medium text-[#2e4258]">{t.route}</td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] text-[#4f6478]">{t.dur}</td>
+                      <td className="h-[34px] px-3 align-middle">
+                        <span className={cn('px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider border', statusStyles[t.status] ?? 'bg-slate-100 text-slate-500 border-slate-200')}>
+                          {t.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Card variant="secondaryBlue" className="p-2.5">
+            <SectionTitle title="Upcoming Inspections" variant="secondaryBlue" />
+            <div className="flex flex-col gap-1">
+              {[
+                { time: '08:30', vehicle: 'VH-141', task: 'Pre-trip check' },
+                { time: '10:15', vehicle: 'VH-207', task: 'Brake review' },
+                { time: '13:00', vehicle: 'VH-080', task: 'Annual fitness' },
+              ].map((item) => (
+                <div key={item.vehicle} className="flex items-center gap-2 px-2 py-1.5 rounded-[6px] bg-[#f4f8fb] border-l-2 border-l-[#5a8aad]">
+                  <span className="text-[9px] font-black text-[#5a8aad] w-9 shrink-0">{item.time}</span>
+                  <span className="text-[9px] font-black text-[#1e3448] shrink-0">{item.vehicle}</span>
+                  <span className="text-[9px] font-medium text-[#6b8299] truncate">{item.task}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card variant="green" className="p-2.5">
+            <SectionTitle title="Team Performance" variant="green" />
+            <div className="flex flex-col gap-2">
+              <RoleProgressBar label="On-time delivery" pct={88} color="#22C55E" />
+              <RoleProgressBar label="Driver compliance" pct={91} color="#3d6b8e" />
+              <RoleProgressBar label="Vehicle availability" pct={84} color="#5a8aad" />
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+    </div>
+  );
+}
+// ── Operations Dashboard View ──
+function OperationsView({ mapFilter, setMapFilter, filteredVehicles, hoveredVehicle, setHoveredVehicle, selectedVehicle, setSelectedVehicle, selectedVehicleData }: {
+  mapFilter: MapFilter;
+  setMapFilter: (f: MapFilter) => void;
+  filteredVehicles: typeof MAP_VEHICLES;
+  hoveredVehicle: string | null;
+  setHoveredVehicle: (id: string | null) => void;
+  selectedVehicle: string | null;
+  setSelectedVehicle: (id: string | null) => void;
+  selectedVehicleData: typeof MAP_VEHICLES[number] | undefined;
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-3 gap-2">
+          <RoleKpiTile label="Active Trips" value="44" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Idle Vehicles" value="166" color="#e8622a" bg="bg-[#fdeee6]" />
+          <RoleKpiTile label="Active Alerts" value="17" color="#DC2626" bg="bg-[#FEECEC]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-10">
+          <Card variant="blue" important className="lg:col-span-7 p-2">
+            <div className="flex items-center justify-between mb-1.5">
+              <SectionTitle title="Live Fleet Monitor" variant="blue" className="mb-0" />
+              <div className="flex items-center gap-0.5 flex-wrap justify-end">
+                {(['all', 'available', 'on-trip', 'maintenance', 'alert'] as MapFilter[]).map((f) => {
+                  const labels: Record<MapFilter, string> = { all: 'All', available: 'Available', 'on-trip': 'On Trip', maintenance: 'Maint.', alert: 'Alerts' };
+                  const chipColors: Record<MapFilter, string> = { all: '#3d6b8e', available: '#22C55E', 'on-trip': '#3d6b8e', maintenance: '#e8622a', alert: '#DC2626' };
+                  const active = mapFilter === f;
+                  return (
+                    <button key={f} onClick={() => setMapFilter(f)}
+                      className={cn('px-1.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider border transition-all', active ? 'text-white shadow-sm' : 'bg-white text-[#4f6478] border-[#d4e0ea]')}
+                      style={active ? { backgroundColor: chipColors[f], borderColor: chipColors[f] } : {}}>
+                      {labels[f]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="relative h-[240px] overflow-hidden rounded-[8px] bg-[#e8eef4]">
+              <div className="absolute inset-0 bg-[radial-gradient(#c8d5e2_1px,transparent_1px)] bg-[size:15px_15px] opacity-25" />
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
+                <rect x="0" y="0" width="100" height="100" fill="#eef4f8" />
+                <g opacity="0.9" fill="#d8e4ed">
+                  <rect x="4" y="8" width="12" height="9" rx="1.2" /><rect x="18" y="8" width="10" height="9" rx="1.2" /><rect x="30" y="8" width="12" height="9" rx="1.2" /><rect x="46" y="8" width="14" height="9" rx="1.2" /><rect x="63" y="8" width="11" height="9" rx="1.2" /><rect x="76" y="8" width="16" height="9" rx="1.2" />
+                  <rect x="7" y="23" width="11" height="10" rx="1.2" /><rect x="21" y="23" width="14" height="10" rx="1.2" /><rect x="39" y="23" width="10" height="10" rx="1.2" /><rect x="52" y="23" width="15" height="10" rx="1.2" /><rect x="71" y="23" width="10" height="10" rx="1.2" /><rect x="84" y="23" width="9" height="10" rx="1.2" />
+                  <rect x="5" y="39" width="15" height="11" rx="1.2" /><rect x="24" y="39" width="12" height="11" rx="1.2" /><rect x="40" y="39" width="12" height="11" rx="1.2" /><rect x="56" y="39" width="11" height="11" rx="1.2" /><rect x="71" y="39" width="17" height="11" rx="1.2" />
+                  <rect x="9" y="57" width="13" height="10" rx="1.2" /><rect x="26" y="57" width="9" height="10" rx="1.2" /><rect x="38" y="57" width="14" height="10" rx="1.2" /><rect x="56" y="57" width="15" height="10" rx="1.2" /><rect x="74" y="57" width="17" height="10" rx="1.2" />
+                  <rect x="7" y="73" width="11" height="11" rx="1.2" /><rect x="21" y="73" width="13" height="11" rx="1.2" /><rect x="37" y="73" width="10" height="11" rx="1.2" /><rect x="51" y="73" width="16" height="11" rx="1.2" /><rect x="71" y="73" width="20" height="11" rx="1.2" />
+                </g>
+                <g stroke="#f0f4f8" strokeWidth="3.1" strokeLinecap="round" strokeLinejoin="round" opacity="0.95" fill="none">
+                  <path d="M0 18 H100" /><path d="M0 35 H100" /><path d="M0 53 H100" /><path d="M0 70 H100" /><path d="M0 88 H100" />
+                  <path d="M16 0 V100" /><path d="M34 0 V100" /><path d="M52 0 V100" /><path d="M69 0 V100" /><path d="M86 0 V100" />
+                  <path d="M-4 82 L42 14 L104 2" /><path d="M-3 5 L52 64 L104 99" />
+                </g>
+                <g stroke="#c8d5e2" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" fill="none">
+                  <path d="M0 26 H100" /><path d="M0 44 H100" /><path d="M0 62 H100" /><path d="M0 79 H100" />
+                  <path d="M25 0 V100" /><path d="M43 0 V100" /><path d="M61 0 V100" /><path d="M78 0 V100" />
+                </g>
+              </svg>
+              <div className="absolute right-2 bottom-2 z-10 bg-white/90 backdrop-blur-sm rounded-[6px] px-1.5 py-1 shadow-sm border border-[#e8eef4] flex flex-col gap-0.5">
+                {Object.entries(MAP_MARKER_STYLES).map(([key, s]) => (
+                  <div key={key} className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full border border-white shadow-sm" style={{ backgroundColor: s.color }} />
+                    <span className="text-[7px] font-bold text-[#4f6478] uppercase tracking-wider">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+              {filteredVehicles.map((vehicle) => {
+                const styles = MAP_MARKER_STYLES[vehicle.status];
+                const isHovered = hoveredVehicle === vehicle.id;
+                const isSelected = selectedVehicle === vehicle.id;
+                return (
+                  <div key={vehicle.id} className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20"
+                    style={{ left: vehicle.left, top: vehicle.top }}
+                    onMouseEnter={() => setHoveredVehicle(vehicle.id)}
+                    onMouseLeave={() => setHoveredVehicle(null)}
+                    onClick={() => setSelectedVehicle(selectedVehicle === vehicle.id ? null : vehicle.id)}>
+                    <div className={cn('absolute -inset-1 rounded-full animate-pulse', styles.halo)} />
+                    <div className={cn('relative h-4 w-4 rounded-full border-[2px] border-white shadow-[0_4px_10px_rgba(15,23,42,0.2)] transition-transform', styles.dot, (isHovered || isSelected) && 'scale-125')}>
+                      <div className={cn('absolute -inset-1 rounded-full border', styles.ring)} />
+                    </div>
+                    {isHovered && (
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 bg-[#1e3448] text-white rounded-[6px] px-2 py-1.5 shadow-lg whitespace-nowrap pointer-events-none">
+                        <p className="text-[9px] font-black uppercase tracking-wider">{vehicle.id}</p>
+                        <p className="text-[8px] text-white/70">{styles.label} • {vehicle.speed}</p>
+                        <p className="text-[8px] text-white/70">{vehicle.driver}</p>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#1e3448]" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {selectedVehicleData && (
+              <div className="mt-1.5 p-2 rounded-[8px] bg-[#eef4f8] border border-[#d4e0ea] flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: MAP_MARKER_STYLES[selectedVehicleData.status].color }} />
+                <div className="flex-1 grid grid-cols-4 gap-2">
+                  <div><p className="text-[8px] text-[#6b8299] uppercase tracking-widest font-black">Vehicle</p><p className="text-[10px] font-black text-[#1e3448]">{selectedVehicleData.id}</p></div>
+                  <div><p className="text-[8px] text-[#6b8299] uppercase tracking-widest font-black">Status</p><p className="text-[10px] font-black" style={{ color: MAP_MARKER_STYLES[selectedVehicleData.status].color }}>{MAP_MARKER_STYLES[selectedVehicleData.status].label}</p></div>
+                  <div><p className="text-[8px] text-[#6b8299] uppercase tracking-widest font-black">Driver</p><p className="text-[10px] font-black text-[#1e3448]">{selectedVehicleData.driver}</p></div>
+                  <div><p className="text-[8px] text-[#6b8299] uppercase tracking-widest font-black">Speed</p><p className="text-[10px] font-black text-[#1e3448]">{selectedVehicleData.speed}</p></div>
+                </div>
+                <button onClick={() => setSelectedVehicle(null)} className="text-[#6b8299] hover:text-[#1e3448] text-[10px] font-black">x</button>
+              </div>
+            )}
+            <div className="grid grid-cols-4 gap-1.5 mt-1.5">
+              {[['Moving', '302', '#3d6b8e'], ['Idle', '166', '#e8622a'], ['Avg Speed', '48 km/h', '#22C55E'], ['In City %', '64%', '#5a8aad']].map(([label, value, color]) => (
+                <div key={label} className="px-2 py-1.5 rounded-[6px] bg-[#f4f8fb] shadow-[0_1px_2px_rgba(37,61,89,0.06)] flex items-center gap-2">
+                  <div>
+                    <p className="text-[8px] text-[#6b8299] font-black uppercase tracking-widest leading-none">{label}</p>
+                    <p className="text-[12px] font-black mt-0.5 leading-none" style={{ color }}>{value}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <div className="flex flex-col gap-3 lg:col-span-3">
+            <Card variant="blue" className="p-2">
+              <div className="flex items-center justify-between mb-1.5">
+                <SectionTitle title="Live Activity" variant="blue" className="mb-0" />
+                <div className="flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[8px] font-black text-[#6b8299] uppercase tracking-widest">Live</span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-0 relative">
+                <div className="absolute left-[6px] top-2 bottom-2 w-px bg-[#e8eef4]" />
+                {LIVE_ACTIVITY_FEED.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={i} className="flex items-start gap-2 pl-1 hover:bg-[#f4f8fb] rounded-[6px] px-1 py-1 transition-colors cursor-default">
+                      <div className="w-3 h-3 rounded-full flex items-center justify-center shrink-0 mt-0.5 z-10 bg-white border" style={{ borderColor: item.color }}>
+                        <Icon className="w-1.5 h-1.5" style={{ color: item.color }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <p className="text-[9px] font-bold text-[#2e4258] truncate">{item.label}</p>
+                          <span className="text-[8px] text-[#6b8299] font-medium shrink-0">{item.time}</span>
+                        </div>
+                        <p className="text-[8px] text-[#6b8299] truncate">{item.detail}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          </div>
+        </div>
+      </SectionWrapper>
+    </div>
+  );
+}
+// ── Dispatcher Dashboard View ──
+function DispatcherView() {
+  const statusStyles: Record<string, string> = {
+    Completed: 'bg-[#EAF9F0] text-[#22C55E] border-[#22C55E]/20',
+    'In Progress': 'bg-[#eef4f8] text-[#3d6b8e] border-[#3d6b8e]/20',
+    Delayed: 'bg-[#FEECEC] text-[#DC2626] border-[#DC2626]/20',
+  };
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-3 gap-2">
+          <RoleKpiTile label="Available Vehicles" value="166" color="#22C55E" bg="bg-[#EAF9F0]" />
+          <RoleKpiTile label="Available Drivers" value="42" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Delayed Trips" value="7" color="#DC2626" bg="bg-[#FEECEC]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Card variant="blue" className="p-0 overflow-hidden">
+              <div className="px-2.5 py-2 bg-white border-b border-[#e8eef4]">
+                <SectionTitle title="Dispatch Queue" variant="blue" className="mb-0" />
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className={dashboardTableHeaderRowClass}>
+                      {['Trip ID', 'Route', 'Duration', 'Status', 'Type', 'Action'].map((h) => (
+                        <th key={h} className={cn(dashboardTableHeaderCellClass, 'px-3 py-1.5')}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {TRIPS.map((t, i) => (
+                      <tr key={t.id} className={cn('border-b border-[#f0f4f8] hover:bg-[#f4f8fb]', i % 2 === 1 && 'bg-[#fafcfd]')}>
+                        <td className="h-[36px] px-3 align-middle text-[10px] font-bold text-[#2e4258]">{t.id}</td>
+                        <td className="h-[36px] px-3 align-middle text-[10px] font-medium text-[#2e4258]">{t.route}</td>
+                        <td className="h-[36px] px-3 align-middle text-[10px] text-[#4f6478]">{t.dur}</td>
+                        <td className="h-[36px] px-3 align-middle">
+                          <span className={cn('px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider border', statusStyles[t.status] ?? 'bg-slate-100 text-slate-500 border-slate-200')}>
+                            {t.status}
+                          </span>
+                        </td>
+                        <td className="h-[36px] px-3 align-middle text-[10px] text-[#4f6478]">{t.type}</td>
+                        <td className="h-[36px] px-3 align-middle">
+                          <button className="px-2 py-0.5 rounded-[4px] text-[8px] font-black uppercase tracking-wider bg-[#3d6b8e] text-white hover:bg-[#2e5270] transition-colors">
+                            Assign
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Card variant="blue" className="p-2.5">
+              <SectionTitle title="Quick Actions" variant="blue" />
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Create Trip', icon: Route, color: '#3d6b8e', bg: 'bg-[#dce8f0]', to: '/trips/new' },
+                  { label: 'Assign Driver', icon: UserCheck, color: '#22C55E', bg: 'bg-[#22C55E]/10', to: '/drivers/assign' },
+                ].map(({ label, icon: Icon, color, bg, to }) => (
+                  <Link key={label} to={to} className="group flex flex-col items-center justify-center gap-2 px-2 py-3.5 rounded-[8px] border border-[#e8eef4] bg-white transition-all hover:border-transparent hover:shadow-md hover:translate-y-[-1px]">
+                    <div className={cn('w-8 h-8 rounded-[6px] flex items-center justify-center', bg)}>
+                      <Icon className="w-4 h-4" style={{ color }} />
+                    </div>
+                    <span className="text-[9px] font-black text-[#4f6478] uppercase tracking-wider text-center">{label}</span>
+                  </Link>
+                ))}
+              </div>
+            </Card>
+            <Card variant="red" className="p-2.5">
+              <SectionTitle title="Delayed Trips" variant="red" />
+              <div className="flex flex-col gap-1">
+                {TRIPS.filter((t) => t.status === 'Delayed').map((t) => (
+                  <div key={t.id} className="flex items-center gap-2 px-2 py-1.5 rounded-[6px] bg-[#FEECEC] border-l-2 border-l-[#DC2626]">
+                    <span className="text-[9px] font-black text-[#DC2626] shrink-0">{t.id}</span>
+                    <span className="text-[9px] font-medium text-[#2e4258] flex-1 truncate">{t.route}</span>
+                    <span className="text-[8px] font-black text-[#DC2626]">{t.dur}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </div>
+      </SectionWrapper>
+    </div>
+  );
+}
+// ── Workshop Dashboard View ──
+function WorkshopView() {
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <RoleKpiTile label="Due This Week" value="14" color="#e8622a" bg="bg-[#fdeee6]" />
+          <RoleKpiTile label="In Workshop" value="17" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Overdue" value="8" color="#DC2626" bg="bg-[#FEECEC]" />
+          <RoleKpiTile label="Work Orders Open" value="18" color="#5a8aad" bg="bg-[#eef4f8]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+          <Card variant="orange" className="p-2">
+            <SectionTitle title="Work Orders" variant="orange" />
+            <div className="grid grid-cols-3 gap-1 text-center">
+              {[
+                { label: 'Open', val: '18', clr: 'text-rose-500', bg: 'bg-rose-50/80', border: 'border-rose-100' },
+                { label: 'Ongoing', val: '27', clr: 'text-orange-500', bg: 'bg-orange-50/80', border: 'border-orange-100' },
+                { label: 'Done', val: '45', clr: 'text-emerald-500', bg: 'bg-emerald-50/80', border: 'border-emerald-100' },
+              ].map(({ label, val, clr, bg, border }) => (
+                <div key={label} className={cn('px-1 py-2 rounded-[6px] border', bg, border)}>
+                  <p className="text-[8px] font-bold text-[#6b8299] uppercase tracking-widest">{label}</p>
+                  <p className={cn('text-[16px] font-black mt-0.5', clr)}>{val}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card variant="secondaryBlue" className="p-2">
+            <SectionTitle title="Workshop Status" variant="secondaryBlue" />
+            <div className="flex flex-col gap-2">
+              <RoleProgressBar label="Bay occupancy" pct={78} color="#22C55E" />
+              <RoleProgressBar label="Turnaround" pct={64} color="#e8622a" />
+              <RoleProgressBar label="Technician availability" pct={83} color="#3d6b8e" />
+            </div>
+          </Card>
+          <Card variant="secondaryBlue" className="p-2">
+            <SectionTitle title="Upcoming Inspections" variant="secondaryBlue" />
+            <div className="flex flex-col gap-1">
+              {[
+                { time: '08:30', vehicle: 'VH-141', task: 'Pre-trip check' },
+                { time: '10:15', vehicle: 'VH-207', task: 'Brake review' },
+                { time: '13:00', vehicle: 'VH-080', task: 'Annual fitness' },
+              ].map((item) => (
+                <div key={item.vehicle} className="flex items-center gap-2 px-2 py-1.5 rounded-[6px] bg-[#f4f8fb] border-l-2 border-l-[#5a8aad]">
+                  <span className="text-[9px] font-black text-[#5a8aad] w-9 shrink-0">{item.time}</span>
+                  <span className="text-[9px] font-black text-[#1e3448] shrink-0">{item.vehicle}</span>
+                  <span className="text-[9px] font-medium text-[#6b8299] truncate">{item.task}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <Card variant="orange" className="p-2.5">
+          <SectionTitle title="Inventory Alerts" variant="orange" />
+          <div className="flex flex-col gap-1.5">
+            {[
+              { label: 'Engine oil stock low', detail: '12 units', color: '#DC2626', bg: 'bg-[#FEECEC]', border: 'border-[#DC2626]/20' },
+              { label: 'Brake pads critical', detail: '4 units', color: '#DC2626', bg: 'bg-[#FEECEC]', border: 'border-[#DC2626]/20' },
+              { label: 'Tyre stock adequate', detail: '38 units', color: '#22C55E', bg: 'bg-[#EAF9F0]', border: 'border-[#22C55E]/20' },
+            ].map(({ label, detail, color, bg, border }) => (
+              <div key={label} className={cn('flex items-center justify-between px-2.5 py-1.5 rounded-[6px] border', bg, border)}>
+                <span className="text-[10px] font-medium text-[#2e4258]">{label}</span>
+                <span className="text-[10px] font-black" style={{ color }}>{detail}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </SectionWrapper>
+    </div>
+  );
+}
+// ── Viewer Dashboard View ──
+function ViewerView() {
+  const statusStyles: Record<string, string> = {
+    Completed: 'bg-[#EAF9F0] text-[#22C55E] border-[#22C55E]/20',
+    'In Progress': 'bg-[#eef4f8] text-[#3d6b8e] border-[#3d6b8e]/20',
+    Delayed: 'bg-[#FEECEC] text-[#DC2626] border-[#DC2626]/20',
+  };
+  return (
+    <div className="flex flex-col gap-3">
+      <SectionWrapper>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <RoleKpiTile label="Total Vehicles" value="512" color="#3d6b8e" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Active Drivers" value="126" color="#22C55E" bg="bg-[#EAF9F0]" />
+          <RoleKpiTile label="Vehicles On Trip" value="311" color="#5a8aad" bg="bg-[#eef4f8]" />
+          <RoleKpiTile label="Fleet Availability" value="91.4%" color="#22C55E" bg="bg-[#EAF9F0]" />
+        </div>
+      </SectionWrapper>
+      <SectionWrapper>
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <Card variant="secondaryBlue" className="p-2.5">
+            <SectionTitle title="Fleet Health" variant="secondaryBlue" />
+            <div className="flex flex-col gap-2">
+              <RoleProgressBar label="Roadworthy" pct={84} color="#22C55E" />
+              <RoleProgressBar label="Off Road" pct={9} color="#3d6b8e" />
+              <RoleProgressBar label="Under Inspection" pct={7} color="#5a8aad" />
+            </div>
+          </Card>
+          <Card variant="blue" className="p-0 overflow-hidden">
+            <div className="px-2.5 py-2 bg-white border-b border-[#e8eef4]">
+              <SectionTitle title="Recent Trips" variant="blue" className="mb-0" />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className={dashboardTableHeaderRowClass}>
+                    {['Trip ID', 'Route', 'Duration', 'Status'].map((h) => (
+                      <th key={h} className={cn(dashboardTableHeaderCellClass, 'px-3 py-1.5')}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {TRIPS.map((t, i) => (
+                    <tr key={t.id} className={cn('border-b border-[#f0f4f8]', i % 2 === 1 && 'bg-[#fafcfd]')}>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-bold text-[#2e4258]">{t.id}</td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] font-medium text-[#2e4258]">{t.route}</td>
+                      <td className="h-[34px] px-3 align-middle text-[10px] text-[#4f6478]">{t.dur}</td>
+                      <td className="h-[34px] px-3 align-middle">
+                        <span className={cn('px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider border', statusStyles[t.status] ?? 'bg-slate-100 text-slate-500 border-slate-200')}>
+                          {t.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      </SectionWrapper>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const today = new Date().toLocaleString(undefined, {
     weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -474,6 +1100,7 @@ export default function DashboardPage() {
   const [mapFilter, setMapFilter] = useState<MapFilter>('all');
   const [hoveredVehicle, setHoveredVehicle] = useState<string | null>(null);
   const [selectedVehicle, setSelectedVehicle] = useState<string | null>(null);
+  const [dashboardRole, setDashboardRole] = useState<DashboardRole>('analyst');
 
   const filteredVehicles = MAP_VEHICLES.filter(
     (v) => mapFilter === 'all' || v.status === mapFilter,
@@ -485,21 +1112,37 @@ export default function DashboardPage() {
     <div className={cn(TOKENS.pageBg, 'main-container pt-5 px-5 pb-6')}>
       <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-2.5">
         {/* Header */}
-        <header className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+        <header className="flex flex-col gap-1.5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="typo-page-title">Executive Analyst Dashboard</h1>
             <div className="flex items-center gap-2 mt-0.5">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <p className="typo-body">Intelligence Command Core • {today}</p>
+              {dashboardRole === 'viewer' && (
+                <span className="text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#eef4f8] text-[#5a8aad] border border-[#5a8aad]/20">Read-only view</span>
+              )}
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] bg-white border border-[#d4e0ea] shadow-[0_1px_3px_rgba(61,107,142,0.06)] hover:border-[#3d6b8e]/40 hover:shadow-[0_2px_8px_rgba(61,107,142,0.10)] transition-all duration-200 focus-within:border-[#3d6b8e]/50 focus-within:shadow-[0_0_0_2px_rgba(61,107,142,0.08)]">
+              <span className="text-[9px] font-bold text-[#6b8299] uppercase tracking-wider whitespace-nowrap">View as</span>
+              <Select value={dashboardRole} onValueChange={(v) => setDashboardRole(v as DashboardRole)}>
+                <SelectTrigger className="h-5 border-0 shadow-none bg-transparent p-0 text-[10px] font-bold text-[#3d6b8e] w-auto min-w-[110px] focus:ring-0 hover:text-[#2e5270] transition-colors">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-[8px] shadow-[0_8px_24px_rgba(61,107,142,0.14)] border-[#e2eaf2]">
+                  {DASHBOARD_ROLES.map((r) => (
+                    <SelectItem key={r.value} value={r.value} className="text-[11px] font-medium">{r.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             {[
               { label: 'Primary Action', type: 'primary' },
               { label: 'Secondary Act', type: 'secondary' },
               { label: 'Tools', type: 'secondary' },
             ].map((btn) => (
-              <button key={btn.label} className={cn('px-3 py-1.5 rounded-[6px] text-[10px] font-black uppercase tracking-wider transition-all duration-300 shadow-sm', btn.type === 'primary' ? 'bg-[linear-gradient(135deg,#e8622a,#f07a4a)] text-white shadow-[0_8px_20px_-6px_rgba(232,98,42,0.40)] hover:shadow-[0_12px_24px_-8px_rgba(232,98,42,0.50)] hover:scale-[1.03] active:scale-[0.97] border border-[#e8622a]/30' : 'bg-[#eef4f8] text-[#3d6b8e] border border-[#d4e0ea] hover:bg-[#dce8f0] hover:shadow-md')}>
+              <button key={btn.label} className={cn('px-2.5 py-1.5 rounded-[6px] text-[10px] font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap', btn.type === 'primary' ? 'bg-[linear-gradient(135deg,#e8622a,#f07a4a)] text-white shadow-[0_3px_10px_-2px_rgba(232,98,42,0.40)] hover:shadow-[0_5px_14px_-2px_rgba(232,98,42,0.50)] hover:scale-[1.02] active:scale-[0.98] border border-[#e8622a]/20' : 'bg-[#f4f8fb] text-[#4f6478] border border-[#dce8f0] hover:bg-[#eef4f8] hover:border-[#b8cedd] hover:text-[#3d6b8e] active:scale-[0.98]')}>
                 {btn.label}
               </button>
             ))}
@@ -508,7 +1151,7 @@ export default function DashboardPage() {
 
         {/* ── SECTION 1: Filters + Enhanced KPI Row ── */}
         <SectionWrapper>
-          <div className="rounded-[8px] bg-[#eef4f8] p-2">
+          <div className="rounded-[6px] bg-[#e8f0f7] border border-[#dce8f0] p-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               {[
                 { label: 'Vehicle Filter', value: vehicleFilter, onChange: setVehicleFilter, opts: [{ value: 'All', label: 'All' }, { value: 'VH-001', label: 'VH-001' }, { value: 'VH-014', label: 'VH-014' }] },
@@ -524,8 +1167,8 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Primary KPI Row — 6 cards, slightly larger */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+          {/* Primary KPI Row — 6 cards, equal height */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1.5">
             {KPI_DATA.slice(0, 6).map((kpi) => {
               const variant = kpi.variant as keyof typeof SEMANTIC_COLORS;
               const colors = SEMANTIC_COLORS[variant];
@@ -536,26 +1179,26 @@ export default function DashboardPage() {
 
               const cardContent = (
                 <div
-                  className={cn('bg-white', TOKENS.cardRadius, TOKENS.cardShadow, 'p-2.5 flex flex-col justify-between group transition-all duration-300 hover:translate-y-[-1px] relative overflow-hidden min-h-[80px] border border-transparent cursor-default')}
+                  className={cn('bg-white rounded-[6px] border border-[#e2eaf2] shadow-[0_1px_6px_rgba(61,107,142,0.07)] p-2.5 flex flex-col justify-between group transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0_6px_20px_rgba(61,107,142,0.13)] hover:border-[#c8d8e8] relative overflow-hidden h-[88px] cursor-default')}
                   title={kpi.tooltip}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ backgroundColor: colors.main }} />
+                  <div className="absolute top-0 left-0 right-0 h-[2px] group-hover:h-[3px] transition-all duration-200" style={{ backgroundColor: colors.main }} />
                   <div className="flex items-start justify-between">
-                    <p className="typo-kpi-label leading-tight pr-1">{kpi.label}</p>
-                    <div className={cn('w-6 h-6 rounded-md flex items-center justify-center shrink-0', colors.iconBg)}>
-                      <Icon className="w-3.5 h-3.5" style={{ color: colors.main }} />
+                    <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-[0.6px] leading-tight pr-1">{kpi.label}</p>
+                    <div className={cn('w-5 h-5 rounded-[4px] flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-110', colors.iconBg)}>
+                      <Icon className="w-3 h-3" style={{ color: colors.main }} />
                     </div>
                   </div>
-                  <div className="flex items-end justify-between mt-1.5 gap-1">
+                  <div className="flex items-end justify-between gap-1">
                     <div>
-                      <p className="text-[16px] font-black text-[#1e3448] leading-none">{kpi.value}</p>
+                      <p className="text-[15px] font-black text-[#1e3448] leading-none tabular-nums">{kpi.value}</p>
                       <div className="flex items-center gap-0.5 mt-0.5">
                         <TrendIcon className="w-2.5 h-2.5" style={{ color: trendColor }} />
                         <span className="text-[9px] font-bold" style={{ color: trendColor }}>{kpi.trend}</span>
                       </div>
                     </div>
                     {sparkData && (
-                      <div className="opacity-60 group-hover:opacity-100 transition-opacity">
+                      <div className="opacity-50 group-hover:opacity-90 transition-opacity">
                         <Sparkline data={sparkData} color={colors.main} />
                       </div>
                     )}
@@ -574,8 +1217,8 @@ export default function DashboardPage() {
             })}
           </div>
 
-          {/* Secondary KPI Row — 4 cards, compact */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {/* Secondary KPI Row — 4 cards, compact, equal height */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {KPI_DATA.slice(6).map((kpi) => {
               const variant = kpi.variant as keyof typeof SEMANTIC_COLORS;
               const colors = SEMANTIC_COLORS[variant];
@@ -586,15 +1229,15 @@ export default function DashboardPage() {
               return (
                 <div
                   key={kpi.label}
-                  className={cn('bg-white/70', TOKENS.cardRadius, 'shadow-[0_1px_4px_rgba(61,107,142,0.05)]', 'px-2.5 py-1.5 flex items-center gap-2.5 border border-[#e8eef4]/80 cursor-default hover:bg-white transition-colors')}
+                  className={cn('bg-white rounded-[6px] border border-[#e2eaf2] shadow-[0_1px_4px_rgba(61,107,142,0.06)] px-2.5 py-2 flex items-center gap-2 cursor-default hover:shadow-[0_4px_12px_rgba(61,107,142,0.11)] hover:translate-y-[-1px] hover:border-[#c8d8e8] transition-all duration-200')}
                   title={kpi.tooltip}
                 >
-                  <div className={cn('w-5 h-5 rounded-md flex items-center justify-center shrink-0', colors.iconBg)}>
+                  <div className={cn('w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0', colors.iconBg)}>
                     <Icon className="w-3 h-3" style={{ color: colors.main }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-wide truncate">{kpi.label}</p>
-                    <p className="text-[12px] font-black text-[#1e3448] leading-tight">{kpi.value}</p>
+                    <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-[0.5px] truncate leading-none mb-0.5">{kpi.label}</p>
+                    <p className="text-[13px] font-black text-[#1e3448] leading-none tabular-nums">{kpi.value}</p>
                   </div>
                   <div className="flex items-center gap-0.5 shrink-0">
                     <TrendIcon className="w-2.5 h-2.5" style={{ color: trendColor }} />
@@ -606,6 +1249,9 @@ export default function DashboardPage() {
           </div>
         </SectionWrapper>
 
+        {/* ── Role-based content ── */}
+        <div key={dashboardRole}>
+        {dashboardRole === 'analyst' && <>
         {/* ── SECTION 2: Live Fleet Monitor (enhanced) ── */}
         <SectionWrapper>
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-10">
@@ -717,22 +1363,6 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {/* Bottom strip — compact */}
-              <div className="grid grid-cols-4 gap-1.5 mt-1.5">
-                {[
-                  ['Moving', '302', '#3d6b8e'],
-                  ['Idle', '166', '#e8622a'],
-                  ['Avg Speed', '48 km/h', '#22C55E'],
-                  ['In City %', '64%', '#5a8aad'],
-                ].map(([label, value, color]) => (
-                  <div key={label} className="px-2 py-1.5 rounded-[6px] bg-[#f4f8fb] shadow-[0_1px_2px_rgba(37,61,89,0.06)] flex items-center gap-2">
-                    <div>
-                      <p className="text-[8px] text-[#6b8299] font-black uppercase tracking-widest leading-none">{label}</p>
-                      <p className="text-[12px] font-black mt-0.5 leading-none" style={{ color }}>{value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </Card>
 
             {/* Right panel: Health & Compliance + Efficiency Summary */}
@@ -782,27 +1412,44 @@ export default function DashboardPage() {
               </Card>
             </div>
           </div>
+
+          {/* KPI strip — full width, aligned with map + right panel */}
+          <div className="grid grid-cols-4 gap-1.5">
+            {[
+              ['Moving', '302', '#3d6b8e'],
+              ['Idle', '166', '#e8622a'],
+              ['Avg Speed', '48 km/h', '#22C55E'],
+              ['In City %', '64%', '#5a8aad'],
+            ].map(([label, value, color]) => (
+              <div key={label} className="px-2.5 py-2 rounded-[6px] bg-white border border-[#e2eaf2] shadow-[0_1px_4px_rgba(61,107,142,0.06)] flex items-center gap-2 hover:shadow-[0_3px_10px_rgba(61,107,142,0.10)] hover:border-[#c8d8e8] hover:translate-y-[-1px] transition-all duration-200">
+                <div>
+                  <p className="text-[8px] text-[#6b8299] font-bold uppercase tracking-[0.6px] leading-none">{label}</p>
+                  <p className="text-[12px] font-black mt-0.5 leading-none tabular-nums" style={{ color }}>{value}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </SectionWrapper>
 
         {/* ── SECTION 3: Analytics Overview Strip ── */}
         <SectionWrapper>
           {/* Row 1: 4 cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {[
               { label: "Today's Trips", value: '142', icon: Route, color: '#3d6b8e', bg: '#dce8f0', trend: '+12', up: true },
               { label: 'Avg Trip Dist.', value: '38.4 km', icon: Navigation, color: '#5a8aad', bg: '#dce8f0', trend: '+2.1', up: true },
               { label: 'Idle Time', value: '2.4 h', icon: Timer, color: '#e8622a', bg: '#fdeee6', trend: '-0.3h', up: false },
               { label: 'Total Distance', value: '5,452 km', icon: Activity, color: '#3d6b8e', bg: '#dce8f0', trend: '+340', up: true },
             ].map(({ label, value, icon: Icon, color, bg, trend, up }) => (
-              <div key={label} className={cn('bg-white rounded-[8px] px-2.5 py-2 border border-[#e8eef4] shadow-[0_1px_4px_rgba(61,107,142,0.05)] flex flex-col gap-0.5 hover:translate-y-[-1px] transition-transform')}>
-                <div className="flex items-center justify-between">
-                  <p className="text-[9px] font-black text-[#6b8299] uppercase tracking-widest leading-tight">{label}</p>
-                  <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ backgroundColor: bg }}>
-                    <Icon className="w-3 h-3" style={{ color }} />
-                  </div>
+              <div key={label} className="bg-white rounded-[6px] border border-[#e2eaf2] shadow-[0_1px_6px_rgba(61,107,142,0.07)] px-2.5 py-2 flex items-center gap-2 hover:translate-y-[-1px] hover:shadow-[0_4px_14px_rgba(61,107,142,0.11)] hover:border-[#c8d8e8] transition-all duration-200 cursor-default">
+                <div className="w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
+                  <Icon className="w-3 h-3" style={{ color }} />
                 </div>
-                <p className="text-[13px] font-black text-[#1e3448] leading-none">{value}</p>
-                <div className="flex items-center gap-0.5">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-[0.5px] leading-none mb-0.5 truncate">{label}</p>
+                  <p className="text-[13px] font-black text-[#1e3448] leading-none tabular-nums">{value}</p>
+                </div>
+                <div className="flex items-center gap-0.5 shrink-0">
                   {up ? <TrendingUp className="w-2.5 h-2.5 text-[#22C55E]" /> : <TrendingDown className="w-2.5 h-2.5 text-[#DC2626]" />}
                   <span className="text-[9px] font-bold" style={{ color: up ? '#22C55E' : '#DC2626' }}>{trend}</span>
                 </div>
@@ -810,21 +1457,21 @@ export default function DashboardPage() {
             ))}
           </div>
           {/* Row 2: 3 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
             {[
               { label: 'Fuel Consumed', value: '1,840 L', icon: Fuel, color: '#e8622a', bg: '#fdeee6', trend: '-60L', up: false },
               { label: 'Service Due', value: '14', icon: CalendarClock, color: '#DC2626', bg: '#FEECEC', trend: '+2', up: false },
               { label: 'Maint. Alerts', value: '8', icon: Wrench, color: '#e8622a', bg: '#fdeee6', trend: '-3', up: false },
             ].map(({ label, value, icon: Icon, color, bg, trend, up }) => (
-              <div key={label} className={cn('bg-white rounded-[8px] px-2.5 py-2 border border-[#e8eef4] shadow-[0_1px_4px_rgba(61,107,142,0.05)] flex flex-col gap-0.5 hover:translate-y-[-1px] transition-transform')}>
-                <div className="flex items-center justify-between">
-                  <p className="text-[9px] font-black text-[#6b8299] uppercase tracking-widest leading-tight">{label}</p>
-                  <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ backgroundColor: bg }}>
-                    <Icon className="w-3 h-3" style={{ color }} />
-                  </div>
+              <div key={label} className="bg-white rounded-[6px] border border-[#e2eaf2] shadow-[0_1px_6px_rgba(61,107,142,0.07)] px-2.5 py-2 flex items-center gap-2 hover:translate-y-[-1px] hover:shadow-[0_4px_14px_rgba(61,107,142,0.11)] hover:border-[#c8d8e8] transition-all duration-200 cursor-default">
+                <div className="w-6 h-6 rounded-[4px] flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
+                  <Icon className="w-3 h-3" style={{ color }} />
                 </div>
-                <p className="text-[13px] font-black text-[#1e3448] leading-none">{value}</p>
-                <div className="flex items-center gap-0.5">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-bold text-[#6b8299] uppercase tracking-[0.5px] leading-none mb-0.5 truncate">{label}</p>
+                  <p className="text-[13px] font-black text-[#1e3448] leading-none tabular-nums">{value}</p>
+                </div>
+                <div className="flex items-center gap-0.5 shrink-0">
                   {up ? <TrendingUp className="w-2.5 h-2.5 text-[#22C55E]" /> : <TrendingDown className="w-2.5 h-2.5 text-[#DC2626]" />}
                   <span className="text-[9px] font-bold" style={{ color: up ? '#22C55E' : '#DC2626' }}>{trend}</span>
                 </div>
@@ -975,27 +1622,6 @@ export default function DashboardPage() {
           </div>
         </SectionWrapper>
 
-        {/* ── SECTION 7: Intelligence Insights Strip ── */}
-        <SectionWrapper>
-          <div className="flex flex-wrap items-stretch gap-1.5">
-            {INTELLIGENCE_INSIGHTS.map((insight, i) => (
-              <div
-                key={i}
-                className={cn(
-                  'flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-200 cursor-default',
-                  'hover:shadow-sm hover:translate-y-[-1px]',
-                  insight.level === 'positive'
-                    ? 'bg-[#EAF9F0] border-[#22C55E]/25 hover:border-[#22C55E]/40'
-                    : 'bg-[#fffbf5] border-[#e8622a]/20 hover:border-[#e8622a]/35',
-                )}
-              >
-                <span className="text-[11px] leading-none shrink-0">{insight.icon}</span>
-                <p className="text-[9px] font-semibold text-[#2e4258] leading-none">{insight.text}</p>
-              </div>
-            ))}
-          </div>
-        </SectionWrapper>
-
         {/* ── SECTION 8: Safety and Alerts ── */}
         <SectionWrapper>
           <div className="grid grid-cols-1 gap-2 lg:grid-cols-12">
@@ -1089,9 +1715,9 @@ export default function DashboardPage() {
 
         {/* ── SECTION 9: Upgraded Tables + Right Operation Panel ── */}
         <SectionWrapper>
-          <div className="grid grid-cols-1 gap-2 lg:grid-cols-12">
+          <div className="grid grid-cols-1 gap-2 lg:grid-cols-12 items-stretch">
             {/* Left: Tables */}
-            <div className="flex flex-col gap-2 lg:col-span-8">
+            <div className="flex flex-col gap-2 lg:col-span-8 min-h-0">
               {/* Drivers Table */}
               <Card variant="green" className="p-0 overflow-hidden">
                 <div className="px-2.5 py-2 bg-white border-b border-[#e8eef4]">
@@ -1206,6 +1832,64 @@ export default function DashboardPage() {
                   </table>
                 </div>
               </Card>
+
+              {/* Quick Actions */}
+              <Card variant="blue" className="p-2.5">
+                <SectionTitle title="Quick Actions" variant="blue" className="mb-0" />
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  {[
+                    { label: 'Create Trip', icon: Route, color: '#3d6b8e', bg: 'bg-[#dce8f0]', hover: 'hover:bg-[#3d6b8e]', to: '/trips/new' },
+                    { label: 'Assign Driver', icon: UserCheck, color: '#22C55E', bg: 'bg-[#22C55E]/10', hover: 'hover:bg-[#22C55E]', to: '/drivers/assign' },
+                    { label: 'Add Vehicle', icon: Truck, color: '#5a8aad', bg: 'bg-[#dce8f0]', hover: 'hover:bg-[#5a8aad]', to: '/fleet/add' },
+                    { label: 'Raise Alert', icon: AlertTriangle, color: '#DC2626', bg: 'bg-[#FEECEC]', hover: 'hover:bg-[#DC2626]', to: '/tracking/alerts/new' },
+                    { label: 'Schedule Maint.', icon: CalendarClock, color: '#e8622a', bg: 'bg-[#fdeee6]', hover: 'hover:bg-[#e8622a]', to: '/maintenance/schedule' },
+                    { label: 'View Reports', icon: TrendingUp, color: '#3d6b8e', bg: 'bg-[#dce8f0]', hover: 'hover:bg-[#3d6b8e]', to: '/reports' },
+                  ].map(({ label, icon: Icon, color, bg, hover, to }) => (
+                    <Link
+                      key={label}
+                      to={to}
+                      className={cn(
+                        'group flex flex-col items-center justify-center gap-2 px-2 py-3.5 rounded-[8px] border border-[#e8eef4]',
+                        'bg-white transition-all duration-200 cursor-pointer',
+                        'hover:border-transparent hover:shadow-[0_4px_12px_rgba(61,107,142,0.15)] hover:translate-y-[-1px]',
+                        hover,
+                        'hover:text-white',
+                      )}
+                    >
+                      <div className={cn('w-8 h-8 rounded-[6px] flex items-center justify-center transition-all duration-200', bg, 'group-hover:bg-white/20')}>
+                        <Icon className="w-4 h-4 transition-colors duration-200" style={{ color }} />
+                      </div>
+                      <span className="text-[9px] font-black text-[#4f6478] uppercase tracking-wider text-center leading-tight transition-colors duration-200 group-hover:text-white">
+                        {label}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+
+              {/* Pending Tasks */}
+              <Card variant="orange" className="p-2.5 flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <SectionTitle title="Pending Tasks" variant="orange" className="mb-0" />
+                  <span className="text-[8px] font-black text-white bg-[#e8622a] px-1.5 py-0.5 rounded-full">10</span>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {[
+                    { icon: ShieldCheck, label: 'Inspections due today', count: 3, color: '#3d6b8e', bg: 'bg-[#eef4f8]', text: 'text-[#3d6b8e]', border: 'border-[#3d6b8e]/15' },
+                    { icon: UserCheck, label: 'Vehicles awaiting driver assignment', count: 2, color: '#e8622a', bg: 'bg-[#fdeee6]', text: 'text-[#e8622a]', border: 'border-[#e8622a]/15' },
+                    { icon: Wrench, label: 'Maintenance jobs pending', count: 4, color: '#5a8aad', bg: 'bg-[#eef4f8]', text: 'text-[#5a8aad]', border: 'border-[#5a8aad]/15' },
+                    { icon: AlertTriangle, label: 'Unresolved alert escalations', count: 1, color: '#DC2626', bg: 'bg-[#FEECEC]', text: 'text-[#DC2626]', border: 'border-[#DC2626]/15' },
+                  ].map(({ icon: Icon, label, count, color, bg, text, border }) => (
+                    <div key={label} className={cn('flex items-center gap-2.5 px-2.5 py-2 rounded-[7px] border cursor-default hover:brightness-95 transition-all', bg, border)}>
+                      <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0 bg-white/60">
+                        <Icon className="w-3 h-3" style={{ color }} />
+                      </div>
+                      <span className="text-[10px] font-medium text-[#2e4258] flex-1 leading-tight">{label}</span>
+                      <span className={cn('text-[11px] font-black shrink-0', text)}>{count}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             </div>
 
             {/* Right: Operation Panel — lighter, consistent */}
@@ -1315,10 +1999,52 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </Card>
+
+              {/* System Status */}
+              <Card variant="secondaryBlue" className="p-2">
+                <SectionTitle title="System Status" variant="secondaryBlue" />
+                <div className="flex flex-col gap-1">
+                  {[
+                    { label: 'GPS Connectivity', value: '92%', dot: 'bg-[#22C55E]', text: 'text-[#22C55E]' },
+                    { label: 'API Status', value: 'Healthy', dot: 'bg-[#22C55E]', text: 'text-[#22C55E]' },
+                    { label: 'Data Sync', value: 'Real-time', dot: 'bg-[#3d6b8e]', text: 'text-[#3d6b8e]' },
+                    { label: 'Active Systems', value: 'OK', dot: 'bg-[#22C55E]', text: 'text-[#22C55E]' },
+                  ].map(({ label, value, dot, text }) => (
+                    <div key={label} className="flex items-center justify-between px-2 py-1.5 rounded-[6px] bg-[#f4f8fb] border border-[#e8eef4]">
+                      <div className="flex items-center gap-1.5">
+                        <span className={cn('w-1.5 h-1.5 rounded-full shrink-0', dot)} />
+                        <span className="text-[9px] font-semibold text-[#4f6478] uppercase tracking-wider">{label}</span>
+                      </div>
+                      <span className={cn('text-[9px] font-black', text)}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             </div>
           </div>
         </SectionWrapper>
+        </>}
+
+        {dashboardRole === 'ceo' && <CEOView />}
+        {dashboardRole === 'manager' && <ManagerView />}
+        {dashboardRole === 'operations' && (
+          <OperationsView
+            mapFilter={mapFilter}
+            setMapFilter={setMapFilter}
+            filteredVehicles={filteredVehicles}
+            hoveredVehicle={hoveredVehicle}
+            setHoveredVehicle={setHoveredVehicle}
+            selectedVehicle={selectedVehicle}
+            setSelectedVehicle={setSelectedVehicle}
+            selectedVehicleData={selectedVehicleData}
+          />
+        )}
+        {dashboardRole === 'dispatcher' && <DispatcherView />}
+        {dashboardRole === 'workshop' && <WorkshopView />}
+        {dashboardRole === 'viewer' && <ViewerView />}
+        </div>
       </div>
+      <PageFooter />
     </div>
   );
 }
