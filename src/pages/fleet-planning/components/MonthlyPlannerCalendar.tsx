@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { getEventCountForDate } from '../mock-data';
+import { getEventCountForDate, dateHasConflict } from '../mock-data';
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -71,6 +71,7 @@ export function MonthlyPlannerCalendar({
           const isToday = cell.dateStr === todayStr && cell.currentMonth;
           const isSelected = cell.dateStr === selectedDate && cell.currentMonth;
           const eventCount = cell.currentMonth ? getEventCountForDate(cell.dateStr) : 0;
+          const hasConflict = cell.currentMonth ? dateHasConflict(cell.dateStr) : false;
           const isWeekend = idx % 7 === 0 || idx % 7 === 6;
 
           return (
@@ -93,9 +94,7 @@ export function MonthlyPlannerCalendar({
               <span
                 className={cn(
                   'flex size-6 items-center justify-center rounded-full text-xs font-medium',
-                  isToday && !isSelected && 'bg-slate-800 text-white',
-                  isSelected && 'bg-[#2e5f8a] text-white',
-                  !isToday && !isSelected && 'text-slate-700',
+                  isSelected ? 'bg-[#2e5f8a] text-white' : 'text-slate-700',
                 )}
               >
                 {cell.day}
@@ -105,6 +104,12 @@ export function MonthlyPlannerCalendar({
               {eventCount > 0 && (
                 <span className="mt-0.5 rounded px-1 py-px text-[10px] font-medium leading-tight bg-[#e8f0f8] text-[#2e5f8a] border border-[#dcedf8]">
                   {eventCount} event{eventCount > 1 ? 's' : ''}
+                </span>
+              )}
+              {/* Conflict indicator */}
+              {hasConflict && (
+                <span className="mt-0.5 rounded px-1.5 py-px text-[10px] font-bold leading-tight bg-red-500 text-white">
+                  ⚠ conflict
                 </span>
               )}
             </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowUpDown } from 'lucide-react';
+import { AlertTriangle, ArrowUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { DateStatus, InspectionDate } from '../planning-table-data';
 
@@ -15,6 +15,8 @@ interface PlanningDataTableProps<T> {
   columns: ColumnDef<T>[];
   rows: T[];
   getRowKey: (row: T) => number | string;
+  /** Optional predicate — rows returning true get conflict styling */
+  isConflict?: (row: T) => boolean;
 }
 
 const STATUS_CLASSES: Record<DateStatus, string> = {
@@ -42,6 +44,7 @@ export function PlanningDataTable<T>({
   columns,
   rows,
   getRowKey,
+  isConflict,
 }: PlanningDataTableProps<T>) {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
@@ -82,28 +85,50 @@ export function PlanningDataTable<T>({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, idx) => (
-            <tr
-              key={getRowKey(row)}
-              className={cn(
-                'border-b border-slate-100 transition-colors hover:bg-slate-50/60',
-                idx % 2 === 1 && 'bg-[#f4f8fb]/30',
-              )}
-            >
-              {columns.map((col) => (
-                <td
-                  key={col.key}
-                  className={cn(
-                    'px-3 py-2 whitespace-nowrap',
-                    col.sticky && 'sticky left-0 z-10 bg-white',
-                    idx % 2 === 1 && col.sticky && 'bg-[#f4f8fb]/30',
-                  )}
-                >
-                  {col.render(row)}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {rows.map((row, idx) => {
+            const conflict = isConflict?.(row) ?? false;
+            return (
+              <tr
+                key={getRowKey(row)}
+                className={cn(
+                  'border-b border-slate-100 transition-colors',
+                  !conflict && 'hover:bg-slate-50/60',
+                  idx % 2 === 1 && !conflict && 'bg-[#f4f8fb]/30',
+                  conflict && 'bg-red-50 hover:bg-red-100/60',
+                )}
+              >
+                {columns.map((col, colIdx) => (
+                  <td
+                    key={col.key}
+                    className={cn(
+                      'px-3 py-2 whitespace-nowrap',
+                      // Left border indicator on first cell
+                      colIdx === 0 && conflict && 'border-l-[5px] border-l-red-500',
+                      colIdx === 0 && !conflict && 'border-l-[5px] border-l-transparent',
+                      col.sticky && 'sticky left-0 z-10',
+                      col.sticky && !conflict && (idx % 2 === 1 ? 'bg-[#f4f8fb]/30' : 'bg-white'),
+                      col.sticky && conflict && 'bg-red-50',
+                    )}
+                  >
+                    {colIdx === 0 && conflict ? (
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {col.render(row)}
+                        <span
+                          title="Schedule conflict: multiple events on the same date"
+                          className="inline-flex items-center gap-0.5 rounded border border-red-300 bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-700 leading-tight whitespace-nowrap"
+                        >
+                          <AlertTriangle className="size-3 shrink-0" />
+                          Conflict
+                        </span>
+                      </div>
+                    ) : (
+                      col.render(row)
+                    )}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
           {rows.length === 0 && (
             <tr>
               <td

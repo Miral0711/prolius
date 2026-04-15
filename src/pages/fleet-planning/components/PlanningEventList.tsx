@@ -1,5 +1,6 @@
 import { CalendarX } from 'lucide-react';
 import { PlanningEventCard } from './PlanningEventCard';
+import { detectCalendarConflicts } from '../conflict-detection';
 import type { PlanningCard } from '../mock-data';
 
 interface PlanningEventListProps {
@@ -16,10 +17,12 @@ export function PlanningEventList({ cards }: PlanningEventListProps) {
     );
   }
 
+  const conflictVehicles = detectCalendarConflicts(cards);
+
   return (
     <div className="flex flex-col gap-2.5">
       {cards.map((card) => (
-        <PlanningEventCard key={card.id} card={card} />
+        <PlanningEventCard key={card.id} card={card} conflictVehicles={conflictVehicles} />
       ))}
     </div>
   );

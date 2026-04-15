@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
-import { Columns2, Plus } from 'lucide-react';
+import { AlertTriangle, Columns2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ASSET_ROWS, type AssetRow } from '../planning-table-data';
+import { hasAssetConflict } from '../conflict-detection';
 import { PlanningFilterRow } from './PlanningFilterRow';
 import { PlanningDataTable, DateCell, type ColumnDef } from './PlanningDataTable';
 import { PlanningPagination } from './PlanningPagination';
@@ -79,6 +80,7 @@ export function AssetPlanningTab() {
   }, [appliedFilters, appliedSearch]);
 
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const conflictCount = filtered.filter(hasAssetConflict).length;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
@@ -121,6 +123,12 @@ export function AssetPlanningTab() {
             <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
               {filtered.length} assets
             </span>
+            {conflictCount > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-red-300 bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">
+                <AlertTriangle className="size-3 shrink-0" />
+                {conflictCount} conflict{conflictCount > 1 ? 's' : ''}
+              </span>
+            )}
           </div>
         </div>
 
@@ -129,6 +137,7 @@ export function AssetPlanningTab() {
           columns={COLUMNS}
           rows={paginated}
           getRowKey={(r) => r.id}
+          isConflict={hasAssetConflict}
         />
 
         {/* Pagination */}

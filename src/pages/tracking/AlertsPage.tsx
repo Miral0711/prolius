@@ -17,6 +17,7 @@ import {
   Info,
   MapPin,
   RefreshCw,
+  Repeat2,
   Search,
   Shield,
   ShieldAlert,
@@ -24,6 +25,7 @@ import {
   X,
   Zap,
 } from 'lucide-react';
+import { groupAndEnrichAlerts, type EnrichedAlert } from '@/lib/alertUtils';
 import { cn } from '@/lib/utils';
 import { PageLayout } from '@/components/shared/PageLayout';
 import {
@@ -41,55 +43,50 @@ import { TablePagination } from '@/components/shared/TablePagination';
 import { fleetSurface, fleetType } from '@/components/fleet/bus-master/tokens';
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
-type Severity = 'Critical' | 'High' | 'Medium' | 'Low';
-type AlertStatus = 'Active' | 'Acknowledged' | 'Resolved' | 'Escalated';
-type AlertType =
-  | 'Overspeed'
-  | 'Geofence'
-  | 'Panic Button'
-  | 'Harsh Braking'
-  | 'Idle Timeout'
-  | 'Maintenance Due'
-  | 'Low Battery'
-  | 'GPS Lost'
-  | 'Accident'
-  | 'Fatigue';
-
-interface Alert {
-  id: string;
-  severity: Severity;
-  type: AlertType;
-  vehicle: string;
-  driver: string;
-  source: string;
-  location: string;
-  time: string;
-  status: AlertStatus;
-  description: string;
-  speed?: number;
-  coordinates?: string;
-  geofenceZone?: string;
-  relatedAlerts?: string[];
-  acknowledgedBy?: string;
-  resolvedAt?: string;
-  notes?: string;
-}
+// Re-export from alertUtils so the rest of the file can use short names
+type Severity    = import('@/lib/alertUtils').Severity;
+type AlertStatus = import('@/lib/alertUtils').AlertStatus;
+type AlertType   = import('@/lib/alertUtils').AlertType;
+type Alert       = EnrichedAlert;
 
 /* ─── Mock data ──────────────────────────────────────────────────────────── */
-const MOCK_ALERTS: Alert[] = [
-  { id: 'ALT-001', severity: 'Critical', type: 'Panic Button',    vehicle: 'HSA1098', driver: 'Ahmed Al-Rashid',  source: 'MDVR',    location: 'King Fahd Rd, Riyadh',       time: '14:32:10', status: 'Active',       description: 'Driver triggered panic button. Immediate response required. Vehicle stationary at last known GPS fix.', coordinates: '24.7136° N, 46.6753° E', relatedAlerts: ['ALT-009'] },
-  { id: 'ALT-002', severity: 'Critical', type: 'Accident',        vehicle: 'XSA4247', driver: 'Khalid Al-Otaibi', source: 'Sensor',  location: 'Dammam Expressway, KM 42',   time: '14:18:05', status: 'Escalated',    description: 'Collision detected via G-force sensor. Impact force exceeded threshold. Emergency services notified.', coordinates: '26.4207° N, 50.0888° E', speed: 0 },
-  { id: 'ALT-003', severity: 'High',     type: 'Overspeed',       vehicle: 'ASA8887', driver: 'Omar Al-Ghamdi',   source: 'GPS',     location: 'Olaya St, Riyadh',           time: '14:25:44', status: 'Active',       description: 'Vehicle exceeded speed limit of 80 km/h. Recorded speed: 112 km/h in a 80 km/h zone.', speed: 112, coordinates: '24.6877° N, 46.7219° E' },
-  { id: 'ALT-004', severity: 'High',     type: 'Geofence',        vehicle: 'KSA0001', driver: 'Faisal Al-Dosari', source: 'GPS',     location: 'Industrial Zone, Jeddah',    time: '14:10:22', status: 'Acknowledged', description: 'Vehicle exited authorized operational geofence boundary. Last seen heading south on Highway 15.', geofenceZone: 'Jeddah Operational Area', acknowledgedBy: 'Dispatch Ctrl' },
-  { id: 'ALT-005', severity: 'High',     type: 'Fatigue',         vehicle: 'HSA1167', driver: 'Nasser Al-Harbi',  source: 'DMS',     location: 'Makkah Rd, Jeddah',          time: '13:58:30', status: 'Active',       description: 'Driver Monitoring System detected signs of fatigue. Eyes closed for >2 seconds. Alert sent to driver.', coordinates: '21.3891° N, 39.8579° E' },
-  { id: 'ALT-006', severity: 'Medium',   type: 'Harsh Braking',   vehicle: 'AVI001',  driver: 'Saad Al-Qahtani',  source: 'Sensor',  location: 'Prince Sultan Rd, Riyadh',   time: '13:45:17', status: 'Resolved',     description: 'Harsh braking event detected. Deceleration: -0.8g. No collision detected. Driver coaching recommended.', resolvedAt: '14:05:00', notes: 'Driver briefed via in-cab messaging.' },
-  { id: 'ALT-007', severity: 'Medium',   type: 'Idle Timeout',    vehicle: 'AVI0012', driver: 'Turki Al-Shehri',  source: 'Engine',  location: 'Depot Zone B, Riyadh',       time: '13:30:00', status: 'Acknowledged', description: 'Vehicle idling for 45 minutes exceeding 30-minute policy threshold. Engine running, no movement detected.', acknowledgedBy: 'Fleet Mgr' },
-  { id: 'ALT-008', severity: 'Medium',   type: 'Maintenance Due', vehicle: 'AVI00123',driver: 'Unassigned',        source: 'System',  location: 'Depot Zone B, Riyadh',       time: '13:00:00', status: 'Active',       description: 'Scheduled maintenance overdue by 3 days. Oil change and brake inspection required. Vehicle should be taken off route.' },
-  { id: 'ALT-009', severity: 'Low',      type: 'GPS Lost',        vehicle: 'KSA0001', driver: 'Faisal Al-Dosari', source: 'GPS',     location: 'Last: King Abdulaziz Rd',    time: '12:55:40', status: 'Resolved',     description: 'GPS signal lost for 8 minutes. Signal restored automatically. No manual intervention required.', resolvedAt: '13:03:55' },
-  { id: 'ALT-010', severity: 'Low',      type: 'Low Battery',     vehicle: 'HSA1167', driver: 'Nasser Al-Harbi',  source: 'Device',  location: 'Makkah Rd, Jeddah',          time: '12:40:10', status: 'Acknowledged', description: 'Device battery voltage dropped to 11.5V. Below recommended 12V threshold. Check alternator and battery health.', acknowledgedBy: 'Tech Support' },
-  { id: 'ALT-011', severity: 'High',     type: 'Overspeed',       vehicle: 'XSA4247', driver: 'Khalid Al-Otaibi', source: 'GPS',     location: 'Dammam Corniche',            time: '12:20:33', status: 'Resolved',     description: 'Speed violation: 98 km/h in 60 km/h zone. Driver warned via in-cab alert.', speed: 98, resolvedAt: '12:25:00' },
-  { id: 'ALT-012', severity: 'Critical', type: 'Overspeed',       vehicle: 'HSA1098', driver: 'Ahmed Al-Rashid',  source: 'GPS',     location: 'Northern Ring Rd, Riyadh',   time: '11:55:20', status: 'Resolved',     description: 'Extreme speed violation: 145 km/h in 100 km/h zone. Incident report filed.', speed: 145, resolvedAt: '12:10:00', notes: 'Incident report #IR-2024-089 filed.' },
+/**
+ * RAW_ALERTS — individual alert events as they arrive from the system.
+ * groupAndEnrichAlerts() will:
+ *   1. Group by (vehicle, alertType) within a 60-min window
+ *   2. Collapse each group into one representative row (most recent)
+ *   3. Attach repeatCount, isRecurring, groupedAlertIds
+ *   4. Compute priorityScore = severityWeight*10 + minutesSinceTriggered + repeatCount*5
+ *   5. Sort descending by priorityScore
+ *
+ * Vehicles XSA4247 and HSA1098 intentionally have multiple Overspeed events
+ * within the window to demonstrate repeat detection.
+ */
+const RAW_ALERTS = [
+  // ── XSA4247 — 3× Overspeed within 60 min (14:18 → 13:30 → 13:05)
+  { id: 'ALT-002', severity: 'Critical' as const, type: 'Accident' as const,        vehicle: 'XSA4247',  driver: 'Khalid Al-Otaibi',  source: 'Sensor', location: 'Dammam Expressway, KM 42',  time: '14:18:05', status: 'Escalated' as const,    description: 'Collision detected via G-force sensor. Impact force exceeded threshold. Emergency services notified.', coordinates: '26.4207° N, 50.0888° E', speed: 0 },
+  { id: 'ALT-011', severity: 'High' as const,     type: 'Overspeed' as const,       vehicle: 'XSA4247',  driver: 'Khalid Al-Otaibi',  source: 'GPS',    location: 'Dammam Corniche',           time: '14:05:10', status: 'Active' as const,       description: 'Speed violation: 104 km/h in 60 km/h zone. Third overspeed event in under an hour.', speed: 104 },
+  { id: 'ALT-013', severity: 'High' as const,     type: 'Overspeed' as const,       vehicle: 'XSA4247',  driver: 'Khalid Al-Otaibi',  source: 'GPS',    location: 'Dammam Ring Rd',            time: '13:42:20', status: 'Acknowledged' as const, description: 'Speed violation: 95 km/h in 60 km/h zone. Second overspeed event.', speed: 95, acknowledgedBy: 'Dispatch Ctrl' },
+  { id: 'ALT-014', severity: 'High' as const,     type: 'Overspeed' as const,       vehicle: 'XSA4247',  driver: 'Khalid Al-Otaibi',  source: 'GPS',    location: 'Dammam Corniche',           time: '13:20:33', status: 'Resolved' as const,     description: 'Speed violation: 98 km/h in 60 km/h zone. Driver warned via in-cab alert.', speed: 98, resolvedAt: '13:25:00' },
+
+  // ── HSA1098 — 2× Overspeed within 60 min (14:32 → 13:55)
+  { id: 'ALT-001', severity: 'Critical' as const, type: 'Panic Button' as const,    vehicle: 'HSA1098',  driver: 'Ahmed Al-Rashid',   source: 'MDVR',   location: 'King Fahd Rd, Riyadh',      time: '14:32:10', status: 'Active' as const,       description: 'Driver triggered panic button. Immediate response required. Vehicle stationary at last known GPS fix.', coordinates: '24.7136° N, 46.6753° E', relatedAlerts: ['ALT-009'] },
+  { id: 'ALT-015', severity: 'Critical' as const, type: 'Overspeed' as const,       vehicle: 'HSA1098',  driver: 'Ahmed Al-Rashid',   source: 'GPS',    location: 'King Fahd Rd, Riyadh',      time: '14:20:00', status: 'Active' as const,       description: 'Extreme speed: 138 km/h in 100 km/h zone. Second overspeed in under an hour.', speed: 138 },
+  { id: 'ALT-012', severity: 'Critical' as const, type: 'Overspeed' as const,       vehicle: 'HSA1098',  driver: 'Ahmed Al-Rashid',   source: 'GPS',    location: 'Northern Ring Rd, Riyadh',  time: '13:55:20', status: 'Resolved' as const,     description: 'Extreme speed violation: 145 km/h in 100 km/h zone. Incident report filed.', speed: 145, resolvedAt: '14:10:00', notes: 'Incident report #IR-2024-089 filed.' },
+
+  // ── Other vehicles — single events
+  { id: 'ALT-003', severity: 'High' as const,     type: 'Overspeed' as const,       vehicle: 'ASA8887',  driver: 'Omar Al-Ghamdi',    source: 'GPS',    location: 'Olaya St, Riyadh',          time: '14:25:44', status: 'Active' as const,       description: 'Vehicle exceeded speed limit of 80 km/h. Recorded speed: 112 km/h in a 80 km/h zone.', speed: 112, coordinates: '24.6877° N, 46.7219° E' },
+  { id: 'ALT-004', severity: 'High' as const,     type: 'Geofence' as const,        vehicle: 'KSA0001',  driver: 'Faisal Al-Dosari',  source: 'GPS',    location: 'Industrial Zone, Jeddah',   time: '14:10:22', status: 'Acknowledged' as const, description: 'Vehicle exited authorized operational geofence boundary. Last seen heading south on Highway 15.', geofenceZone: 'Jeddah Operational Area', acknowledgedBy: 'Dispatch Ctrl' },
+  { id: 'ALT-005', severity: 'High' as const,     type: 'Fatigue' as const,         vehicle: 'HSA1167',  driver: 'Nasser Al-Harbi',   source: 'DMS',    location: 'Makkah Rd, Jeddah',         time: '13:58:30', status: 'Active' as const,       description: 'Driver Monitoring System detected signs of fatigue. Eyes closed for >2 seconds. Alert sent to driver.', coordinates: '21.3891° N, 39.8579° E' },
+  { id: 'ALT-006', severity: 'Medium' as const,   type: 'Harsh Braking' as const,   vehicle: 'AVI001',   driver: 'Saad Al-Qahtani',   source: 'Sensor', location: 'Prince Sultan Rd, Riyadh',  time: '13:45:17', status: 'Resolved' as const,     description: 'Harsh braking event detected. Deceleration: -0.8g. No collision detected. Driver coaching recommended.', resolvedAt: '14:05:00', notes: 'Driver briefed via in-cab messaging.' },
+  { id: 'ALT-007', severity: 'Medium' as const,   type: 'Idle Timeout' as const,    vehicle: 'AVI0012',  driver: 'Turki Al-Shehri',   source: 'Engine', location: 'Depot Zone B, Riyadh',      time: '13:30:00', status: 'Acknowledged' as const, description: 'Vehicle idling for 45 minutes exceeding 30-minute policy threshold. Engine running, no movement detected.', acknowledgedBy: 'Fleet Mgr' },
+  { id: 'ALT-008', severity: 'Medium' as const,   type: 'Maintenance Due' as const, vehicle: 'AVI00123', driver: 'Unassigned',         source: 'System', location: 'Depot Zone B, Riyadh',      time: '13:00:00', status: 'Active' as const,       description: 'Scheduled maintenance overdue by 3 days. Oil change and brake inspection required. Vehicle should be taken off route.' },
+  { id: 'ALT-009', severity: 'Low' as const,      type: 'GPS Lost' as const,        vehicle: 'KSA0001',  driver: 'Faisal Al-Dosari',  source: 'GPS',    location: 'Last: King Abdulaziz Rd',   time: '12:55:40', status: 'Resolved' as const,     description: 'GPS signal lost for 8 minutes. Signal restored automatically. No manual intervention required.', resolvedAt: '13:03:55' },
+  { id: 'ALT-010', severity: 'Low' as const,      type: 'Low Battery' as const,     vehicle: 'HSA1167',  driver: 'Nasser Al-Harbi',   source: 'Device', location: 'Makkah Rd, Jeddah',         time: '12:40:10', status: 'Acknowledged' as const, description: 'Device battery voltage dropped to 11.5V. Below recommended 12V threshold. Check alternator and battery health.', acknowledgedBy: 'Tech Support' },
 ];
+
+// Grouped, scored, sorted — ready to render
+const MOCK_ALERTS: Alert[] = groupAndEnrichAlerts(RAW_ALERTS, 60);
 
 /* ─── Config maps ────────────────────────────────────────────────────────── */
 const SEVERITY_CFG: Record<Severity, { bg: string; text: string; border: string; dot: string; icon: React.ElementType }> = {
@@ -120,6 +117,16 @@ const TYPE_ICON: Record<AlertType, React.ElementType> = {
 };
 
 /* ─── Small atoms ────────────────────────────────────────────────────────── */
+function RecurringBadge({ count }: { count: number }) {
+  if (count <= 1) return null;
+  return (
+    <span className="inline-flex items-center gap-1 rounded-sm border border-orange-200 bg-orange-50 px-1.5 py-0 text-[10.5px] font-semibold uppercase leading-[1.125rem] tracking-[0.01rem] text-orange-700">
+      <Repeat2 className="h-2.5 w-2.5 shrink-0" />
+      ×{count}
+    </span>
+  );
+}
+
 function SeverityBadge({ severity }: { severity: Severity }) {
   const cfg = SEVERITY_CFG[severity];
   const Icon = cfg.icon;
@@ -248,8 +255,14 @@ function AlertDetailPanel({ alert, onClose }: { alert: Alert; onClose: () => voi
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[12.5px] font-bold text-slate-800">{alert.type}</span>
               <SeverityBadge severity={alert.severity} />
+              {alert.isRecurring && <RecurringBadge count={alert.repeatCount} />}
             </div>
-            <p className="mt-0.5 text-[10.5px] text-slate-400">{alert.id} · {alert.time}</p>
+            <p className="mt-0.5 text-[10.5px] text-slate-400">
+              {alert.id} · {alert.time}
+              {alert.isRecurring && (
+                <span className="ml-1.5 font-medium text-orange-500">Recurring Alert</span>
+              )}
+            </p>
           </div>
           <button
             onClick={onClose}
@@ -292,6 +305,22 @@ function AlertDetailPanel({ alert, onClose }: { alert: Alert; onClose: () => voi
         </Section>
 
         <Section icon={Info} title="Workflow" defaultOpen={false}>
+          <DR label="Priority Score" value={String(alert.priorityScore)} valueClass="font-bold text-[#3d6b8e]" />
+          {alert.isRecurring && (
+            <DR label="Repeat Count" value={`${alert.repeatCount}× in last 60 min`} valueClass="text-orange-600 font-semibold" />
+          )}
+          {alert.isRecurring && alert.groupedAlertIds.length > 1 && (
+            <div className="mt-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Grouped Events</p>
+              <div className="flex flex-wrap gap-1">
+                {alert.groupedAlertIds.map(gid => (
+                  <span key={gid} className="inline-flex items-center rounded border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10.5px] font-medium text-orange-700">
+                    {gid}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           {alert.acknowledgedBy && <DR label="Acknowledged By" value={alert.acknowledgedBy} />}
           {alert.resolvedAt && <DR label="Resolved At" value={alert.resolvedAt} />}
           {alert.notes && (
@@ -548,7 +577,10 @@ export default function AlertsPage() {
                         <TableCell>
                           <div className="flex items-center gap-1.5">
                             <TypeIcon className="h-3 w-3 shrink-0 text-slate-400" />
-                            <span className={fleetType.bodyPrimary}>{alert.type}</span>
+                            <span className={fleetType.bodyPrimary}>
+                              {alert.type}{alert.isRecurring ? ` (${alert.repeatCount}×)` : ''}
+                            </span>
+                            {alert.isRecurring && <RecurringBadge count={alert.repeatCount} />}
                           </div>
                         </TableCell>
                         <TableCell>
