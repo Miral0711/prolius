@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header/Header';
+import { GlobalAssistant } from '@/components/assistant';
 import { useLayout } from './context';
 import { Sidebar } from './sidebar';
 
@@ -48,6 +49,8 @@ export function Wrapper() {
           </main>
         </div>
       </div>
+
+      <GlobalAssistant />
     </div>
   );
 }

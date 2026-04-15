@@ -1114,7 +1114,7 @@ export default function DashboardPage() {
         {/* Header */}
         <header className="flex flex-col gap-1.5 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="typo-page-title">Executive Analyst Dashboard</h1>
+            <h1 className="typo-page-title">{DASHBOARD_ROLES.find((r) => r.value === dashboardRole)?.label ?? 'Dashboard'}</h1>
             <div className="flex items-center gap-2 mt-0.5">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <p className="typo-body">Intelligence Command Core • {today}</p>
@@ -1124,10 +1124,10 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[6px] bg-white border border-[#d4e0ea] shadow-[0_1px_3px_rgba(61,107,142,0.06)] hover:border-[#3d6b8e]/40 hover:shadow-[0_2px_8px_rgba(61,107,142,0.10)] transition-all duration-200 focus-within:border-[#3d6b8e]/50 focus-within:shadow-[0_0_0_2px_rgba(61,107,142,0.08)]">
-              <span className="text-[9px] font-bold text-[#6b8299] uppercase tracking-wider whitespace-nowrap">View as</span>
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] font-medium text-[#9ab0c2] uppercase tracking-wider whitespace-nowrap select-none">View as</span>
               <Select value={dashboardRole} onValueChange={(v) => setDashboardRole(v as DashboardRole)}>
-                <SelectTrigger className="h-5 border-0 shadow-none bg-transparent p-0 text-[10px] font-bold text-[#3d6b8e] w-auto min-w-[110px] focus:ring-0 hover:text-[#2e5270] transition-colors">
+                <SelectTrigger className="h-7 px-2 border border-[#dce8f0] shadow-none bg-[#f4f8fb] rounded-[6px] text-[11px] font-semibold text-[#3d6b8e] w-auto min-w-[120px] focus:ring-0 hover:bg-[#eef4f8] hover:border-[#b8cedd] hover:text-[#2e5270] transition-all duration-150">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="rounded-[8px] shadow-[0_8px_24px_rgba(61,107,142,0.14)] border-[#e2eaf2]">
