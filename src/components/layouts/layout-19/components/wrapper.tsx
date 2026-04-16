@@ -41,7 +41,7 @@ export function Wrapper() {
             className={cn(
               'mb-0 flex min-h-0 w-full min-w-0 flex-1 flex-col scrollbar-hide',
               isViewportFillMain
-                ? 'overflow-hidden'
+                ? 'overflow-x-hidden'
                 : 'overflow-x-hidden overflow-y-auto',
             )}
           >

@@ -17,7 +17,7 @@ export function Layout19() {
       </Helmet>
 
       <LayoutProvider
-        bodyClassName="overflow-y-auto h-full"
+        bodyClassName="h-full"
         style={
           {
             '--sidebar-width': '72px',

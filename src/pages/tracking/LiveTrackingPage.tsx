@@ -24,6 +24,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PageFooter } from '@/components/shared/PageFooter';
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 type VehicleStatus = 'Online' | 'Idling' | 'Offline' | 'Alarm' | 'ACC Off';
@@ -877,6 +878,9 @@ export default function LiveTrackingPage() {
           )}
         </div>
       </div>
+
+      {/* ── Footer ─────────────────────────────────────────────────────────── */}
+      <PageFooter />
     </div>
   );
 }

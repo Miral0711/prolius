@@ -1,4 +1,5 @@
 ﻿import { useState, type ReactNode } from 'react';
+import { PageLayout } from '@/components/shared';
 import {
   Activity,
   AlertTriangle,
@@ -48,7 +49,6 @@ import {
 } from 'recharts';
 import { Link } from 'react-router';
 import { cn } from '@/lib/utils';
-import { PageFooter } from '@/components/shared/PageFooter';
 import {
   dashboardTableHeaderCellClass,
   dashboardTableHeaderRowClass,
@@ -1109,8 +1109,9 @@ export default function DashboardPage() {
   const selectedVehicleData = MAP_VEHICLES.find((v) => v.id === selectedVehicle);
 
   return (
-    <div className={cn(TOKENS.pageBg, 'main-container pt-5 px-5 pb-6')}>
-      <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-2.5">
+    <PageLayout title="Dashboard">
+    <div className={cn(TOKENS.pageBg, 'overflow-y-auto flex-1 min-h-0 [scrollbar-gutter:stable]')}>
+      <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-2.5 px-5 pt-5 pb-4">
         {/* Header */}
         <header className="flex flex-col gap-1.5 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -2044,7 +2045,7 @@ export default function DashboardPage() {
         {dashboardRole === 'viewer' && <ViewerView />}
         </div>
       </div>
-      <PageFooter />
     </div>
+    </PageLayout>
   );
 }
