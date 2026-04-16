@@ -13,6 +13,7 @@ import {
 import { TableToolbar, TablePagination } from '@/components/shared';
 import { cn } from '@/lib/utils';
 import type { VehicleCheckRow, VehicleStatus } from '../mock-data';
+import { getEscalationStatus, VEHICLE_CHECKS_MOCK } from '../mock-data';
 import { CheckResultBadge } from './CheckResultBadge';
 
 const COL_WIDTHS = ['120px', '110px', '200px', '130px', '110px', '120px', '140px', '70px'];
@@ -21,6 +22,24 @@ function vehicleStatusVariant(s: VehicleStatus) {
   if (s === 'Active') return 'emerald' as const;
   if (s === 'Maintenance') return 'amber' as const;
   return 'rose' as const;
+}
+
+function EscalationIndicator({ status }: { status: ReturnType<typeof getEscalationStatus> }) {
+  if (!status) return null;
+  const isHighRisk = status === 'high-risk';
+  return (
+    <span
+      title={isHighRisk ? 'High Risk Vehicle' : 'Needs Attention'}
+      className={cn(
+        'ml-1.5 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none',
+        isHighRisk
+          ? 'bg-red-100 text-red-700'
+          : 'bg-amber-100 text-amber-700',
+      )}
+    >
+      {isHighRisk ? '⚠ High Risk' : '⚠ Needs Attention'}
+    </span>
+  );
 }
 
 interface VehicleChecksTableProps {
@@ -83,7 +102,10 @@ export function VehicleChecksTable({
                   <TableCell><span className="block truncate text-2sm text-slate-800">{row.check}</span></TableCell>
                   <TableCell><span className="text-2sm text-slate-600">{row.type}</span></TableCell>
                   <TableCell>
-                    <StatusBadge label={row.vehicleStatus} variant={vehicleStatusVariant(row.vehicleStatus)} size="sm" />
+                    <div className="flex flex-wrap items-center gap-x-1">
+                      <StatusBadge label={row.vehicleStatus} variant={vehicleStatusVariant(row.vehicleStatus)} size="sm" />
+                      <EscalationIndicator status={getEscalationStatus(row, VEHICLE_CHECKS_MOCK)} />
+                    </div>
                   </TableCell>
                   <TableCell><CheckResultBadge result={row.checkResult} /></TableCell>
                   <TableCell><span className="block truncate text-2sm text-slate-700">{row.createdBy}</span></TableCell>

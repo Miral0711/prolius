@@ -7,6 +7,9 @@ import type { QuickSearchState } from './components/ReportedIncidentsQuickSearch
 import { ReportedIncidentsQuickSearch } from './components/ReportedIncidentsQuickSearch';
 import { ReportedIncidentsTable } from './components/ReportedIncidentsTable';
 import { SearchModeTabs, type SearchMode } from './components/SearchModeTabs';
+import { buildFrequentVehicleMap, buildHotspotData, computeIncidentTrend, computeIncidentSummary } from '@/lib/incidentUtils';
+import { HotspotSummaryBar } from './components/HotspotSummaryBar';
+import { IncidentSummaryPanel } from './components/IncidentSummaryPanel';
 
 const EMPTY_QUICK: QuickSearchState = { registration: '', incidentId: '', createdBy: '' };
 
@@ -58,6 +61,30 @@ export default function ReportedIncidentsPage() {
     [filteredRows, page, pageSize],
   );
 
+  // Frequent vehicle detection — always computed from the full dataset (not filtered)
+  const frequentVehicles = useMemo(
+    () => buildFrequentVehicleMap(REPORTED_INCIDENTS_MOCK, 72, 2),
+    [],
+  );
+
+  // Trend intelligence — current week vs previous week, full dataset
+  const trend = useMemo(
+    () => computeIncidentTrend(REPORTED_INCIDENTS_MOCK, 7),
+    [],
+  );
+
+  // Hotspot detection — always from full dataset, top 3 locations
+  const { map: hotspots, top: hotspotTop } = useMemo(
+    () => buildHotspotData(REPORTED_INCIDENTS_MOCK, 3),
+    [],
+  );
+
+  // Smart summary — all 5 metrics in one pass
+  const summaryData = useMemo(
+    () => computeIncidentSummary(REPORTED_INCIDENTS_MOCK),
+    [],
+  );
+
   const handleSearch = () => {
     setPage(1);
     if (searchMode === 'quick') {
@@ -86,6 +113,7 @@ export default function ReportedIncidentsPage() {
 
   return (
     <PageLayout title="Reported Incidents">
+      <IncidentSummaryPanel data={summaryData} />
       <SearchPanel>
         <div className="flex flex-col gap-2">
           <SearchModeTabs value={searchMode} onChange={handleTabChange} />
@@ -107,6 +135,7 @@ export default function ReportedIncidentsPage() {
           )}
         </div>
       </SearchPanel>
+      <HotspotSummaryBar top={hotspotTop} />
       <ReportedIncidentsTable
         rows={pagedRows}
         totalCount={filteredRows.length}
@@ -118,6 +147,9 @@ export default function ReportedIncidentsPage() {
         onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
         onResetColumns={() => {}}
         onViewDetail={(row) => console.log('View incident:', row)}
+        frequentVehicles={frequentVehicles}
+        trend={trend}
+        hotspots={hotspots}
       />
     </PageLayout>
   );

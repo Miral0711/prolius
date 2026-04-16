@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { Eye, FileDown, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Eye, FilePen, Plus } from 'lucide-react';
 import { PageLayout, SearchPanel, SearchBar, TableToolbar, TablePagination } from '@/components/shared';
 import {
   DataTable, DataTableBodyScroll, DataTableTable,
@@ -16,6 +17,7 @@ function profileStatusBadge(s: ProfileStatus) {
 }
 
 export default function AssetProfilesPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [showArchived, setShowArchived] = useState(false);
   const [page, setPage] = useState(1);
@@ -48,7 +50,7 @@ export default function AssetProfilesPage() {
           onShowArchivedChange={(v) => { setShowArchived(v); setPage(1); }}
           showArchivedLabel="Show archived asset profiles"
           actions={
-            <button type="button" className="inline-flex h-8 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 text-2sm font-semibold text-emerald-700 shadow-sm hover:bg-emerald-100">
+            <button type="button" onClick={() => navigate('/asset-management/profiles/add')} className="inline-flex h-8 items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-3 text-2sm font-semibold text-emerald-700 shadow-sm hover:bg-emerald-100">
               <Plus className="h-3.5 w-3.5" />Add asset profile
             </button>
           }
@@ -90,8 +92,8 @@ export default function AssetProfilesPage() {
                   <TableCell>{profileStatusBadge(row.profileStatus)}</TableCell>
                   <TableCell align="center">
                     <div className="flex items-center justify-center gap-0.5">
-                      <button type="button" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-[#2e5f8a] hover:bg-[#e8f0f8]"><Eye className="h-3.5 w-3.5" /></button>
-                      <button type="button" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><FileDown className="h-3.5 w-3.5" /></button>
+                      <button type="button" onClick={() => navigate(`/asset-management/profiles/${row.id}`)} className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-[#2e5f8a] hover:bg-[#e8f0f8]"><Eye className="h-3.5 w-3.5" /></button>
+                      <button type="button" onClick={() => navigate(`/asset-management/profiles/${row.id}/edit`)} className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><FilePen className="h-3.5 w-3.5" /></button>
                     </div>
                   </TableCell>
                 </TableRow>

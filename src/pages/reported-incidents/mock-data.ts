@@ -14,7 +14,9 @@ export type IncidentType =
   | 'Road Hazard'
   | 'Driver Misconduct'
   | 'Mechanical Failure'
-  | 'Theft';
+  | 'Theft'
+  | 'Overspeed'
+  | 'Harsh Braking';
 
 export interface ReportedIncidentRow {
   id: number;
@@ -57,6 +59,27 @@ export const REPORTED_INCIDENTS_MOCK: ReportedIncidentRow[] = [
   { id: 23, date: '03/04/2026 17:00', registration: 'OPQ 7890', incidentId: 'INC-3279', incidentDate: '02/04/2026', incidentType: 'Mechanical Failure', allocatedTo: 'Safety Team B', incidentStatus: 'Reported',      createdBy: 'Sultan Al-Rashid',  region: 'Riyadh',           division: 'West Riyadh',    archived: false },
   { id: 24, date: '03/04/2026 15:35', registration: 'RST 1122', incidentId: 'INC-3278', incidentDate: '02/04/2026', incidentType: 'Theft',              allocatedTo: 'Safety Team A', incidentStatus: 'Under Review',  createdBy: 'Khalid Al-Mutairi', region: 'Makkah',           division: 'Makkah East',    archived: false },
   { id: 25, date: '03/04/2026 14:10', registration: 'UVW 4433', incidentId: 'INC-3277', incidentDate: '01/04/2026', incidentType: 'Collision',          allocatedTo: 'Safety Team C', incidentStatus: 'Resolved',      createdBy: 'Faisal Al-Dosari',  region: 'Madinah',          division: 'Madinah South',  archived: false },
+
+  // ── Repeat incidents — same vehicles within 72 h window ──────────────────
+  // ABC 1234: 3 incidents within 72 h (07/04 + 06/04 + 05/04)
+  { id: 26, date: '06/04/2026 14:30', registration: 'ABC 1234', incidentId: 'INC-3276', incidentDate: '06/04/2026', incidentType: 'Near Miss',          allocatedTo: 'Safety Team B', incidentStatus: 'Reported',      createdBy: 'Sultan Al-Rashid',  region: 'Riyadh',           division: 'North Depot',    archived: false },
+  { id: 27, date: '05/04/2026 11:00', registration: 'ABC 1234', incidentId: 'INC-3275', incidentDate: '05/04/2026', incidentType: 'Harsh Braking',      allocatedTo: 'Safety Team A', incidentStatus: 'Under Review',  createdBy: 'Ahmed Al-Otaibi',   region: 'Riyadh',           division: 'North Depot',    archived: false },
+
+  // GHI 9012: 2 incidents within 72 h (06/04 + 05/04)
+  { id: 28, date: '05/04/2026 08:20', registration: 'GHI 9012', incidentId: 'INC-3274', incidentDate: '05/04/2026', incidentType: 'Vehicle Damage',     allocatedTo: 'Safety Team C', incidentStatus: 'Pending',       createdBy: 'Khalid Al-Mutairi', region: 'Riyadh',           division: 'South Depot',    archived: false },
+
+  // DEF 5678: 2 incidents within 72 h (07/04 + 06/04)
+  { id: 29, date: '06/04/2026 11:15', registration: 'DEF 5678', incidentId: 'INC-3273', incidentDate: '06/04/2026', incidentType: 'Overspeed',          allocatedTo: 'Safety Team B', incidentStatus: 'Resolved',      createdBy: 'Sultan Al-Rashid',  region: 'Jeddah',           division: 'Jeddah Hub',     archived: false },
+
+  // ── Extra rows to create clear hotspot clusters ───────────────────────────
+  // Riyadh · North Depot — 3 more (total 5 with ids 1, 9, 14, 26)
+  { id: 30, date: '05/04/2026 07:30', registration: 'XYZ 0011', incidentId: 'INC-3272', incidentDate: '05/04/2026', incidentType: 'Collision',          allocatedTo: 'Safety Team A', incidentStatus: 'Reported',      createdBy: 'Ahmed Al-Otaibi',   region: 'Riyadh',           division: 'North Depot',    archived: false },
+  { id: 31, date: '04/04/2026 10:00', registration: 'XYZ 0022', incidentId: 'INC-3271', incidentDate: '04/04/2026', incidentType: 'Near Miss',          allocatedTo: 'Safety Team A', incidentStatus: 'Under Review',  createdBy: 'Ahmed Al-Otaibi',   region: 'Riyadh',           division: 'North Depot',    archived: false },
+  // Jeddah · Jeddah Hub — 2 more (total 4 with ids 2, 15, 29)
+  { id: 32, date: '05/04/2026 14:00', registration: 'XYZ 0033', incidentId: 'INC-3270', incidentDate: '05/04/2026', incidentType: 'Vehicle Damage',     allocatedTo: 'Safety Team B', incidentStatus: 'Pending',       createdBy: 'Sultan Al-Rashid',  region: 'Jeddah',           division: 'Jeddah Hub',     archived: false },
+  { id: 33, date: '03/04/2026 09:45', registration: 'XYZ 0044', incidentId: 'INC-3269', incidentDate: '03/04/2026', incidentType: 'Road Hazard',        allocatedTo: 'Safety Team B', incidentStatus: 'Closed',        createdBy: 'Sultan Al-Rashid',  region: 'Jeddah',           division: 'Jeddah Hub',     archived: false },
+  // Makkah · Makkah Central — 2 more (total 3 with ids 5, 18)
+  { id: 34, date: '04/04/2026 08:15', registration: 'XYZ 0055', incidentId: 'INC-3268', incidentDate: '04/04/2026', incidentType: 'Theft',              allocatedTo: 'Safety Team C', incidentStatus: 'Reported',      createdBy: 'Nora Al-Qahtani',   region: 'Makkah',           division: 'Makkah Central', archived: false },
 ];
 
 export const INCIDENT_STATUSES: IncidentStatus[] = [

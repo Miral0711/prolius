@@ -3,6 +3,7 @@ import { PageLayout } from '@/components/shared';
 import { VEHICLE_PROFILES_MOCK } from './mock-data';
 import { VehicleProfilesSearchBar } from './components/VehicleProfilesSearchBar';
 import { VehicleProfilesTable } from './components/VehicleProfilesTable';
+import { FleetCompositionSummary } from './components/FleetCompositionSummary';
 import type { VehicleProfileRow } from './mock-data';
 
 export default function VehicleProfilesPage() {
@@ -56,6 +57,7 @@ export default function VehicleProfilesPage() {
         onSearch={handleSearch}
         onClear={handleClear}
       />
+      <FleetCompositionSummary rows={filteredRows} />
       <VehicleProfilesTable
         rows={pagedRows}
         totalCount={filteredRows.length}

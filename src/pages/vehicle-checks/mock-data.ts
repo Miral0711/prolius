@@ -45,6 +45,45 @@ export const VEHICLE_CHECKS_MOCK: VehicleCheckRow[] = [
 ];
 
 export const REGIONS = ['All Regions', 'Riyadh', 'Jeddah', 'Eastern Province', 'Makkah', 'Madinah'];
+
+// --- Defect Escalation Logic ---
+
+const DEFECT_RESULTS: CheckResult[] = ['Defect Found', 'Critical'];
+
+/** Parse "DD/MM/YYYY HH:mm" → Date */
+function parseCheckDate(dateStr: string): Date {
+  const [datePart, timePart] = dateStr.split(' ');
+  const [day, month, year] = datePart.split('/').map(Number);
+  const [hours, minutes] = (timePart ?? '00:00').split(':').map(Number);
+  return new Date(year, month - 1, day, hours, minutes);
+}
+
+export type EscalationStatus = 'high-risk' | 'needs-attention' | null;
+
+/**
+ * Returns the escalation status for a given row based on all available rows.
+ * - 'high-risk'       → same registration has 2+ defect results within 48 h of this check
+ * - 'needs-attention' → this check result is "Defect Found" or "Critical"
+ * - null              → no escalation
+ */
+export function getEscalationStatus(
+  row: VehicleCheckRow,
+  allRows: VehicleCheckRow[],
+): EscalationStatus {
+  if (!DEFECT_RESULTS.includes(row.checkResult)) return null;
+
+  const rowDate = parseCheckDate(row.date);
+  const window48h = 48 * 60 * 60 * 1000;
+
+  const defectsInWindow = allRows.filter(
+    (r) =>
+      r.registration === row.registration &&
+      DEFECT_RESULTS.includes(r.checkResult) &&
+      Math.abs(parseCheckDate(r.date).getTime() - rowDate.getTime()) <= window48h,
+  );
+
+  return defectsInWindow.length >= 2 ? 'high-risk' : 'needs-attention';
+}
 export const DIVISIONS = ['All Divisions', 'North Depot', 'South Depot', 'East Riyadh', 'West Riyadh', 'Jeddah Hub', 'Jeddah South', 'Dammam Depot', 'Al Khobar', 'Makkah Central', 'Makkah East', 'Madinah North', 'Madinah South'];
 export const CHECK_TYPES: CheckType[] = ['Daily Walk-Around', 'Pre-Trip', 'Post-Trip', 'Periodic', 'Roadside'];
 export const VEHICLE_TYPES: VehicleType[] = ['Bus', 'Coach', 'Minibus', 'Taxi', 'Van'];

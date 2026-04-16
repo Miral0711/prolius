@@ -1,16 +1,16 @@
 import { useMemo, useState } from 'react';
 import { Download, Eye, RefreshCw, Settings } from 'lucide-react';
 import { PageLayout, SearchPanel, SearchBar, TableToolbar, TablePagination } from '@/components/shared';
+import { AiSummaryBadge } from '@/components/shared/AiSummaryBadge';
+import { ReportInsightsPanel } from '@/components/shared/ReportInsightsPanel';
+import { ExecutiveReportsSection } from '@/components/reports/ExecutiveReportsSection';
 import { FilterDropdown } from '@/components/fleet/bus-master/FilterDropdown';
 import {
   DataTable, DataTableBodyScroll, DataTableTable,
   TableCell, TableHeader, TableHeaderCell, TableRow,
 } from '@/components/fleet/bus-master/DataTable';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { REPORTS_MOCK, REPORT_TYPES } from './mock-data';
-
-const COL_WIDTHS = ['200px', '1fr', '120px', '160px', '100px'];
 
 type ReportTab = 'reports' | 'downloads';
 
@@ -21,6 +21,9 @@ export default function ReportsPage() {
   const [activeFilters, setActiveFilters] = useState<{ name: string; type: string } | null>(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const toggleExpand = (id: number) => setExpandedId(prev => (prev === id ? null : id));
 
   const filtered = useMemo(() => {
     let rows = REPORTS_MOCK;
@@ -36,8 +39,11 @@ export default function ReportsPage() {
 
   return (
     <PageLayout title="Reports">
+      {/* Executive Reports */}
+      <ExecutiveReportsSection />
+
       {/* Tab bar */}
-      <div className="shrink-0 rounded-md border border-[#d4e0ea] bg-white px-3 pt-2 shadow-sm">
+      <div className="shrink-0 rounded-md border border-[#d4e0ea] bg-white px-3 pt-2">
         <Tabs value={tab} onValueChange={v => setTab(v as ReportTab)}>
           <TabsList variant="line" size="md" className="w-full justify-start">
             <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -57,7 +63,7 @@ export default function ReportsPage() {
           extra={
             <FilterDropdown
               defaultValue={typeFilter}
-              widthClassName="min-w-[160px] max-w-[200px]"
+              widthClassName="min-w-[140px] max-w-[180px]"
               items={REPORT_TYPES.map(t => ({ value: t === 'All Types' ? 'all' : t, label: t }))}
             />
           }
@@ -69,21 +75,22 @@ export default function ReportsPage() {
         <TableToolbar title={tab === 'reports' ? 'Reports' : 'Downloads'} showExportButtons={tab === 'reports'} />
 
         <DataTableBodyScroll>
-          <DataTableTable style={{ minWidth: '700px' }}>
+          {/* Override min-w token and table-fixed so table fills container width */}
+          <DataTableTable className="min-w-0 table-auto w-full" style={{}}>
             {tab === 'reports' ? (
               <>
                 <colgroup>
-                  <col style={{ width: '200px' }} />
+                  <col style={{ width: '180px' }} />
                   <col />
-                  <col style={{ width: '120px' }} />
-                  <col style={{ width: '170px' }} />
-                  <col style={{ width: '116px' }} />
+                  <col style={{ width: '100px' }} />
+                  <col style={{ width: '150px' }} />
+                  <col style={{ width: '100px' }} />
                 </colgroup>
                 <TableHeader>
                   <tr>
                     <TableHeaderCell>Name</TableHeaderCell>
                     <TableHeaderCell>Description</TableHeaderCell>
-                    <TableHeaderCell>Report Type</TableHeaderCell>
+                    <TableHeaderCell>Type</TableHeaderCell>
                     <TableHeaderCell>Last Generated</TableHeaderCell>
                     <TableHeaderCell align="center">Actions</TableHeaderCell>
                   </tr>
@@ -97,13 +104,34 @@ export default function ReportsPage() {
                     </TableRow>
                   ) : paged.map(row => (
                     <TableRow key={row.id}>
-                      <TableCell><span className="text-2sm font-medium text-slate-800">{row.name}</span></TableCell>
-                      <TableCell className="max-w-none"><span className="text-2sm text-slate-600">{row.description}</span></TableCell>
-                      <TableCell><span className="text-2sm text-slate-600">{row.reportType}</span></TableCell>
-                      <TableCell><span className="text-2sm tabular-nums text-slate-500">{row.lastGenerated || '—'}</span></TableCell>
+                      <TableCell>
+                        <span className="text-2sm font-medium text-slate-800">{row.name}</span>
+                      </TableCell>
+                      <TableCell className="max-w-none">
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-2sm text-slate-600">{row.description}</span>
+                          <AiSummaryBadge reportName={row.name} lastGenerated={row.lastGenerated} />
+                          {expandedId === row.id && (
+                            <ReportInsightsPanel reportName={row.name} lastGenerated={row.lastGenerated} />
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-2sm text-slate-500">{row.reportType}</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-2sm tabular-nums text-slate-500">{row.lastGenerated || '—'}</span>
+                      </TableCell>
                       <TableCell align="center">
                         <div className="flex items-center justify-center gap-0.5">
-                          <button type="button" title="Run report" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-[#2e5f8a] hover:bg-[#e8f0f8]"><Eye className="h-3.5 w-3.5" /></button>
+                          <button
+                            type="button"
+                            title={expandedId === row.id ? 'Hide insights' : 'View insights'}
+                            onClick={() => toggleExpand(row.id)}
+                            className={`flex h-6 w-6 items-center justify-center rounded-sm border bg-white ${expandedId === row.id ? 'border-[#3d6b8e] bg-[#e8f0f8] text-[#2e5f8a]' : 'border-slate-200 text-[#2e5f8a] hover:bg-[#e8f0f8]'}`}
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </button>
                           <button type="button" title="Download" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><Download className="h-3.5 w-3.5" /></button>
                           <button type="button" title="Schedule" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><RefreshCw className="h-3.5 w-3.5" /></button>
                           <button type="button" title="Settings" className="flex h-6 w-6 items-center justify-center rounded-sm border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><Settings className="h-3.5 w-3.5" /></button>
@@ -117,9 +145,9 @@ export default function ReportsPage() {
               <>
                 <colgroup>
                   <col />
+                  <col style={{ width: '140px' }} />
                   <col style={{ width: '160px' }} />
-                  <col style={{ width: '180px' }} />
-                  <col style={{ width: '180px' }} />
+                  <col style={{ width: '160px' }} />
                   <col style={{ width: '80px' }} />
                 </colgroup>
                 <TableHeader>

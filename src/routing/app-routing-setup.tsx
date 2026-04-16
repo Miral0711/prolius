@@ -10,6 +10,9 @@ import MessagingPage from '@/pages/messaging/MessagingPage';
 import SettingsPage from '@/pages/settings/SettingsPage';
 import AssetChecksPage from '@/pages/asset-checks/AssetChecksPage';
 import AssetProfilesPage from '@/pages/asset-profiles/AssetProfilesPage';
+import AssetProfileDetailPage from '@/pages/asset-profiles/AssetProfileDetailPage';
+import AssetProfileEditPage from '@/pages/asset-profiles/AssetProfileEditPage';
+import AssetProfileAddPage from '@/pages/asset-profiles/AssetProfileAddPage';
 import WorkshopsPage from '@/pages/workshops/WorkshopsPage';
 import UserManagementPage from '@/pages/system-management/user/UserManagementPage';
 import ReportsPage from '@/pages/reports/ReportsPage';
@@ -50,6 +53,9 @@ export function AppRoutingSetup() {
 
         {/* Asset Management */}
         <Route path="/asset-management/profiles" element={<AssetProfilesPage />} />
+        <Route path="/asset-management/profiles/add" element={<AssetProfileAddPage />} />
+        <Route path="/asset-management/profiles/:id" element={<AssetProfileDetailPage />} />
+        <Route path="/asset-management/profiles/:id/edit" element={<AssetProfileEditPage />} />
         <Route path="/asset-management/checks" element={<AssetChecksPage />} />
         <Route path="/asset-management/defects" element={<AssetDefectsPage />} />
         <Route path="/asset-management/inventory" element={<InventoryPage />} />

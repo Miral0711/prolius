@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { VehicleProfileRow } from '../mock-data';
 import { ProfileStatusBadge } from './ProfileStatusBadge';
+import { ProfileRiskTags } from './ProfileRiskTags';
 import { TableActionButtons } from './TableActionButtons';
 import { TableEmptyState } from './TableEmptyState';
 import { TableToolbar, TablePagination } from '@/components/shared';
@@ -106,6 +107,7 @@ export function VehicleProfilesTable({
                   <TableCell><span className="block truncate text-2sm text-slate-600">{row.engineType}</span></TableCell>
                   <TableCell align="center">
                     <span className="font-mono text-2sm font-semibold tabular-nums text-[#2e5f8a]">{row.vehicleCount}</span>
+                    <ProfileRiskTags vehicleCount={row.vehicleCount} fuelType={row.fuelType} />
                   </TableCell>
                   <TableCell><ProfileStatusBadge status={row.profileStatus} /></TableCell>
                   <TableCell align="center" className="max-w-none overflow-visible">
