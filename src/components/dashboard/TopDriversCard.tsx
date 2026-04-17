@@ -4,7 +4,6 @@ import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 import { CardHeader } from './CardHeader';
 import { SimpleTable, type SimpleTableColumn } from './SimpleTable';
-import { TOP_DRIVERS } from '@/pages/dashboard/mockData';
 import type { LeaderboardItem } from './CompactLeaderboard';
 
 /** Rank badge colors by position */
@@ -30,19 +29,25 @@ const COLUMNS: SimpleTableColumn<LeaderboardItem>[] = [
   { key: 'distance', header: 'Distance', align: 'right', cellClassName: 'text-slate-500', render: (d) => d.distance },
 ];
 
-export function TopDriversCard() {
+export interface TopDriversCardProps {
+  data?: LeaderboardItem[];
+  title?: string;
+  subtitle?: string;
+}
+
+export function TopDriversCard({ data = [], title = 'Top Drivers', subtitle = 'This month' }: TopDriversCardProps) {
   return (
     <DashboardCard className="!p-0 !rounded-lg overflow-hidden">
       <CardHeader
-        title="Top Drivers"
+        title={title}
         icon={Trophy}
         iconWrapperClassName="bg-amber-50 border-amber-100/50"
         iconClassName="text-amber-500"
-        trailing={<span className={cn(typography.meta, 'text-slate-400')}>This month</span>}
+        trailing={<span className={cn(typography.meta, 'text-slate-400')}>{subtitle}</span>}
         className="px-4 py-3 border-b border-slate-100"
       />
       <SimpleTable
-        data={TOP_DRIVERS}
+        data={data}
         columns={COLUMNS}
         rowKey={(d) => d.rank}
         striped

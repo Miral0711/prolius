@@ -6,7 +6,20 @@ import { typography } from '@/lib/typography';
 import { DashboardCard } from './DashboardCard';
 import { MetricGrid, type MetricItem } from './MetricGrid';
 
-const trendData = [
+export interface FleetTrendPoint {
+  day: string;
+  value: number;
+}
+
+export interface FleetOverviewCardProps {
+  title?: string;
+  metrics?: MetricItem[];
+  trendData?: FleetTrendPoint[];
+  utilizationRate?: number;
+  utilizationLabel?: string;
+}
+
+const DEFAULT_TREND: FleetTrendPoint[] = [
   { day: 'Mon', value: 420 },
   { day: 'Tue', value: 428 },
   { day: 'Wed', value: 432 },
@@ -16,29 +29,37 @@ const trendData = [
   { day: 'Sun', value: 450 },
 ];
 
-const chartConfig: ChartConfig = {
-  value: { label: 'Active', color: '#3b82f6' },
-};
-
-const FLEET_METRICS: MetricItem[] = [
+const DEFAULT_METRICS: MetricItem[] = [
   { label: 'Total Vehicles', value: '450' },
   { label: 'Active', value: '425' },
   { label: 'Total Drivers', value: '126' },
 ];
 
-export function FleetOverviewCard() {
+const chartConfig: ChartConfig = {
+  value: { label: 'Active', color: '#3b82f6' },
+};
+
+export function FleetOverviewCard({
+  title = 'Fleet Overview',
+  metrics = DEFAULT_METRICS,
+  trendData = DEFAULT_TREND,
+  utilizationRate = 95.3,
+  utilizationLabel,
+}: FleetOverviewCardProps) {
+  const displayLabel = utilizationLabel ?? `${utilizationRate}%`;
+
   return (
     <DashboardCard>
-      <h3 className={cn(typography.cardTitle, 'mb-1')}>Fleet Overview</h3>
-      <MetricGrid items={FLEET_METRICS} cols={2} />
-      {/* Utilization bar — full-width, rendered separately */}
+      <h3 className={cn(typography.cardTitle, 'mb-1')}>{title}</h3>
+      <MetricGrid items={metrics} cols={2} />
+      {/* Utilization bar */}
       <div className="mt-1">
         <p className={cn(typography.label, 'text-slate-500')}>Utilization Rate</p>
         <div className="mt-0.5 flex items-center gap-1">
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-200">
-            <div className="h-full rounded-full bg-emerald-500" style={{ width: '95.3%' }} />
+            <div className="h-full rounded-full bg-emerald-500" style={{ width: `${utilizationRate}%` }} />
           </div>
-          <span className="text-[14px] font-semibold text-emerald-600">95.3%</span>
+          <span className="text-[14px] font-semibold text-emerald-600">{displayLabel}</span>
         </div>
       </div>
       <div className="mt-1 h-8">

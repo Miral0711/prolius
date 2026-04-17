@@ -23,6 +23,7 @@ export type { AnalyticsCardProps } from './AnalyticsCard';
 export { ActivityFeed } from './ActivityFeed';
 export type { ActivityFeedProps, ActivityItem } from './ActivityFeed';
 export { RecentActivityCard } from './RecentActivityCard';
+export type { RecentActivityCardProps, ActivityEntry } from './RecentActivityCard';
 export { TransactionsCard } from './TransactionsCard';
 export type { TransactionsCardProps, TransactionItem } from './TransactionsCard';
 
@@ -31,6 +32,7 @@ export { FleetMapPanel } from './FleetMapPanel';
 export { FleetBreakdownCard } from './FleetBreakdownCard';
 export { FleetHealthPanel } from './FleetHealthPanel';
 export { FleetOverviewCard } from './FleetOverviewCard';
+export type { FleetOverviewCardProps, FleetTrendPoint } from './FleetOverviewCard';
 
 // ─── Trips & Jobs ───────────────────────────────────────────────────────────
 export { ActiveTripsPanel } from './ActiveTripsPanel';
@@ -44,6 +46,7 @@ export { DriverStatusPanel } from './DriverStatusPanel';
 export { DriverPerformancePanel } from './DriverPerformancePanel';
 export type { DriverPerformancePanelProps, DriverAvailabilityItem, DriverMetricItem } from './DriverPerformancePanel';
 export { TopDriversCard } from './TopDriversCard';
+export type { TopDriversCardProps } from './TopDriversCard';
 
 // ─── Revenue & Finance ──────────────────────────────────────────────────────
 export { RevenueAnalyticsCard } from './RevenueAnalyticsCard';

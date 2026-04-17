@@ -12,6 +12,9 @@
 
 /** Colors - https://tailwindcss.com/docs/colors **/
 :root {
+  /* Dashboard vertical rhythm */
+  --section-gap: 16px;
+
   /* Prolius brand tokens */
   --brand-blue: #3d6b8e;
   --brand-blue-dark: #2e5270;
@@ -241,6 +244,29 @@ body {
 
   .drivers-table .trend-cell svg {
     margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  /* ── Dashboard vertical rhythm ── */
+  .section-block {
+    margin-bottom: var(--section-gap);
+  }
+
+  .section-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .row-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .chart-card {
+    padding: 16px;
+    margin-bottom: var(--section-gap);
+  }
+
+  .chart-card:last-child {
     margin-bottom: 0;
   }
 }

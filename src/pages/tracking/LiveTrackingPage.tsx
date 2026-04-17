@@ -646,11 +646,6 @@ function TrackingMap({
         <Maximize2 className="h-2.5 w-2.5" />
         {Math.round(zoom * 100)}%
       </div>
-
-      {/* ── Copyright ── */}
-      <div className="pointer-events-none absolute bottom-1 left-1/2 z-10 -translate-x-1/2 text-[9px] text-slate-400/70">
-        © 2026 Blitztech Solutions FZE LLC
-      </div>
     </div>
   );
 }
